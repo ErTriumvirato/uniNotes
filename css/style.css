@@ -1,33 +1,23 @@
-body{
-    background-color: #6e6e6e;
+body {
+	background-color: #1a1a1a;
+	color: aliceblue;
 }
 
 .custom-navbar {
-    background-color: #ffffff !important;
-    border-bottom: 1px solid #6e6e6e;
-    display: flex;
-    align-items: center;
-    height: 60px; /* altezza fissa */
-    padding: 0 1rem;
+	background-color: lightslategray !important;
+	border-bottom: 1px solid #000000;
+	display: flex;
+	align-items: center;
+	height: 60px;
+	padding: 0 1rem;
 }
 
 .navbar-brand {
-    padding: 0; /* togli padding default che può allargare la brand area */
+	padding: 0;
 }
 
 .navbar-brand img {
-    max-height: 45px; /* limita l'altezza del logo */
-    width: auto;
-    object-fit: contain;
-    display: block;
-}
-
-/* Su schermi molto piccoli riduci ancora il logo */
-@media (max-width: 576px) {
-    .navbar-brand img {
-        max-height: 30px;
-    }
-    .custom-navbar {
-        height: 50px;
-    }
+	max-height: 45px;
+	object-fit: contain;
+	display: block;
 }

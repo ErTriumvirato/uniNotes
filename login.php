@@ -1,6 +1,6 @@
 <?php
 require_once 'db/database.php';
-require_once 'functions.php';
+require_once 'utils/functions.php';
 
 if(isset($_POST["username"]) && isset($_POST["password"])){
     $login_result = $dbh->checkLogin($_POST["username"], $_POST["password"]);
@@ -19,7 +19,7 @@ if(isUserLoggedIn()){
 }
 else{
     $templateParams["titolo"] = "uniNotes - Login";
-    $templateParams["nome"] = "login-form.php";
+    $templateParams["nome"] = "templates/login-form.php";
 }
 require 'templates/base.php';
 ?>
