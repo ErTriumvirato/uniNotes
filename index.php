@@ -1,5 +1,5 @@
 <?php
-require 'templates/base.php';
+require_once 'templates/base.php';
 ?>
 
 <head>

@@ -2,7 +2,6 @@
 <html lang="it">
 
 <head>
-
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>uniNotes</title>
@@ -27,11 +26,11 @@
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-lg-auto text-center">
-                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Servizi</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Contatti</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="elenco_corsi.php">Corsi</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contatti.php">Contatti</a></li>
                 </ul>
-                <a href="#" class="btn btn-primary d-none d-lg-block">Login</a>
+                <a href="login-form.php" class="btn btn-primary d-none d-lg-block">Login</a>
             </div>
         </nav>
     </header>
