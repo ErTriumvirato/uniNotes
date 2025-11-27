@@ -1,0 +1,33 @@
+body{
+    background-color: #333;
+}
+
+.custom-navbar {
+    background-color: #ffffff !important;
+    border-bottom: 1px solid #333;
+    display: flex;
+    align-items: center;
+    height: 60px; /* altezza fissa */
+    padding: 0 1rem;
+}
+
+.navbar-brand {
+    padding: 0; /* togli padding default che può allargare la brand area */
+}
+
+.navbar-brand img {
+    max-height: 45px; /* limita l'altezza del logo */
+    width: auto;
+    object-fit: contain;
+    display: block;
+}
+
+/* Su schermi molto piccoli riduci ancora il logo */
+@media (max-width: 576px) {
+    .navbar-brand img {
+        max-height: 30px;
+    }
+    .custom-navbar {
+        height: 50px;
+    }
+}
