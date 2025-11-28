@@ -3,9 +3,11 @@ class DatabaseHelper
 {
     private $db;
 
-    public function __construct($db)
-    {
-        $this->db = $db;
+    public function __construct($servername, $username, $password, $dbname, $port){
+        $this->db = new mysqli($servername, $username, $password, $dbname, $port);
+        if ($this->db->connect_error) {
+            die("Connection failed: " . $db->connect_error);
+        }        
     }
 
     public function checkLogin($username, $password)
@@ -18,4 +20,15 @@ class DatabaseHelper
 
         return $result->fetch_all(MYSQLI_ASSOC);
     }
+
+    public function getCoursesWithSSD(){       
+        $query = "SELECT corsi.nome AS nomeCorso, ssd.nome AS nomeSSD, corsi.descrizione AS descrizioneCorso 
+        FROM corsi JOIN ssd ON corsi.idssd = ssd.idssd";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
 }
+?>
