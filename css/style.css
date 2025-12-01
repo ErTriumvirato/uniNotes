@@ -21,3 +21,7 @@ body {
 	object-fit: contain;
 	display: block;
 }
+
+article>a {
+	text-decoration: none;
+}
