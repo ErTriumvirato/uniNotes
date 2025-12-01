@@ -34,5 +34,24 @@ class DatabaseHelper
 
         return $result->fetch_all(MYSQLI_ASSOC);
     }
+
+    public function getArticlesByDate($idcorso){
+        $query = "SELECT * FROM articoli WHERE idcorso = ? ORDER BY data_pubblicazione DESC";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $idcorso);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getArticlesByNumberOfViews(){
+        $query = "SELECT * FROM articoli ORDER BY numero_visualizzazioni DESC";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
 }
 ?>
