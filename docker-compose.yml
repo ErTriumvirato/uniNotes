@@ -1,6 +1,6 @@
 services:
   web:
-    image: php:8.4-apache
+    build: .
     ports:
       - "80:80"
     volumes:
@@ -13,8 +13,10 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: example
       MYSQL_PASSWORD: user_password
-      MYSQL_DATABASE: uninotes
+      MYSQL_DATABASE: uniNotes
       MYSQL_USER: user
+    ports:
+      - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
       - ./db/init:/docker-entrypoint-initdb.d

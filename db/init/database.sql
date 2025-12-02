@@ -52,3 +52,5 @@ CREATE TABLE recensioni (
     FOREIGN KEY (idarticolo) REFERENCES articoli(idarticolo),
     FOREIGN KEY (idutente) REFERENCES utenti(idutente)
 );
+
+GRANT ALL PRIVILEGES ON uniNotes.* TO 'user'@'localhost' IDENTIFIED BY 'user_password';
