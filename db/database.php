@@ -10,6 +10,17 @@ class DatabaseHelper
         }        
     }
 
+    public function checkLogin($username, $password)
+    {
+        $query = "SELECT idautore, username, nome FROM autore WHERE attivo=1 AND username = ? AND password = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('ss', $username, $password);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
     public function getCoursesWithSSD(){       
         $query = "SELECT corsi.nome AS nomeCorso, ssd.nome AS nomeSSD, corsi.descrizione AS descrizioneCorso
         FROM corsi JOIN ssd ON corsi.idssd = ssd.idssd";
@@ -27,7 +38,6 @@ class DatabaseHelper
         JOIN iscrizioni ON corsi.idcorso = iscrizioni.idcorso
         WHERE iscrizioni.idutente = ?";
         $stmt = $this->db->prepare($query);
-        // Assuming $userId is available in the context where this method is called
         $stmt->bind_param('i', $userId);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -47,6 +57,28 @@ class DatabaseHelper
 
     public function getArticlesByNumberOfViews(){
         $query = "SELECT * FROM articoli ORDER BY numero_visualizzazioni DESC";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getArticlesByReviews(){
+        $query = "SELECT articoli.*, AVG(recensioni.valutazione) AS media_valutazioni
+        FROM articoli
+        LEFT JOIN recensioni ON articoli.idarticolo = recensioni.idarticolo
+        GROUP BY articoli.idarticolo
+        ORDER BY media_valutazioni DESC";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+    
+    public function getUsersInfo(){
+        $query = "SELECT * FROM utenti";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         $result = $stmt->get_result();

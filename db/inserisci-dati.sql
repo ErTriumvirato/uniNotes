@@ -23,3 +23,8 @@ INSERT INTO iscrizioni (idutente, idcorso) VALUES
 (2, 1),
 (2, 3),
 (3, 2);
+
+INSERT INTO recensioni (valutazione, commento, idarticolo, idutente) VALUES
+(5, 'Ottimi appunti, molto chiari!', 1, 3),
+(4, 'Gli esercizi sono utili per la preparazione.', 2, 2),
+(5, 'La guida è stata fondamentale per imparare C.', 3, 3);

@@ -2,7 +2,7 @@
 require_once 'db/database.php';
 require_once 'config.php';
 
-$articoli = $dbh->getArticlesByNumberOfViews();
+$articoli = $dbh->getArticlesByReviews();
 foreach ($articoli as $articolo) :
 ?>
 

@@ -42,3 +42,13 @@ CREATE TABLE iscrizioni (
     FOREIGN KEY (idutente) REFERENCES utenti(idutente),
     FOREIGN KEY (idcorso) REFERENCES corsi(idcorso)
 );
+
+CREATE TABLE recensioni (
+    idrecensione INTEGER PRIMARY KEY AUTO_INCREMENT,
+    valutazione INTEGER NOT NULL,
+    commento TEXT,
+    idarticolo INTEGER,
+    idutente INTEGER,
+    FOREIGN KEY (idarticolo) REFERENCES articoli(idarticolo),
+    FOREIGN KEY (idutente) REFERENCES utenti(idutente)
+);
