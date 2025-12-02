@@ -1,5 +1,5 @@
-<form action="#" method="POST">
-    <h2>Login</h2>
+<article class="card shadow-sm border-0 my-4" style="max-width: 600px; margin: auto;">
+    <form action="#" method="POST">
     <?php if(isset($templateParams["errorelogin"])): ?>
     <p><?php echo $templateParams["errorelogin"]; ?></p>
     <?php endif; ?>
@@ -15,3 +15,4 @@
         </li>
     </ul>
 </form>
+</article>

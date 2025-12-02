@@ -25,3 +25,12 @@ body {
 article>a {
 	text-decoration: none;
 }
+
+article>form {
+	text-align: center;
+}
+
+article>form>ul {
+	list-style-type: none;
+	margin: 10px;
+}
