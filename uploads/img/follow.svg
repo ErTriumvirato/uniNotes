@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="48" height="48" role="img" aria-label="Segui il corso" style="cursor:pointer;">
+  <title>Segui il corso</title>
+  <rect x="2" y="2" width="60" height="60" rx="12" fill="#f4f7ff"/>
+  <path d="M20 14h18v26l-9-4-9 4V14z"
+        fill="#2b6ef6" stroke="#234fbf" stroke-width="0.8"/>
+  <g transform="translate(40,40)">
+    <circle cx="0" cy="0" r="8.2"
+            fill="#19a974" stroke="#147a55" stroke-width="1"/>
+    <g fill="#fff">
+      <rect x="-1.4" y="-4" width="2.8" height="8" rx="0.9"/>
+      <rect x="-4" y="-1.4" width="8" height="2.8" rx="0.9"/>
+    </g>
+  </g>
+  <rect x="0" y="0" width="64" height="64" fill="transparent"/>
+</svg>

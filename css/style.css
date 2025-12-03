@@ -34,3 +34,9 @@ article>form>ul {
 	list-style-type: none;
 	margin: 10px;
 }
+
+.card-img-top {
+    width: 50px !important;
+    height: 50px !important;
+    object-fit: contain;
+}

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="48" height="48" role="img" aria-label="Non seguire più il corso" style="cursor:pointer;">
+  <title>Non seguire più il corso</title>
+  <rect x="2" y="2" width="60" height="60" rx="12" fill="#f4f7ff"/>
+  <path d="M20 14h18v26l-9-4-9 4V14z"
+        fill="#2b6ef6" stroke="#234fbf" stroke-width="0.8"/>
+  <g transform="translate(40,40)">
+    <circle cx="0" cy="0" r="8.2"
+            fill="#e05c5c" stroke="#b84242" stroke-width="1"/>
+    <rect x="-5" y="-1.4" width="10" height="2.8" rx="1" fill="#fff"/>
+  </g>
+  <rect x="0" y="0" width="64" height="64" fill="transparent"/>
+</svg>
