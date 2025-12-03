@@ -5,6 +5,6 @@ require_once 'config.php';
 $templateParams["titolo"] = "uniNotes - Corsi Seguiti";
 $templateParams["nome"] = "templates/lista-seguiti.php";
 
-require_once 'templates/base.php';
+require_once 'templates/users-base.php';
 
 ?>

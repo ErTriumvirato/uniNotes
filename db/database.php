@@ -95,5 +95,35 @@ class DatabaseHelper
 
         return $result->fetch_all(MYSQLI_ASSOC);
     }
+
+    public function getUsersNumber(){
+        $query = "SELECT COUNT(*) AS total FROM utenti";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+
+        return $row['total'];
+    }
+
+    public function getCoursesNumber(){
+        $query = "SELECT COUNT(*) AS total FROM corsi";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+
+        return $row['total'];
+    }
+
+    public function getArticlesNumber(){
+        $query = "SELECT COUNT(*) AS total FROM articoli";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+
+        return $row['total'];
+    }
 }
 ?>

@@ -13,7 +13,7 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-lg custom-navbar px-3">
-            <a class="navbar-brand d-flex align-items-center" href="#">
+            <a class="navbar-brand d-flex align-items-center" href="index.php">
                 <img src="uploads/img/logo.png" alt="Logo" />
             </a>
 
@@ -26,11 +26,8 @@
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-lg-auto text-center">
-                    <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="corsi.php">Corsi</a></li>
-                    <!--VERIFICARE SE SI è LOGGATI PRIMA DI MOSTRARLO-->
-                    <li class="nav-item"><a class="nav-link" href="seguiti.php">Seguiti</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contatti.php">Contatti</a></li>
+                    <li class="nav-item"><a class="nav-link" href="dashboard.php">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="gestione.php">Gestione</a></li>
                 </ul>
                 <a href="login.php" class="btn btn-primary d-none d-lg-block">Login</a>
             </div>

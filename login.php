@@ -20,5 +20,5 @@ else{
     $templateParams["titolo"] = "uniNotes - Login";
     $templateParams["nome"] = "templates/login-form.php";
 }
-require 'templates/base.php';
+require 'templates/users-base.php';
 ?>

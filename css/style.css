@@ -35,6 +35,10 @@ article>form>ul {
 	margin: 10px;
 }
 
+.card {
+	background-color: #f5f7ff;
+}
+
 .card-img-top {
     width: 50px !important;
     height: 50px !important;
