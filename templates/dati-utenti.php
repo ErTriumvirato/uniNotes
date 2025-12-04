@@ -1,6 +1,7 @@
 <?php
 require_once 'db/database.php';
 require_once 'config.php';
+require_once 'templates/auth-required.php';
 
     $numeroUtenti = $dbh->getUsersNumber();
     $numeroCorsi = $dbh->getCoursesNumber();
@@ -8,7 +9,6 @@ require_once 'config.php';
 ?>
 <article class="card shadow-sm border-0 my-4" style="max-width: 600px; margin: auto;">
     <div class="card-body text-center">
-        
         <p class="text-muted mb-3">
             <?php 
                 echo 'Numero totale utenti: ' . $numeroUtenti . '<br>';
@@ -18,7 +18,6 @@ require_once 'config.php';
 </article>
 <article class="card shadow-sm border-0 my-4" style="max-width: 600px; margin: auto;">
     <div class="card-body text-center">
-        
         <p class="text-muted mb-3">
             <?php 
                 echo 'Numero totale corsi: ' . $numeroCorsi . '<br>';

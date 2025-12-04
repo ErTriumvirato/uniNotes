@@ -3,25 +3,27 @@ class DatabaseHelper
 {
     private $db;
 
-    public function __construct($servername, $username, $password, $dbname, $port){
+    public function __construct($servername, $username, $password, $dbname, $port)
+    {
         $this->db = new mysqli($servername, $username, $password, $dbname, $port);
         if ($this->db->connect_error) {
-            die("Connection failed: " . $db->connect_error);
-        }        
+            die("Connection failed: " . $this->db->connect_error);
+        }
     }
 
-    public function checkLogin($username, $password)
+    public function getUserByUsername($username)
     {
-        $query = "SELECT idautore, username, nome FROM autore WHERE attivo=1 AND username = ? AND password = ?";
+        $query = "SELECT * FROM utenti WHERE username = ?";
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param('ss', $username, $password);
+        $stmt->bind_param('s', $username);
         $stmt->execute();
         $result = $stmt->get_result();
 
-        return $result->fetch_all(MYSQLI_ASSOC);
+        return $result->fetch_assoc();
     }
 
-    public function getCoursesWithSSD(){       
+    public function getCoursesWithSSD()
+    {
         $query = "SELECT corsi.nome AS nomeCorso, ssd.nome AS nomeSSD, corsi.descrizione AS descrizioneCorso
         FROM corsi JOIN ssd ON corsi.idssd = ssd.idssd";
         $stmt = $this->db->prepare($query);
@@ -30,8 +32,9 @@ class DatabaseHelper
 
         return $result->fetch_all(MYSQLI_ASSOC);
     }
-    
-    public function getFollowedCoursesWithSSD($userId){
+
+    public function getFollowedCoursesWithSSD($userId)
+    {
         $query = "SELECT corsi.nome AS nomeCorso, ssd.nome AS nomeSSD, corsi.descrizione AS descrizioneCorso
         FROM corsi 
         JOIN ssd ON corsi.idssd = ssd.idssd
@@ -45,7 +48,8 @@ class DatabaseHelper
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getArticlesByDate($idcorso){
+    public function getArticlesByDate($idcorso)
+    {
         $query = "SELECT * FROM articoli WHERE idcorso = ? ORDER BY data_pubblicazione DESC";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param('i', $idcorso);
@@ -55,7 +59,8 @@ class DatabaseHelper
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getArticlesByNumberOfViews(){
+    public function getArticlesByNumberOfViews()
+    {
         $query = "SELECT * FROM articoli ORDER BY numero_visualizzazioni DESC";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
@@ -64,7 +69,8 @@ class DatabaseHelper
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getArticlesByReviews(){
+    public function getArticlesByReviews()
+    {
         $query = "SELECT articoli.*, AVG(recensioni.valutazione) AS media_valutazioni
         FROM articoli
         LEFT JOIN recensioni ON articoli.idarticolo = recensioni.idarticolo
@@ -76,8 +82,9 @@ class DatabaseHelper
 
         return $result->fetch_all(MYSQLI_ASSOC);
     }
-    
-    public function getUsersInfo(){
+
+    public function getUsersInfo()
+    {
         $query = "SELECT * FROM utenti";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
@@ -86,7 +93,8 @@ class DatabaseHelper
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getReviewByArticle($idarticolo){
+    public function getReviewByArticle($idarticolo)
+    {
         $query = "SELECT * FROM recensioni WHERE idarticolo = ?";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param('i', $idarticolo);
@@ -96,7 +104,8 @@ class DatabaseHelper
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getUsersNumber(){
+    public function getUsersNumber()
+    {
         $query = "SELECT COUNT(*) AS total FROM utenti";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
@@ -106,7 +115,8 @@ class DatabaseHelper
         return $row['total'];
     }
 
-    public function getCoursesNumber(){
+    public function getCoursesNumber()
+    {
         $query = "SELECT COUNT(*) AS total FROM corsi";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
@@ -116,7 +126,8 @@ class DatabaseHelper
         return $row['total'];
     }
 
-    public function getArticlesNumber(){
+    public function getArticlesNumber()
+    {
         $query = "SELECT COUNT(*) AS total FROM articoli";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
@@ -126,4 +137,3 @@ class DatabaseHelper
         return $row['total'];
     }
 }
-?>

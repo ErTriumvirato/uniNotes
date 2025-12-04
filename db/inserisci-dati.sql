@@ -1,8 +1,8 @@
 INSERT INTO utenti (ruolo, username, password) VALUES
-(1, 'admin', 'adminpass'),
-(2, 'studente1', 'studpass1'),
-(2, 'studente2', 'studpass2'),
-(2, 'studente3', 'studpass3');
+(1, 'admin', '$2y$10$gYT.l6keERbhJzw/LOuVXOk4BdrLkL15fbFGMr8AiUpBIfD8lT7si'),
+(2, 'studente1', '$2y$10$gYT.l6keERbhJzw/LOuVXOk4BdrLkL15fbFGMr8AiUpBIfD8lT7si'),
+(2, 'studente2', '$2y$10$gYT.l6keERbhJzw/LOuVXOk4BdrLkL15fbFGMr8AiUpBIfD8lT7si'),
+(2, 'studente3', '$2y$10$gYT.l6keERbhJzw/LOuVXOk4BdrLkL15fbFGMr8AiUpBIfD8lT7si');
 
 INSERT INTO ssd (nome, descrizione) VALUES
 ('MAT/01', 'Matematica'),
@@ -24,7 +24,7 @@ INSERT INTO iscrizioni (idutente, idcorso) VALUES
 (2, 3),
 (3, 2);
 
-INSERT INTO recensioni (valutazione, commento, idarticolo, idutente) VALUES
-(5, 'Ottimi appunti, molto chiari!', 1, 3),
-(4, 'Gli esercizi sono utili per la preparazione.', 2, 2),
-(5, 'La guida è stata fondamentale per imparare C.', 3, 3);
+INSERT INTO recensioni (valutazione, idarticolo, idutente) VALUES
+(5, 1, 3),
+(4, 2, 2),
+(5, 3, 3);

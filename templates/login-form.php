@@ -1,7 +1,7 @@
-<article class="card shadow-sm border-0 my-4" style="max-width: 600px; margin: auto;">
-    <form action="#" method="POST">
-    <?php if(isset($templateParams["errorelogin"])): ?>
-    <p><?php echo $templateParams["errorelogin"]; ?></p>
+
+<form action="login.php" method="POST">
+    <?php if (isset($templateParams["errorelogin"])): ?>
+        <p><?php echo $templateParams["errorelogin"]; ?></p>
     <?php endif; ?>
     <ul>
         <li>
@@ -11,8 +11,11 @@
             <label for="password">Password:</label><input type="password" id="password" name="password" />
         </li>
         <li>
-            <input type="submit" name="submit" value="Invia" />
+            <input type="submit" name="login" value="Invia" />
         </li>
     </ul>
 </form>
-</article>
+
+<?php
+var_dump(isUserLoggedIn());
+?>

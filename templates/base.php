@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="it">
 
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -13,7 +19,7 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-lg custom-navbar px-3">
-            <a class="navbar-brand d-flex align-items-center" href="index.php">
+            <a class="navbar-brand d-flex align-items-center" href="gestione.php">
                 <img src="uploads/img/logo.png" alt="Logo" />
             </a>
 
@@ -26,8 +32,15 @@
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-lg-auto text-center">
-                    <li class="nav-item"><a class="nav-link" href="dashboard.php">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="gestione.php">Gestione</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="corsi.php">Corsi</a></li>
+                    <?php if ($_SESSION['role'] == 2) { ?>
+                        <li class="nav-item"><a class="nav-link" href="seguiti.php">Seguiti</a></li>
+                    <?php } elseif ($_SESSION['role'] == 1) { ?>
+                        <li class="nav-item"><a class="nav-link" href="dashboard.php">Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link" href="gestione.php">Gestione</a></li>
+                    <?php } ?>
+                    <li class="nav-item"><a class="nav-link" href="about.php">Contatti</a></li>
                 </ul>
                 <a href="login.php" class="btn btn-primary d-none d-lg-block">Login</a>
             </div>
@@ -35,11 +48,11 @@
     </header>
 
     <main>
-    <?php
-    if(isset($templateParams["nome"])){
-        require($templateParams["nome"]);
-    }
-    ?>
+        <?php
+        if (isset($templateParams["nome"])) {
+            require($templateParams["nome"]);
+        }
+        ?>
     </main>
 
     <footer class="bg-dark text-light pt-4 pb-3 mt-5">

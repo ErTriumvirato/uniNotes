@@ -1,24 +1,50 @@
 <?php
 require_once 'db/database.php';
 require_once 'utils/functions.php';
+require_once 'config.php';
 
-if(isset($_POST["username"]) && isset($_POST["password"])){
-    $login_result = $dbh->checkLogin($_POST["username"], $_POST["password"]);
-    if(count($login_result)==0){
-        $templateParams["errorelogin"] = "Errore! Controllare username o password!";
-    }
-    else{
-        registerLoggedUser($login_result[0]);
-    }
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
 
-if(isUserLoggedIn()){
-    $templateParams["titolo"] = "uniNotes - Home";
-    $templateParams["nome"] = "index.php";
+// Login
+if (isset($_POST['login'])) {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    if(isUserLoggedIn()) {
+        echo "<script>console.log('dsdsdsds');</script>";
+    }
+    echo "<script>console.log('dsdsdsds');</script>";
+    if (empty($username) || empty($password)) {
+        $templateParams["error"] = "Inserisci username e password.";
+    } else {
+        $user = $dbh->getUserByUsername($username);
+        if ($user && password_verify($password, $user['password'])) {
+            $_SESSION['username'] = $user['username'];
+            header("Location: index.php");
+            exit();
+        } else {
+            $templateParams["error"] = "Username o password errati.";
+        }
+    }
 }
-else{
-    $templateParams["titolo"] = "uniNotes - Login";
-    $templateParams["nome"] = "templates/login-form.php";
+
+// Logout
+if (isset($_POST['logout'])) {
+    session_unset();
+    session_destroy();
+    header("Location: index.php");
+    exit();
 }
-require 'templates/users-base.php';
-?>
+if (isUserLoggedIn()) {
+    if(isUserLoggedIn()) {
+        echo "<script>console.log('dsdsdsds');</script>";
+    }
+    header("Location: dashboard.php");
+    exit();
+}
+$templateParams["titolo"] = "uniNotes - Login";
+$templateParams["nome"] = "templates/login-form.php";
+
+require 'templates/base.php';
+
