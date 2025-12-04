@@ -6,5 +6,3 @@ $templateParams["titolo"] = "uniNotes - Gestione";
 $templateParams["nome"] = "templates/management.php";
 
 require_once 'templates/base.php';
-
-?>

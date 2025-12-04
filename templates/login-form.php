@@ -15,7 +15,3 @@
         </li>
     </ul>
 </form>
-
-<?php
-var_dump(isUserLoggedIn());
-?>

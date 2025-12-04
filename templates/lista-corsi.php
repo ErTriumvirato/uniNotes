@@ -21,4 +21,3 @@ foreach ($corsi as $corso) :
 </article>
 <?php
     endforeach;
-?>

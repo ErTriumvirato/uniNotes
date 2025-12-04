@@ -12,9 +12,9 @@ if (isset($_POST['login'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
     if(isUserLoggedIn()) {
-        echo "<script>console.log('dsdsdsds');</script>";
+        //echo "<script>console.log('dsdsdsds');</script>";
     }
-    echo "<script>console.log('dsdsdsds');</script>";
+    //echo "<script>console.log('dsdsdsds');</script>";
     if (empty($username) || empty($password)) {
         $templateParams["error"] = "Inserisci username e password.";
     } else {
@@ -38,7 +38,7 @@ if (isset($_POST['logout'])) {
 }
 if (isUserLoggedIn()) {
     if(isUserLoggedIn()) {
-        echo "<script>console.log('dsdsdsds');</script>";
+        //echo "<script>console.log('dsdsdsds');</script>";
     }
     header("Location: dashboard.php");
     exit();

@@ -2,7 +2,6 @@
 require_once 'db/database.php';
 require_once 'config.php';
 require_once 'templates/auth-required.php';
-
 ?>
 
 <article class="card shadow-sm border-0 my-4" style="max-width: 600px; margin: auto;">
