@@ -1,4 +1,7 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();  
+}
 define("UPLOAD_DIR", "./upload/");
 require_once("utils/functions.php");
 require_once("db/database.php");

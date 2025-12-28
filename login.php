@@ -1,13 +1,7 @@
 <?php
-session_start();
-
 require_once 'db/database.php';
 require_once 'utils/functions.php';
 require_once 'config.php';
-
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
 
 if (isUserLoggedIn()) {
     header("Location: index.php");
@@ -22,7 +16,11 @@ if (isset($_POST['login'])) {
     if ($user && password_verify($password, $user['password'])) {
         $_SESSION['username'] = $user['username'];
         $_SESSION['ruolo'] = $user['ruolo'];
-        header("Location: index.php");
+        if(isUserAdmin()){
+            header("Location: dashboard.php");
+        } else {
+            header("Location: index.php");
+        }
         exit();
     } else {
         $templateParams["error"] = "Username o password errati";

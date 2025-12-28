@@ -1,7 +1,5 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+    require_once 'config.php';
 ?>
 <!DOCTYPE html>
 <html lang="it">
@@ -28,36 +26,37 @@ if (session_status() === PHP_SESSION_NONE) {
                 </button>
             </div>
 
+            <?php if(isUserAdmin()) { ?>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-lg-auto text-center">
+                    <li class="nav-item"><a class="nav-link" href="dashboard.php">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="gestione.php">Gestione</a></li>
+                </ul>
+            <?php } else {?>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-lg-auto text-center">
                     <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="corsi.php">Corsi</a></li>
-                    <?php if (isset($_SESSION['ruolo']) && $_SESSION['ruolo'] == 2) { ?>
+                    <?php if (isUserLoggedIn() && !isUserAdmin()) { ?>
                         <li class="nav-item"><a class="nav-link" href="seguiti.php">Seguiti</a></li>
-                    <?php } elseif (isset($_SESSION['ruolo']) && $_SESSION['ruolo'] == 1) { ?>
-                        <li class="nav-item"><a class="nav-link" href="dashboard.php">Dashboard</a></li>
-                        <li class="nav-item"><a class="nav-link" href="gestione.php">Gestione</a></li>
                     <?php } ?>
                     <li class="nav-item"><a class="nav-link" href="contatti.php">Contatti</a></li>
                 </ul>
-                
-                <?php
-                    if((!isUserLoggedIn()))
-                        echo '<a href="login.php" class="btn btn-primary d-none d-lg-block">Login</a>';
-                    else{
-                        echo '<a href="logout.php" class="btn btn-primary d-none d-lg-block">Logout</a>';
-                    }
-                ?>
+            <?php } ?>
+
+                <! -- Bottone di login/logout -->
+                <?php if((!isUserLoggedIn())) { ?>
+                    <a href="login.php" class="btn btn-primary d-none d-lg-block">Login</a>
+                <?php } else { ?>
+                    <a href="logout.php" class="btn btn-primary d-none d-lg-block">Logout</a>
+                <?php } ?>
             </div>
         </nav>
     </header>
 
     <main>
-        <?php
-        if (isset($templateParams["nome"])) {
-            require($templateParams["nome"]);
-        }
-        ?>
+        <!-- Contenuto della pagina -->
+        <?php if (isset($templateParams["nome"])) require($templateParams["nome"]); ?>
     </main>
 
     <footer class="bg-dark text-light pt-4 pb-3 mt-5">
