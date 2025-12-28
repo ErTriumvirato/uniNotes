@@ -17,7 +17,7 @@ if (session_status() === PHP_SESSION_NONE) {
 <body>
     <header>
         <nav class="navbar navbar-expand-lg custom-navbar px-3">
-            <a class="navbar-brand d-flex align-items-center" href="gestione.php">
+            <a class="navbar-brand d-flex align-items-center" href="index.php">
                 <img src="uploads/img/logo.png" alt="Logo" />
             </a>
 
@@ -32,9 +32,9 @@ if (session_status() === PHP_SESSION_NONE) {
                 <ul class="navbar-nav mx-lg-auto text-center">
                     <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="corsi.php">Corsi</a></li>
-                    <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 2) { ?>
+                    <?php if (isset($_SESSION['ruolo']) && $_SESSION['ruolo'] == 2) { ?>
                         <li class="nav-item"><a class="nav-link" href="seguiti.php">Seguiti</a></li>
-                    <?php } elseif (isset($_SESSION['role']) && $_SESSION['role'] == 1) { ?>
+                    <?php } elseif (isset($_SESSION['ruolo']) && $_SESSION['ruolo'] == 1) { ?>
                         <li class="nav-item"><a class="nav-link" href="dashboard.php">Dashboard</a></li>
                         <li class="nav-item"><a class="nav-link" href="gestione.php">Gestione</a></li>
                     <?php } ?>

@@ -1,8 +1,11 @@
 <?php
 require_once 'config.php';
-require_once 'templates/auth-required.php';
 
-// templateParams
+if(!isUserAdmin()){
+    header("Location: index.php");
+    exit();
+}
+
 $templateParams["titolo"] = "uniNotes - Gestione";
 $templateParams["nome"] = "templates/management.php";
 

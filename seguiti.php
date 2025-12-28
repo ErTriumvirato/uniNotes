@@ -1,6 +1,5 @@
 <?php
 require_once 'config.php';
-require_once 'templates/auth-required.php';
 
 // templateParams
 $templateParams["titolo"] = "uniNotes - Corsi Seguiti";

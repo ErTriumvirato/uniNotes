@@ -4,9 +4,9 @@ USE uniNotes;
 
 CREATE TABLE utenti (
     idutente INTEGER PRIMARY KEY AUTO_INCREMENT,
-    ruolo INTEGER NOT NULL,
+    ruolo INTEGER NOT NULL
     username VARCHAR(30) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL
+    password VARCHAR(255) NOT NULL,
 );
 
 CREATE TABLE ssd (
