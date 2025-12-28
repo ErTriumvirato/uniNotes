@@ -40,7 +40,14 @@ if (session_status() === PHP_SESSION_NONE) {
                     <?php } ?>
                     <li class="nav-item"><a class="nav-link" href="contatti.php">Contatti</a></li>
                 </ul>
-                <a href="login.php" class="btn btn-primary d-none d-lg-block">Login</a>
+                
+                <?php
+                    if((!isUserLoggedIn()))
+                        echo '<a href="login.php" class="btn btn-primary d-none d-lg-block">Login</a>';
+                    else{
+                        echo '<a href="logout.php" class="btn btn-primary d-none d-lg-block">Logout</a>';
+                    }
+                ?>
             </div>
         </nav>
     </header>
