@@ -1,6 +1,4 @@
 <?php
-require_once 'db/database.php';
-require_once 'utils/functions.php';
 require_once 'config.php';
 
 if (isUserLoggedIn()) {
@@ -14,6 +12,7 @@ if (isset($_POST['login'])) {
     $user = $dbh->getUserByUsername($username);
 
     if ($user && password_verify($password, $user['password'])) {
+        $_SESSION['idutente'] = $user['idutente'];
         $_SESSION['username'] = $user['username'];
         $_SESSION['ruolo'] = $user['ruolo'];
         if(isUserAdmin()){

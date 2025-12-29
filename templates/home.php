@@ -1,39 +1,48 @@
 <?php
-require_once 'db/database.php';
-require_once 'config.php';
+$articoli = $dbh->getArticles();
 
-$articoli = $dbh->getArticlesByReviews();
-
-foreach ($articoli as $articolo) :
-    $recensioni = $dbh->getReviewByArticle($articolo['idarticolo']);
-    $media = null;
-    if (!empty($recensioni)) {
-        $somma = 0;
-        foreach ($recensioni as $recensione) {
-            $somma += $recensione['valutazione'];
-        }
-        $media = round($somma / count($recensioni), 1);
-    }
-?>
+foreach ($articoli as $articolo) { ?>
 
 <article class="card shadow-sm border-0 my-4" style="max-width: 600px; margin: auto;">
-    <a href="corso.php">
+    <a href="articolo.php?id=<?php echo $articolo['idarticolo']; ?>"
+       class="text-decoration-none text-dark">
+
         <div class="card-body text-center">
-            <h2 class="card-title mb-3"><?php echo htmlspecialchars($articolo['titolo']); ?></h2>
-                <p class="text-muted mb-3">
-                <?php 
-                    if ($media !== null) {
-                        echo "L'articolo è valutato " . $media . " stelle";
+
+            <!-- Titolo -->
+            <h2 class="card-title mb-2">
+                <?php echo htmlspecialchars($articolo['titolo']); ?>
+            </h2>
+
+            <!-- Data pubblicazione -->
+            <p class="text-muted mb-1">
+                Pubblicato il
+                <?php
+                    echo date(
+                        'd/m/Y',
+                        strtotime($articolo['data_pubblicazione'])
+                    );
+                ?>
+            </p>
+
+            <!-- Media recensioni -->
+            <p class="mb-1">
+                <?php
+                    if ($articolo['media_recensioni'] !== null) {
+                        echo "⭐ " . $articolo['media_recensioni'] . " / 5.0";
                     } else {
-                        echo "Non sono presenti recensioni";
+                        echo "⭐ Nessuna recensione";
                     }
                 ?>
+            </p>
+
+            <!-- Visualizzazioni -->
+            <p class="text-muted mb-0">
+                <?php echo (int)$articolo['numero_visualizzazioni']; ?> visualizzazioni
             </p>
 
         </div>
     </a>
 </article>
 
-<?php
-    endforeach;
-?>
+<?php } ?>

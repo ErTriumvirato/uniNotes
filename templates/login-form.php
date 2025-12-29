@@ -1,4 +1,3 @@
-
 <form action="login.php" method="POST">
     <!-- Errore login -->
     <?php if (isset($templateParams["error"])): ?>

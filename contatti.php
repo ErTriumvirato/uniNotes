@@ -1,7 +1,7 @@
 <?php
 require_once 'config.php';
 
-// templateParams
+// Template parameters
 $templateParams["titolo"] = "uniNotes - Contatti";
 $templateParams["nome"] = "templates/lista-contatti.php";
 

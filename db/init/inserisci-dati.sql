@@ -14,10 +14,11 @@ INSERT INTO corsi (nome, descrizione, idssd) VALUES
 ('Fisica 1', 'Corso di Fisica per studenti di ingegneria', 2),
 ('Programmazione', 'Introduzione alla programmazione in C', 3);
 
-INSERT INTO articoli (titolo, contenuto, idutente, idcorso, numero_visualizzazioni) VALUES
-('Appunti di Analisi Matematica', 'Questi sono gli appunti di Analisi Matematica...', 2, 1, 10),
-('Esercizi di Fisica', 'Ecco alcuni esercizi risolti di Fisica Generale...', 3, 2, 15),
-('Guida alla Programmazione in C', 'In questa guida vedremo le basi della programmazione in C...', 2, 3, 20);
+INSERT INTO articoli (titolo, contenuto, idutente, idcorso, numero_visualizzazioni, data_pubblicazione) VALUES
+('Appunti di Analisi Matematica', 'Questi sono gli appunti di Analisi Matematica...', 2, 1, 10, '2024-10-15 09:30:00'),
+('Esercizi di Fisica', 'Ecco alcuni esercizi risolti di Fisica Generale...', 3, 2, 15,'2024-11-02 14:00:00'),
+('Guida alla Programmazione in C', 'In questa guida vedremo le basi della programmazione in C...', 2, 3, 20, '2024-12-01 18:45:00');
+
 
 INSERT INTO iscrizioni (idutente, idcorso) VALUES
 (2, 1),

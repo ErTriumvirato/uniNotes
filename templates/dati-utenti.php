@@ -1,7 +1,4 @@
 <?php
-require_once 'db/database.php';
-require_once 'config.php';
-
     $numeroUtenti = $dbh->getUsersNumber();
     $numeroCorsi = $dbh->getCoursesNumber();
     $numeroArticoli = $dbh->getArticlesNumber();

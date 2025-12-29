@@ -24,7 +24,7 @@ class DatabaseHelper
 
     public function getCoursesWithSSD()
     {
-        $query = "SELECT corsi.nome AS nomeCorso, ssd.nome AS nomeSSD, corsi.descrizione AS descrizioneCorso
+        $query = "SELECT corsi.idcorso, corsi.nome AS nomeCorso, ssd.nome AS nomeSSD, corsi.descrizione AS descrizioneCorso
         FROM corsi JOIN ssd ON corsi.idssd = ssd.idssd";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
@@ -35,7 +35,7 @@ class DatabaseHelper
 
     public function getFollowedCoursesWithSSD($userId)
     {
-        $query = "SELECT corsi.nome AS nomeCorso, ssd.nome AS nomeSSD, corsi.descrizione AS descrizioneCorso
+        $query = "SELECT corsi.idcorso AS idcorso, corsi.nome AS nomeCorso, ssd.nome AS nomeSSD
         FROM corsi 
         JOIN ssd ON corsi.idssd = ssd.idssd
         JOIN iscrizioni ON corsi.idcorso = iscrizioni.idcorso
@@ -48,9 +48,9 @@ class DatabaseHelper
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getArticlesByDate($idcorso)
+    public function getArticlesById($idcorso)
     {
-        $query = "SELECT * FROM articoli WHERE idcorso = ? ORDER BY data_pubblicazione DESC";
+        $query = "SELECT * FROM articoli WHERE idcorso = ?";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param('i', $idcorso);
         $stmt->execute();
@@ -69,13 +69,14 @@ class DatabaseHelper
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getArticlesByReviews()
+    public function getArticles()
     {
-        $query = "SELECT articoli.*, AVG(recensioni.valutazione) AS media_valutazioni
-        FROM articoli
-        LEFT JOIN recensioni ON articoli.idarticolo = recensioni.idarticolo
-        GROUP BY articoli.idarticolo
-        ORDER BY media_valutazioni DESC";
+        $query = "SELECT articoli.*, ROUND(AVG(recensioni.valutazione), 1) AS media_recensioni
+            FROM articoli
+            LEFT JOIN recensioni ON articoli.idarticolo = recensioni.idarticolo
+            GROUP BY articoli.idarticolo
+            ORDER BY data_pubblicazione DESC, media_recensioni DESC
+        ";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -135,5 +136,29 @@ class DatabaseHelper
         $row = $result->fetch_assoc();
 
         return $row['total'];
+    }
+
+    public function followCourse($idutente, $idcorso)
+    {
+        $stmt = $this->db->prepare("INSERT INTO iscrizioni (idutente, idcorso) VALUES (?, ?)");
+        $stmt->bind_param("ii", $idutente, $idcorso);
+        $stmt->execute();
+    }
+
+    public function unfollowCourse($idutente, $idcorso)
+    {
+        $stmt = $this->db->prepare("DELETE FROM iscrizioni WHERE idutente = ? AND idcorso = ?");
+        $stmt->bind_param("ii", $idutente, $idcorso);
+        $stmt->execute();
+    }
+    
+    public function isFollowingCourse($idutente, $idcorso)
+    {
+        $stmt = $this->db->prepare("SELECT COUNT(*) as count FROM iscrizioni WHERE idutente = ? AND idcorso = ?");
+        $stmt->bind_param("ii", $idutente, $idcorso);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        return $row['count'] > 0;
     }
 }
