@@ -1,5 +1,5 @@
 <?php
-$articoli = $dbh->getArticles();
+$articoli = $dbh->getApprovedArticles();
 
 foreach ($articoli as $articolo) { ?>
 

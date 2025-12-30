@@ -33,24 +33,17 @@ class DatabaseHelper
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getFollowedCoursesWithSSD($userId)
+    public function getApprovedArticlesByCourse($idcorso)
     {
-        $query = "SELECT corsi.idcorso AS idcorso, corsi.nome AS nomeCorso, ssd.nome AS nomeSSD
-        FROM corsi 
-        JOIN ssd ON corsi.idssd = ssd.idssd
-        JOIN iscrizioni ON corsi.idcorso = iscrizioni.idcorso
-        WHERE iscrizioni.idutente = ?";
-        $stmt = $this->db->prepare($query);
-        $stmt->bind_param('i', $userId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        return $result->fetch_all(MYSQLI_ASSOC);
-    }
-
-    public function getArticlesByCourse($idcorso)
-    {
-        $query = "SELECT * FROM articoli WHERE idcorso = ?";
+        $query = "SELECT articoli.*, utenti.username AS autore, ROUND(AVG(recensioni.valutazione), 1) AS media_recensioni
+            FROM articoli
+            JOIN utenti ON articoli.idutente = utenti.idutente
+            LEFT JOIN recensioni ON articoli.idarticolo = recensioni.idarticolo
+            WHERE articoli.idcorso = ?
+            AND articoli.approvato = true
+            GROUP BY articoli.idarticolo
+            ORDER BY data_pubblicazione DESC, media_recensioni DESC
+        ";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param('i', $idcorso);
         $stmt->execute();
@@ -59,13 +52,30 @@ class DatabaseHelper
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getArticlesByNumberOfViews()
+    public function getApprovedArticles()
     {
-        $query = "SELECT * FROM articoli ORDER BY numero_visualizzazioni DESC";
+        $query = "SELECT articoli.*,  utenti.username AS autore,
+            ROUND(AVG(recensioni.valutazione), 1) AS media_recensioni,
+            COUNT(recensioni.idrecensione) AS numero_recensioni
+        FROM articoli
+        JOIN utenti ON articoli.idutente = utenti.idutente
+        LEFT JOIN recensioni ON articoli.idarticolo = recensioni.idarticolo
+        WHERE articoli.approvato = TRUE
+        GROUP BY articoli.idarticolo
+        ORDER BY articoli.data_pubblicazione DESC, media_recensioni DESC
+    ";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
         $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
 
+
+    public function getUnapprovedArticles()
+    {
+        $stmt = $this->db->prepare("SELECT * FROM articoli WHERE approvato = false");
+        $stmt->execute();
+        $result = $stmt->get_result();
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
@@ -78,27 +88,6 @@ class DatabaseHelper
             ORDER BY data_pubblicazione DESC, media_recensioni DESC
         ";
         $stmt = $this->db->prepare($query);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        return $result->fetch_all(MYSQLI_ASSOC);
-    }
-
-    public function getUsersInfo()
-    {
-        $query = "SELECT * FROM utenti";
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        return $result->fetch_all(MYSQLI_ASSOC);
-    }
-
-    public function getReviewByArticle($idarticolo)
-    {
-        $query = "SELECT * FROM recensioni WHERE idarticolo = ?";
-        $stmt = $this->db->prepare($query);
-        $stmt->bind_param('i', $idarticolo);
         $stmt->execute();
         $result = $stmt->get_result();
 
@@ -140,7 +129,13 @@ class DatabaseHelper
 
     public function getArticleById($idarticolo)
     {
-        $query = "SELECT * FROM articoli WHERE idarticolo = ?";
+        $query = "SELECT articoli.*, utenti.username AS autore, ROUND(AVG(recensioni.valutazione), 1) AS media_recensioni
+            FROM articoli
+            JOIN utenti ON articoli.idutente = utenti.idutente
+            LEFT JOIN recensioni ON articoli.idarticolo = recensioni.idarticolo
+            WHERE articoli.idarticolo = ?
+            GROUP BY articoli.idarticolo
+        ";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param('i', $idarticolo);
         $stmt->execute();
@@ -169,7 +164,7 @@ class DatabaseHelper
         $stmt->bind_param("ii", $idutente, $idcorso);
         $stmt->execute();
     }
-    
+
     public function isFollowingCourse($idutente, $idcorso)
     {
         $stmt = $this->db->prepare("SELECT COUNT(*) as count FROM iscrizioni WHERE idutente = ? AND idcorso = ?");
@@ -178,5 +173,22 @@ class DatabaseHelper
         $result = $stmt->get_result();
         $row = $result->fetch_assoc();
         return $row['count'] > 0;
+    }
+
+    public function createArticle($idcorso, $titolo, $contenuto, $idutente)
+    {
+        $stmt = $this->db->prepare("INSERT INTO articoli (idcorso, titolo, contenuto, idutente, data_pubblicazione, approvato, numero_visualizzazioni) VALUES (?, ?, ?, ?, NOW(), false, 0)");
+        $stmt->bind_param("issi", $idcorso, $titolo, $contenuto, $idutente);
+        $stmt->execute();
+    }
+
+    public function getCourses()
+    {
+        $query = "SELECT * FROM corsi";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
     }
 }
