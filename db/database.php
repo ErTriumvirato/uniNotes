@@ -48,7 +48,7 @@ class DatabaseHelper
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getArticlesById($idcorso)
+    public function getArticlesByCourse($idcorso)
     {
         $query = "SELECT * FROM articoli WHERE idcorso = ?";
         $stmt = $this->db->prepare($query);
@@ -136,6 +136,24 @@ class DatabaseHelper
         $row = $result->fetch_assoc();
 
         return $row['total'];
+    }
+
+    public function getArticleById($idarticolo)
+    {
+        $query = "SELECT * FROM articoli WHERE idarticolo = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $idarticolo);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_assoc();
+    }
+
+    public function incrementArticleViews($idarticolo)
+    {
+        $stmt = $this->db->prepare("UPDATE articoli SET numero_visualizzazioni = numero_visualizzazioni + 1 WHERE idarticolo = ?");
+        $stmt->bind_param("i", $idarticolo);
+        $stmt->execute();
     }
 
     public function followCourse($idutente, $idcorso)

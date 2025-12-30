@@ -18,7 +18,7 @@ CREATE TABLE ssd (
 CREATE TABLE corsi (
     idcorso INTEGER PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(50) UNIQUE NOT NULL,
-    descrizione TEXT NOT NULL,
+    descrizione MEDIUMTEXT NOT NULL,
     idssd INTEGER,
     FOREIGN KEY (idssd) REFERENCES ssd(idssd)
 );

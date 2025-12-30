@@ -34,9 +34,6 @@
                 <ul class="navbar-nav mx-lg-auto text-center">
                     <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="corsi.php">Corsi</a></li>
-                    <?php if (isUserLoggedIn() && !isUserAdmin()) { ?>
-                        <li class="nav-item"><a class="nav-link" href="seguiti.php">Seguiti</a></li>
-                    <?php } ?>
                     <li class="nav-item"><a class="nav-link" href="contatti.php">Contatti</a></li>
                 </ul>
             <?php } ?>
