@@ -28,6 +28,7 @@
                 <ul class="navbar-nav mx-lg-auto text-center">
                     <li class="nav-item"><a class="nav-link" href="dashboard.php">Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link" href="gestione.php">Gestione</a></li>
+                    <li class="nav-item"><a class="nav-link" href="approvazione_appunti.php">Approvazione Appunti</a></li>
                 </ul>
             <?php } else if(isUserLoggedIn()){?>
             <div class="collapse navbar-collapse" id="navbarNav">

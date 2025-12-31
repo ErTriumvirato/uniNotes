@@ -191,4 +191,19 @@ class DatabaseHelper
 
         return $result->fetch_all(MYSQLI_ASSOC);
     }
+
+    public function getArticlesToApprove()
+    {
+        $query = "SELECT articoli.*, utenti.username AS autore
+            FROM articoli
+            JOIN utenti ON articoli.idutente = utenti.idutente
+            WHERE articoli.approvato = FALSE
+            ORDER BY data_pubblicazione DESC
+        ";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
 }

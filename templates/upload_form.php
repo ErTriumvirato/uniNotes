@@ -1,11 +1,9 @@
 <?php
-//get courses
 $courses = $dbh->getCourses();
 ?>
 
 <form action="creazione_appunti.php" method="post">
     <div class="mb-3">
-        <!-- Course selection with combobox-->
         <label for="course" class="form-label">Corso:</label>
         <select class="form-select" id="course" name="course" required>
             <option value="" disabled selected>Seleziona un corso</option>
