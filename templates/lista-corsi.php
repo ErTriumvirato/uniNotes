@@ -30,7 +30,7 @@ $ssds = $templateParams["ssds"];
     </div>
 </div>
 
-<div id="courses-container">
+<div id="courses-container" class="d-flex flex-wrap">
 <?php foreach ($corsi as $corso):
     $isFollowing = $idutente ? $dbh->isFollowingCourse($idutente, $corso['idcorso']) : false;
 ?>
