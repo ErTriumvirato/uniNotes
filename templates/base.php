@@ -56,7 +56,6 @@
     </header>
 
     <main>
-        <!-- Contenuto della pagina -->
         <?php if (isset($templateParams["nome"])) require($templateParams["nome"]); ?>
     </main>
 

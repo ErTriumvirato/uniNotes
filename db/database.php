@@ -22,11 +22,79 @@ class DatabaseHelper
         return $result->fetch_assoc();
     }
 
-    public function getCoursesWithSSD()
+    public function getAllSSD()
     {
-        $query = "SELECT corsi.idcorso, corsi.nome AS nomeCorso, ssd.nome AS nomeSSD, corsi.descrizione AS descrizioneCorso
-        FROM corsi JOIN ssd ON corsi.idssd = ssd.idssd";
+        $query = "SELECT * FROM ssd";
         $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getCoursesWithSSD($search = null, $ssd = null, $idutente = null, $filterType = 'all')
+    {
+        $query = "SELECT corsi.idcorso, corsi.nome AS nomeCorso, ssd.nome AS nomeSSD, corsi.descrizione AS descrizioneCorso 
+                  FROM corsi 
+                  JOIN ssd ON corsi.idssd = ssd.idssd";
+
+        $params = [];
+        $types = "";
+        $hasWhere = false;
+
+        if (!empty($search)) {
+            if (!$hasWhere) {
+                $query .= " WHERE ";
+                $hasWhere = true;
+            } else {
+                $query .= " AND ";
+            }
+            $query .= "corsi.nome LIKE ?";
+            $params[] = "%" . $search . "%";
+            $types .= "s";
+        }
+
+        if (!empty($ssd)) {
+            if (!$hasWhere) {
+                $query .= " WHERE ";
+                $hasWhere = true;
+            } else {
+                $query .= " AND ";
+            }
+            $query .= "ssd.nome = ?";
+            $params[] = $ssd;
+            $types .= "s";
+        }
+
+        if ($idutente && $filterType === 'followed') {
+            if (!$hasWhere) {
+                $query .= " WHERE ";
+                $hasWhere = true;
+            } else {
+                $query .= " AND ";
+            }
+            $query .= "corsi.idcorso IN (SELECT idcorso FROM iscrizioni WHERE idutente = ?)";
+            $params[] = $idutente;
+            $types .= "i";
+        }
+
+        if ($idutente && $filterType === 'not_followed') {
+            if (!$hasWhere) {
+                $query .= " WHERE ";
+                $hasWhere = true;
+            } else {
+                $query .= " AND ";
+            }
+            $query .= "corsi.idcorso NOT IN (SELECT idcorso FROM iscrizioni WHERE idutente = ?)";
+            $params[] = $idutente;
+            $types .= "i";
+        }
+
+        $stmt = $this->db->prepare($query);
+
+        if (!empty($params)) {
+            $stmt->bind_param($types, ...$params);
+        }
+
         $stmt->execute();
         $result = $stmt->get_result();
 
@@ -194,9 +262,10 @@ class DatabaseHelper
 
     public function getArticlesToApprove()
     {
-        $query = "SELECT articoli.*, utenti.username AS autore
+        $query = "SELECT articoli.*, utenti.username AS autore, corsi.nome AS nome_corso
             FROM articoli
             JOIN utenti ON articoli.idutente = utenti.idutente
+            JOIN corsi ON articoli.idcorso = corsi.idcorso
             WHERE articoli.approvato = FALSE
             ORDER BY data_pubblicazione DESC
         ";
@@ -205,5 +274,84 @@ class DatabaseHelper
         $result = $stmt->get_result();
 
         return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function approveArticle($idarticolo)
+    {
+        $stmt = $this->db->prepare("UPDATE articoli SET approvato = true WHERE idarticolo = ?");
+        $stmt->bind_param("i", $idarticolo);
+        return $stmt->execute();
+    }
+
+    public function deleteArticle($idarticolo)
+    {
+        $stmt = $this->db->prepare("DELETE FROM articoli WHERE idarticolo = ?");
+        $stmt->bind_param("i", $idarticolo);
+        return $stmt->execute();
+    }
+
+    public function addReview($idarticolo, $idutente, $valutazione)
+    {
+        $stmt = $this->db->prepare("INSERT INTO recensioni (idarticolo, idutente, valutazione) VALUES (?, ?, ?)");
+        $stmt->bind_param("iii", $idarticolo, $idutente, $valutazione);
+        return $stmt->execute();
+    }
+
+    public function getReviewsByArticle($idarticolo)
+    {
+        $query = "SELECT recensioni.*, utenti.username 
+                  FROM recensioni 
+                  JOIN utenti ON recensioni.idutente = utenti.idutente 
+                  WHERE idarticolo = ? 
+                  ORDER BY idrecensione DESC";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param("i", $idarticolo);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function hasUserReviewed($idarticolo, $idutente)
+    {
+        $stmt = $this->db->prepare("SELECT COUNT(*) as count FROM recensioni WHERE idarticolo = ? AND idutente = ?");
+        $stmt->bind_param("ii", $idarticolo, $idutente);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        return $row['count'] > 0;
+    }
+
+    public function getApprovedArticlesByCourseWithFilters($idcorso, $sort, $order)
+    {
+        $allowedSort = ['data_pubblicazione', 'media_recensioni', 'numero_visualizzazioni'];
+        $allowedOrder = ['ASC', 'DESC'];
+
+        $sort = in_array($sort, $allowedSort) ? $sort : 'data_pubblicazione';
+        $order = in_array($order, $allowedOrder) ? $order : 'DESC';
+
+        $query = "SELECT articoli.*, utenti.username AS autore, ROUND(AVG(recensioni.valutazione), 1) AS media_recensioni
+              FROM articoli
+              JOIN utenti ON articoli.idutente = utenti.idutente
+              LEFT JOIN recensioni ON articoli.idarticolo = recensioni.idarticolo
+              WHERE articoli.idcorso = ? AND articoli.approvato = true
+              GROUP BY articoli.idarticolo
+              ORDER BY $sort $order";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $idcorso);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getCourseById($idcorso)
+    {
+        $query = "SELECT corsi.*, ssd.nome AS nomeSSD 
+              FROM corsi 
+              JOIN ssd ON corsi.idssd = ssd.idssd 
+              WHERE corsi.idcorso = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $idcorso);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_assoc();
     }
 }

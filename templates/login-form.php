@@ -1,10 +1,8 @@
 <form action="login.php" method="POST">
-    <!-- Errore login -->
     <?php if (isset($templateParams["error"])): ?>
         <p><?php echo $templateParams["error"]; ?></p>
     <?php endif; ?>
 
-    <!-- Form login -->
     <ul>
         <li>
             <label for="username">Username:</label><input type="text" id="username" name="username" />
