@@ -34,7 +34,7 @@ $ssds = $templateParams["ssds"];
 <?php foreach ($corsi as $corso):
     $isFollowing = $idutente ? $dbh->isFollowingCourse($idutente, $corso['idcorso']) : false;
 ?>
-    <article class="card shadow-sm border-0 my-4" style="min-width: 400px; max-width: 600px; margin: auto;">
+    <article class="card shadow-sm border-0 my-4" style="min-width: 600px; max-width: 800px; margin: auto;">
         <div class="card-body text-center">
             <h2 class="card-title mb-3">
                 <a href="corso.php?id=<?php echo (int)$corso['idcorso']; ?>" style="text-decoration: none;">
