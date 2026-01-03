@@ -354,4 +354,101 @@ class DatabaseHelper
         $stmt->execute();
         return $stmt->get_result()->fetch_assoc();
     }
+
+    // Admin Course Management
+    public function createCourse($nome, $descrizione, $idssd) {
+        $stmt = $this->db->prepare("INSERT INTO corsi (nome, descrizione, idssd) VALUES (?, ?, ?)");
+        $stmt->bind_param("ssi", $nome, $descrizione, $idssd);
+        return $stmt->execute();
+    }
+
+    public function updateCourse($idcorso, $nome, $descrizione, $idssd) {
+        $stmt = $this->db->prepare("UPDATE corsi SET nome = ?, descrizione = ?, idssd = ? WHERE idcorso = ?");
+        $stmt->bind_param("ssii", $nome, $descrizione, $idssd, $idcorso);
+        return $stmt->execute();
+    }
+
+    public function deleteCourse($idcorso) {
+        $stmt = $this->db->prepare("DELETE FROM corsi WHERE idcorso = ?");
+        $stmt->bind_param("i", $idcorso);
+        return $stmt->execute();
+    }
+
+    // Admin SSD Management
+    public function createSSD($nome, $descrizione) {
+        $stmt = $this->db->prepare("INSERT INTO ssd (nome, descrizione) VALUES (?, ?)");
+        $stmt->bind_param("ss", $nome, $descrizione);
+        return $stmt->execute();
+    }
+
+    public function updateSSD($idssd, $nome, $descrizione) {
+        $stmt = $this->db->prepare("UPDATE ssd SET nome = ?, descrizione = ? WHERE idssd = ?");
+        $stmt->bind_param("ssi", $nome, $descrizione, $idssd);
+        return $stmt->execute();
+    }
+
+    public function deleteSSD($idssd) {
+        $stmt = $this->db->prepare("DELETE FROM ssd WHERE idssd = ?");
+        $stmt->bind_param("i", $idssd);
+        return $stmt->execute();
+    }
+
+    public function getSSDById($idssd) {
+        $stmt = $this->db->prepare("SELECT * FROM ssd WHERE idssd = ?");
+        $stmt->bind_param("i", $idssd);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_assoc();
+    }
+
+    // Admin User Management
+    public function getAllUsers($search = null) {
+        $query = "SELECT idutente, username, isAdmin FROM utenti";
+        $params = [];
+        $types = "";
+
+        if (!empty($search)) {
+            $query .= " WHERE username LIKE ?";
+            $params[] = "%" . $search . "%";
+            $types .= "s";
+        }
+
+        $stmt = $this->db->prepare($query);
+        if (!empty($params)) {
+            $stmt->bind_param($types, ...$params);
+        }
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getUserById($idutente) {
+        $stmt = $this->db->prepare("SELECT idutente, username, isAdmin FROM utenti WHERE idutente = ?");
+        $stmt->bind_param("i", $idutente);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_assoc();
+    }
+
+    public function createUser($username, $password, $ruolo) {
+        $hash = password_hash($password, PASSWORD_DEFAULT);
+        $stmt = $this->db->prepare("INSERT INTO utenti (username, password, isAdmin) VALUES (?, ?, ?)");
+        $stmt->bind_param("ssi", $username, $hash, $ruolo);
+        return $stmt->execute();
+    }
+
+    public function updateUser($idutente, $username, $ruolo, $password = null) {
+        if ($password) {
+            $hash = password_hash($password, PASSWORD_DEFAULT);
+            $stmt = $this->db->prepare("UPDATE utenti SET username = ?, isAdmin = ?, password = ? WHERE idutente = ?");
+            $stmt->bind_param("sisi", $username, $ruolo, $hash, $idutente);
+        } else {
+            $stmt = $this->db->prepare("UPDATE utenti SET username = ?, isAdmin = ? WHERE idutente = ?");
+            $stmt->bind_param("sii", $username, $ruolo, $idutente);
+        }
+        return $stmt->execute();
+    }
+
+    public function deleteUser($idutente) {
+        $stmt = $this->db->prepare("DELETE FROM utenti WHERE idutente = ?");
+        $stmt->bind_param("i", $idutente);
+        return $stmt->execute();
+    }
 }

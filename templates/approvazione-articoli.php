@@ -44,7 +44,7 @@ function handleArticle(id, action) {
     formData.append('action', action);
     formData.append('idarticolo', id);
 
-    fetch('approvazione_articoli.php', {
+    fetch('gestione-articoli.php', {
         method: 'POST',
         body: formData
     })

@@ -14,12 +14,8 @@ if (isset($_POST['login'])) {
     if ($user && password_verify($password, $user['password'])) {
         $_SESSION['idutente'] = $user['idutente'];
         $_SESSION['username'] = $user['username'];
-        $_SESSION['ruolo'] = $user['ruolo'];
-        if(isUserAdmin()){
-            header("Location: dashboard.php");
-        } else {
-            header("Location: index.php");
-        }
+        $_SESSION['isAdmin'] = $user['isAdmin'];
+        header("Location: index.php");
         exit();
     } else {
         $templateParams["error"] = "Username o password errati";

@@ -11,6 +11,6 @@ if(isset($_POST["invia"]) && isset($_POST["course"]) &&isset($_POST["title"]) &&
 }
 
 $templateParams["titolo"] = "uniNotes - Creazione appunti";
-$templateParams["nome"] = "templates/upload_form.php";
+$templateParams["nome"] = "templates/upload-form.php";
 
 require_once 'templates/base.php';

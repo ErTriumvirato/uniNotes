@@ -1,8 +1,8 @@
-INSERT INTO utenti (ruolo, username, password) VALUES
-(1, 'admin', '$2y$10$gYT.l6keERbhJzw/LOuVXOk4BdrLkL15fbFGMr8AiUpBIfD8lT7si'),
-(2, 'studente1', '$2y$10$gYT.l6keERbhJzw/LOuVXOk4BdrLkL15fbFGMr8AiUpBIfD8lT7si'),
-(2, 'studente2', '$2y$10$gYT.l6keERbhJzw/LOuVXOk4BdrLkL15fbFGMr8AiUpBIfD8lT7si'),
-(2, 'studente3', '$2y$10$gYT.l6keERbhJzw/LOuVXOk4BdrLkL15fbFGMr8AiUpBIfD8lT7si');
+INSERT INTO utenti (isAdmin, username, password) VALUES
+(true, 'admin', '$2y$10$gYT.l6keERbhJzw/LOuVXOk4BdrLkL15fbFGMr8AiUpBIfD8lT7si'),
+(false, 'studente1', '$2y$10$gYT.l6keERbhJzw/LOuVXOk4BdrLkL15fbFGMr8AiUpBIfD8lT7si'),
+(false, 'studente2', '$2y$10$gYT.l6keERbhJzw/LOuVXOk4BdrLkL15fbFGMr8AiUpBIfD8lT7si'),
+(false, 'studente3', '$2y$10$gYT.l6keERbhJzw/LOuVXOk4BdrLkL15fbFGMr8AiUpBIfD8lT7si');
 
 INSERT INTO ssd (nome, descrizione) VALUES
 ('MAT/01', 'Matematica'),
@@ -20,7 +20,6 @@ INSERT INTO articoli (titolo, contenuto, idutente, idcorso, numero_visualizzazio
 ('Esame secondo appello', 'hahahahhh', 3, 1, 5, '2024-10-20 11:15:00'),
 ('Esercizi di Fisica', 'Ecco alcuni esercizi risolti di Fisica Generale...', 3, 2, 15,'2024-11-02 14:00:00'),
 ('Guida alla Programmazione in C', 'In questa guida vedremo le basi della programmazione in C...', 2, 3, 20, '2024-12-01 18:45:00');
-
 
 INSERT INTO iscrizioni (idutente, idcorso) VALUES
 (2, 1),

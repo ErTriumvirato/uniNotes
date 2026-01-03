@@ -2,7 +2,7 @@
 $courses = $dbh->getCourses();
 ?>
 
-<form action="creazione_appunti.php" method="post">
+<form action="gestione-articoli.php" method="post">
     <div class="mb-3">
         <label for="course" class="form-label">Corso:</label>
         <select class="form-select" id="course" name="course" required>

@@ -4,7 +4,7 @@ USE uniNotes;
 
 CREATE TABLE utenti (
     idutente INTEGER PRIMARY KEY AUTO_INCREMENT,
-    ruolo INTEGER NOT NULL,
+    isAdmin BOOLEAN NOT NULL DEFAULT FALSE,
     username VARCHAR(30) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL
 );

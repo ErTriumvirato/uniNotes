@@ -7,5 +7,5 @@ if(!isUserAdmin()){
 }
 
 $templateParams["titolo"] = "uniNotes - Dashboard";
-$templateParams["nome"] = "templates/dati-utenti.php";
+$templateParams["nome"] = "templates/menu-gestione.php";
 require_once 'templates/base.php';

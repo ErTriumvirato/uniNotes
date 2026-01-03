@@ -23,29 +23,17 @@
                 </button>
             </div>
 
-            <?php if(isUserAdmin()) { ?>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mx-lg-auto text-center">
-                    <li class="nav-item"><a class="nav-link" href="dashboard.php">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="gestione.php">Gestione</a></li>
-                    <li class="nav-item"><a class="nav-link" href="approvazione_appunti.php">Approvazione Appunti</a></li>
-                </ul>
-            <?php } else if(isUserLoggedIn()){?>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-lg-auto text-center">
                     <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="corsi.php">Corsi</a></li>
-                    <li class="nav-item"><a class="nav-link" href="creazione_appunti.php">Carica appunti</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contatti.php">Contatti</a></li>
+                <?php if(isUserLoggedIn()) { ?>
+                    <li class="nav-item"><a class="nav-link" href="creazione-articoli.php">Carica appunti</a></li>
+                <?php } ?>
+                <?php if(isUserAdmin()) { ?>
+                    <li class="nav-item"><a class="nav-link" href="area-admin.php">Area Admin</a></li>
+                <?php } ?>
                 </ul>
-            <?php } else {?>
-                <ul class="navbar-nav mx-lg-auto text-center">
-                    <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="corsi.php">Corsi</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contatti.php">Contatti</a></li>
-                </ul>
-            <?php } ?>
-                <! -- Bottone di login/logout -->
                 <?php if((!isUserLoggedIn())) { ?>
                     <a href="login.php" class="btn btn-primary d-none d-lg-block">Login</a>
                 <?php } else { ?>

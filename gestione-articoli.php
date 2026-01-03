@@ -23,5 +23,5 @@ if (isset($_POST['action'], $_POST['idarticolo'])) {
 }
 
 $templateParams["titolo"] = "uniNotes - Approvazione Appunti";
-$templateParams["nome"] = "templates/approvazione.php";
+$templateParams["nome"] = "templates/approvazione-articoli.php";
 require_once 'templates/base.php';
