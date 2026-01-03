@@ -6,61 +6,6 @@ $isFollowing = $idutente ? $dbh->isFollowingCourse($idutente, $idCorso) : false;
 $articoli = $dbh->getApprovedArticlesByCourse($idCorso);
 ?>
 
-<style>
-    .filter-label-text {
-        color: #cfd8dc !important;
-        font-weight: 600;
-        font-size: 0.72rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .course-header {
-        background-color: #fcfcfc !important;
-        border-top: 4px solid #0d6efd;
-        margin-top: 10px;
-    }
-
-    .course-desc-text {
-        color: #444 !important;
-        font-size: 0.92rem;
-        line-height: 1.6;
-        max-width: 600px;
-        margin: 0 auto;
-    }
-
-    .follow-btn-mini {
-        font-size: 0.75rem !important;
-        border-radius: 50px;
-        font-weight: 600;
-        padding: 5px 15px;
-        width: auto !important;
-        transition: all 0.2s;
-    }
-
-    .article-card-mini {
-        width: 100%;
-        max-width: 500px;
-        background-color: #ffffff !important;
-        border-radius: 10px;
-        transition: transform 0.2s;
-    }
-
-    .article-card-mini:hover {
-        transform: scale(1.02);
-    }
-
-    .badge-author {
-        background-color: #eef4ff;
-        color: #0d6efd;
-        border: 1px solid #d0e1ff;
-    }
-
-    .x-small {
-        font-size: 0.72rem !important;
-    }
-</style>
-
 <div class="container mt-4 px-3 pb-5">
 
     <header class="course-header text-center mb-5 p-4 rounded shadow-sm">
@@ -73,15 +18,13 @@ $articoli = $dbh->getApprovedArticlesByCourse($idCorso);
             </p>
         </div>
 
-        <?php if ($idutente): ?>
-            <button class="btn btn-primary follow-btn-mini shadow-sm" data-idcorso="<?php echo $idCorso; ?>">
-                <span class="d-flex align-items-center justify-content-center gap-2">
-                    <img src="uploads/img/<?php echo $isFollowing ? 'unfollow.svg' : 'follow.svg'; ?>"
-                        alt="" style="width:14px; height:14px;">
-                    <span class="btn-text"><?php echo $isFollowing ? 'Smetti di seguire' : 'Segui'; ?></span>
-                </span>
-            </button>
-        <?php endif; ?>
+        <button class="btn btn-primary follow-btn-mini shadow-sm" data-idcorso="<?php echo $idCorso; ?>">
+            <span class="d-flex align-items-center justify-content-center gap-2">
+                <img src="uploads/img/<?php echo $isFollowing ? 'unfollow.svg' : 'follow.svg'; ?>"
+                    alt="" style="width:14px; height:14px;">
+                <span class="btn-text"><?php echo $isFollowing ? 'Smetti di seguire' : 'Segui'; ?></span>
+            </span>
+        </button>
     </header>
 
     <div class="mx-auto p-3 mb-5 rounded shadow-sm" style="max-width: 500px; background-color: #2c2c2c;">
@@ -132,6 +75,11 @@ $articoli = $dbh->getApprovedArticlesByCourse($idCorso);
 
 <script>
     document.querySelector('.follow-btn-mini')?.addEventListener('click', function() {
+        <?php if (!$idutente): ?>
+            window.location.href = 'login.php';
+            return;
+        <?php endif; ?>
+
         const idcorso = this.dataset.idcorso;
         const btn = this;
         btn.disabled = true;

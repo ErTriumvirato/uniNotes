@@ -9,6 +9,24 @@ if (!$idCorso || !is_numeric($idCorso)) {
 
 $idutente = $_SESSION["idutente"] ?? null;
 
+if (isset($_GET['action']) && $_GET['action'] === 'filter') {
+    $sort = $_GET['sort'] ?? 'data_pubblicazione';
+    $order = $_GET['order'] ?? 'DESC';
+
+    $articoli = $dbh->getApprovedArticlesByCourseWithFilters($idCorso, $sort, $order);
+
+    $response = array_map(function ($art) {
+        $art['views'] = (int)$art['numero_visualizzazioni'];
+        $art['data_formattata'] = date('d/m/y', strtotime($art['data_pubblicazione']));
+        $art['media_recensioni'] = $art['media_recensioni'] ?: '0.0';
+        return $art;
+    }, $articoli);
+
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit();
+}
+
 if (isset($_POST['toggleFollow']) && $idutente) {
     $idcorso_post = (int)$_POST['toggleFollow'];
     if ($dbh->isFollowingCourse($idutente, $idcorso_post)) {
