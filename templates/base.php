@@ -28,6 +28,7 @@
                 <?php if((!isUserLoggedIn())) { ?>
                     <a href="login.php">Login</a>
                 <?php } else { ?>
+                    <a href="impostazioni.php">Impostazioni</a>
                     <a href="logout.php">Logout</a>
                 <?php } ?>
             </div>
