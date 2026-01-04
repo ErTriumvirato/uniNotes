@@ -26,7 +26,7 @@ $articles = $dbh->getArticlesToApprove();
                     </div>
 
                     <div class="mt-3">
-                        <button class="btn btn-outline-primary me-2" type="Leggi" data-bs-toggle="collapse" data-bs-target="#collapseContent-<?= $article['idarticolo'] ?>" aria-expanded="false" aria-controls="collapseContent-<?= $article['idarticolo'] ?>">
+                        <button class="btn btn-outline-primary me-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseContent-<?= $article['idarticolo'] ?>" aria-expanded="false" aria-controls="collapseContent-<?= $article['idarticolo'] ?>">
                             Leggi
                         </button>
                         <button class="btn btn-success me-2" onclick="handleArticle(<?= $article['idarticolo'] ?>, 'approve')">Approva</button>

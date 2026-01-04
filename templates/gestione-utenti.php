@@ -29,7 +29,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="userModalTitle">Nuovo Utente</h5>
-                <button type="Nuovo utente" class="btn-close" data-bs-dismiss="modal"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <form id="userForm">
@@ -53,8 +53,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="Annulla" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
-                <button type="Salva" class="btn btn-primary" onclick="saveUser()">Salva</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                <button type="button" class="btn btn-primary" onclick="saveUser()">Salva</button>
             </div>
         </div>
     </div>
