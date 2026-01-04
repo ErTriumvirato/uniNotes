@@ -18,7 +18,7 @@
 
             <div class="d-flex d-lg-none ms-auto align-items-center">
                 <a href="#" class="btn btn-primary me-2">Login</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <button class="navbar-toggler" type="Login" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
             </div>

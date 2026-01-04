@@ -3,10 +3,10 @@
 
     <ul class="nav nav-tabs mb-4" id="adminTabs" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="corsi-tab" data-bs-toggle="tab" data-bs-target="#corsi-pane" type="button" role="tab">Corsi</button>
+            <button class="nav-link active" id="corsi-tab" data-bs-toggle="tab" data-bs-target="#corsi-pane" type="Corsi" role="tab">Corsi</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="ssd-tab" data-bs-toggle="tab" data-bs-target="#ssd-pane" type="button" role="tab">SSD</button>
+            <button class="nav-link" id="ssd-tab" data-bs-toggle="tab" data-bs-target="#ssd-pane" type="SSD" role="tab">SSD</button>
         </li>
     </ul>
 
@@ -81,7 +81,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="courseModalTitle">Nuovo Corso</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <button type="Nuovo corso" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <form id="courseForm">
@@ -103,8 +103,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
-                <button type="button" class="btn btn-primary" onclick="saveCourse()">Salva</button>
+                <button type="Annulla" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                <button type="Salva" class="btn btn-primary" onclick="saveCourse()">Salva</button>
             </div>
         </div>
     </div>
@@ -116,7 +116,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="ssdModalTitle">Nuovo SSD</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <button type="Nuovo SSD" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <form id="ssdForm">
@@ -132,8 +132,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
-                <button type="button" class="btn btn-primary" onclick="saveSSD()">Salva</button>
+                <button type="Annulla" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                <button type="Salva" class="btn btn-primary" onclick="saveSSD()">Salva</button>
             </div>
         </div>
     </div>
