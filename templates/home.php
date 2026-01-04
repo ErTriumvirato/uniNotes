@@ -3,15 +3,14 @@ $articoli = $dbh->getApprovedArticles();
 
 foreach ($articoli as $articolo) { ?>
 
-<article class="card shadow-sm border-0 my-4" style="max-width: 600px; margin: auto;">
-    <a href="articolo.php?id=<?php echo $articolo['idarticolo']; ?>"
-       class="text-decoration-none text-dark">
+<article>
+    <a href="articolo.php?id=<?php echo $articolo['idarticolo']; ?>">
 
-        <div class="card-body text-center">
-            <h2 class="card-title mb-2">
+        <div>
+            <h2>
                 <?php echo htmlspecialchars($articolo['titolo']); ?>
             </h2>
-            <p class="text-muted mb-1">
+            <p>
                 Pubblicato il
                 <?php
                     echo date(
@@ -20,7 +19,7 @@ foreach ($articoli as $articolo) { ?>
                     );
                 ?>
             </p>
-            <p class="mb-1">
+            <p>
                 <?php
                     if ($articolo['media_recensioni'] !== null) {
                         echo "⭐ " . $articolo['media_recensioni'] . " / 5.0";
@@ -29,7 +28,7 @@ foreach ($articoli as $articolo) { ?>
                     }
                 ?>
             </p>
-            <p class="text-muted mb-0">
+            <p>
                 <?php echo (int)$articolo['numero_visualizzazioni']; ?> visualizzazioni
             </p>
 

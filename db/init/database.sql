@@ -20,7 +20,7 @@ CREATE TABLE corsi (
     nome VARCHAR(50) UNIQUE NOT NULL,
     descrizione MEDIUMTEXT NOT NULL,
     idssd INTEGER NOT NULL,
-    FOREIGN KEY (idssd) REFERENCES ssd(idssd)
+    FOREIGN KEY (idssd) REFERENCES ssd(idssd) ON DELETE CASCADE
 );
 
 CREATE TABLE articoli (
@@ -32,8 +32,8 @@ CREATE TABLE articoli (
     approvato BOOLEAN DEFAULT FALSE NOT NULL,
     idutente INTEGER NOT NULL,
     idcorso INTEGER NOT NULL,
-    FOREIGN KEY (idutente) REFERENCES utenti(idutente),
-    FOREIGN KEY (idcorso) REFERENCES corsi(idcorso)
+    FOREIGN KEY (idutente) REFERENCES utenti(idutente) ON DELETE CASCADE,
+    FOREIGN KEY (idcorso) REFERENCES corsi(idcorso) ON DELETE CASCADE
 );
 
 CREATE TABLE iscrizioni (
@@ -41,8 +41,8 @@ CREATE TABLE iscrizioni (
     idutente INTEGER NOT NULL,
     idcorso INTEGER NOT NULL,
     UNIQUE (idutente, idcorso),
-    FOREIGN KEY (idutente) REFERENCES utenti(idutente),
-    FOREIGN KEY (idcorso) REFERENCES corsi(idcorso)
+    FOREIGN KEY (idutente) REFERENCES utenti(idutente) ON DELETE CASCADE,
+    FOREIGN KEY (idcorso) REFERENCES corsi(idcorso) ON DELETE CASCADE
 );
 
 CREATE TABLE recensioni (
@@ -50,8 +50,8 @@ CREATE TABLE recensioni (
     valutazione INTEGER NOT NULL,
     idarticolo INTEGER NOT NULL,
     idutente INTEGER NOT NULL,
-    FOREIGN KEY (idarticolo) REFERENCES articoli(idarticolo),
-    FOREIGN KEY (idutente) REFERENCES utenti(idutente)
+    FOREIGN KEY (idarticolo) REFERENCES articoli(idarticolo) ON DELETE CASCADE,
+    FOREIGN KEY (idutente) REFERENCES utenti(idutente) ON DELETE CASCADE
 );
 
 GRANT ALL PRIVILEGES ON uniNotes.* TO 'user'@'localhost' IDENTIFIED BY 'user_password';

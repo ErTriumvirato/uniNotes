@@ -14,4 +14,5 @@
             <input type="submit" name="login" value="Invia" />
         </li>
     </ul>
+    <p>Non hai un account? <a href="registrazione-utente.php">Registrati</a></p>
 </form>

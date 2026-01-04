@@ -5,21 +5,21 @@ $idutente = $_SESSION["idutente"] ?? null;
 $ssds = $templateParams["ssds"];
 ?>
 
-<div class="container mb-4">
-    <div class="row g-3">
-        <div class="col-md-4">
-            <input type="text" id="search" class="form-control" placeholder="Cerca corso...">
+<div>
+    <div>
+        <div>
+            <input type="text" id="search" placeholder="Cerca corso...">
         </div>
-        <div class="col-md-4">
-            <select id="ssd" class="form-select">
+        <div>
+            <select id="ssd">
                 <option value="">Tutti gli SSD</option>
                 <?php foreach ($ssds as $ssd): ?>
                     <option value="<?= htmlspecialchars($ssd['nome']) ?>"><?= htmlspecialchars($ssd['nome']) ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
-        <div class="col-md-4">
-            <select id="filterType" class="form-select">
+        <div>
+            <select id="filterType">
                 <option value="all">Tutti i corsi</option>
                 <?php if ($idutente): ?>
                     <option value="followed">Corsi seguiti</option>
@@ -30,29 +30,27 @@ $ssds = $templateParams["ssds"];
     </div>
 </div>
 
-<div id="courses-container" class="d-flex flex-wrap">
+<div id="courses-container">
 <?php foreach ($corsi as $corso):
     $isFollowing = $idutente ? $dbh->isFollowingCourse($idutente, $corso['idcorso']) : false;
 ?>
-    <article class="card shadow-sm border-0 my-4" style="min-width: 600px; max-width: 800px; margin: auto;">
-        <div class="card-body text-center">
-            <h2 class="card-title mb-3">
-                <a href="corso.php?id=<?php echo (int)$corso['idcorso']; ?>" style="text-decoration: none;">
+    <article>
+        <div>
+            <h2>
+                <a href="corso.php?id=<?php echo (int)$corso['idcorso']; ?>">
                     <?php echo htmlspecialchars($corso['nomeCorso']); ?>
                 </a>
             </h2>
-            <p class="text-muted mb-3">
+            <p>
                 SSD: <strong><?php echo htmlspecialchars($corso['nomeSSD']); ?></strong>
             </p>
-            <button class="btn btn-primary follow-btn d-flex align-items-center justify-content-center mx-auto" 
-                    style="gap: 8px; width: 180px;"
-                    data-idcorso="<?= (int)$corso['idcorso'] ?>"
+            <button type="button" data-idcorso="<?= (int)$corso['idcorso'] ?>"
                     data-following="<?= $isFollowing ? 'true' : 'false' ?>">
                 <?php if ($isFollowing): ?>
-                    <img src="uploads/img/unfollow.svg" alt="Unfollow" style="width:20px;height:20px;">
+                    <img src="uploads/img/unfollow.svg" alt="Unfollow">
                     Smetti di seguire
                 <?php else: ?>
-                    <img src="uploads/img/follow.svg" alt="Follow" style="width:20px;height:20px;">
+                    <img src="uploads/img/follow.svg" alt="Follow">
                     Segui corso
                 <?php endif; ?>
             </button>
@@ -63,7 +61,7 @@ $ssds = $templateParams["ssds"];
 
 <script>
 function attachFollowListeners() {
-    document.querySelectorAll('.follow-btn').forEach(btn => {
+    document.querySelectorAll('button[data-idcorso]').forEach(btn => {
         const newBtn = btn.cloneNode(true);
         btn.parentNode.replaceChild(newBtn, btn);
         
@@ -80,10 +78,10 @@ function attachFollowListeners() {
             .then(res => res.json())
             .then(data => {
                 if (data.following) {
-                    button.innerHTML = '<img src="uploads/img/unfollow.svg" alt="Unfollow" style="width:20px;height:20px;"> Smetti di seguire';
+                    button.innerHTML = '<img src="uploads/img/unfollow.svg" alt="Unfollow"> Smetti di seguire';
                     button.dataset.following = 'true';
                 } else {
-                    button.innerHTML = '<img src="uploads/img/follow.svg" alt="Follow" style="width:20px;height:20px;"> Segui corso';
+                    button.innerHTML = '<img src="uploads/img/follow.svg" alt="Follow"> Segui corso';
                     button.dataset.following = 'false';
                 }
                 button.disabled = false;
@@ -114,35 +112,30 @@ function filterCourses() {
     .then(data => {
         coursesContainer.innerHTML = '';
         if (data.length === 0) {
-            coursesContainer.innerHTML = '<p class="text-center mt-5">Nessun corso trovato.</p>';
+            coursesContainer.innerHTML = '<p>Nessun corso trovato.</p>';
             return;
         }
 
         data.forEach(corso => {
             const article = document.createElement('article');
-            article.className = 'card shadow-sm border-0 my-4';
-            article.style.maxWidth = '600px';
-            article.style.margin = 'auto';
 
             const isFollowing = corso.isFollowing;
             const followText = isFollowing ? 'Smetti di seguire' : 'Segui corso';
             const followIcon = isFollowing ? 'uploads/img/unfollow.svg' : 'uploads/img/follow.svg';
 
             article.innerHTML = `
-                <div class="card-body text-center">
-                    <h2 class="card-title mb-3">
-                        <a href="corso.php?id=${corso.idcorso}" style="text-decoration: none;">
+                <div>
+                    <h2>
+                        <a href="corso.php?id=${corso.idcorso}">
                             ${corso.nomeCorso}
                         </a>
                     </h2>
-                    <p class="text-muted mb-3">
+                    <p>
                         SSD: <strong>${corso.nomeSSD}</strong>
                     </p>
-                    <button class="btn btn-primary follow-btn d-flex align-items-center justify-content-center mx-auto" 
-                            style="gap: 8px; width: 180px;"
-                            data-idcorso="${corso.idcorso}"
+                    <button type="button" data-idcorso="${corso.idcorso}"
                             data-following="${isFollowing}">
-                        <img src="${followIcon}" alt="${isFollowing ? 'Unfollow' : 'Follow'}" style="width:20px;height:20px;">
+                        <img src="${followIcon}" alt="${isFollowing ? 'Unfollow' : 'Follow'}">
                         ${followText}
                     </button>
                 </div>

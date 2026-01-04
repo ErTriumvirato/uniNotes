@@ -1,0 +1,36 @@
+<?php
+require_once 'config.php';
+
+if (isUserLoggedIn()) {
+    header("Location: index.php");
+    exit();
+}
+
+if (isset($_POST['registrazione'])) {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    
+    // Verifica se l'utente esiste già
+    $existingUser = $dbh->getUserByUsername($username);
+    
+    if ($existingUser) {
+        $templateParams["error"] = "Username già in uso";
+    } else {
+        // Crea nuovo utente (ruolo 0 = utente standard)
+        $dbh->createUser($username, $password, 0);
+        
+        // Login automatico dopo registrazione
+        $user = $dbh->getUserByUsername($username);
+        $_SESSION['idutente'] = $user['idutente'];
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['isAdmin'] = $user['isAdmin'];
+        
+        header("Location: index.php");
+        exit();
+    }
+}
+
+$templateParams["titolo"] = "uniNotes - Registrati";
+$templateParams["nome"] = "templates/registrazione-utente-form.php";
+
+require 'templates/base.php';
