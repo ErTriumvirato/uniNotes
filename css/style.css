@@ -1,0 +1,48 @@
+/* Variabili per i colori principali */
+:root {
+    --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
+    --bg-light: #f8f9fa;
+    --color: #333;
+}
+
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--bg-light);
+    color: var(--color);
+}
+
+.navbar {
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+.navbar-brand .logo-img {
+    height: 40px;
+    width: auto;
+}
+
+.nav-link {
+    font-weight: 500;
+    color: var(--color) !important;
+    transition: color 1s ease; /* Durata transizione */
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--primary-color) !important;
+}
+
+footer {
+    font-size: 15px;
+}
+
+@media (max-width: 991.98px) { /* Applicati a cellulari e tablet (max 992px), .98 per evitare che vengano applicate entrambe gli stili*/
+    .navbar-collapse {
+        background-color: white;
+        padding: 16px;
+        border-radius: 8px;
+        margin-top: 8px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+}
