@@ -2,31 +2,51 @@
 $articles = $dbh->getArticlesToApprove();
 ?>
 
-<div id="approvazione-container">
-    <?php if (empty($articles)): ?>
-        <p>Nessun articolo da approvare.</p>
-    <?php else: ?>
-        <?php foreach ($articles as $article): ?>
-            <article id="article-<?= $article['idarticolo'] ?>">
-                <div>
-                    <h2><?= htmlspecialchars($article['titolo']) ?></h2>
-                    <p>Corso: <?= htmlspecialchars($article['nome_corso']) ?></p>
-                    <p>Autore: <?= htmlspecialchars($article['autore']) ?></p>
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="display-5 fw-bold">Approvazione Articoli</h2>
+            <p class="text-muted">Revisiona e approva gli articoli inviati dagli utenti</p>
+        </div>
+    </div>
 
-                    <div id="collapseContent-<?= $article['idarticolo'] ?>">
-                        <div>
-                            <?= nl2br(htmlspecialchars($article['contenuto'])) ?>
+    <div id="approvazione-container" class="d-flex flex-column gap-4 mb-5">
+        <?php if (empty($articles)): ?>
+            <div class="alert alert-info" role="alert">
+                Nessun articolo da approvare al momento.
+            </div>
+        <?php else: ?>
+            <?php foreach ($articles as $article): ?>
+                <div class="card shadow-sm border-0" id="article-<?= $article['idarticolo'] ?>">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-3">
+                            <div>
+                                <h3 class="card-title h4 mb-1"><?= htmlspecialchars($article['titolo']) ?></h3>
+                                <div class="text-muted small">
+                                    <span class="me-3">Corso: <strong><?= htmlspecialchars($article['nome_corso']) ?></strong></span>
+                                    <span>Autore: <strong><?= htmlspecialchars($article['autore']) ?></strong></span>
+                                </div>
+                            </div>
+                            <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseContent-<?= $article['idarticolo'] ?>" aria-expanded="false" aria-controls="collapseContent-<?= $article['idarticolo'] ?>">
+                                Leggi Contenuto
+                            </button>
+                        </div>
+
+                        <div class="collapse mb-4" id="collapseContent-<?= $article['idarticolo'] ?>">
+                            <div class="card card-body bg-light border-0">
+                                <?= nl2br(htmlspecialchars($article['contenuto'])) ?>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2 justify-content-end">
+                            <button type="button" class="btn btn-outline-danger" onclick="handleArticle(<?= $article['idarticolo'] ?>, 'reject')">Rifiuta</button>
+                            <button type="button" class="btn btn-primary" onclick="handleArticle(<?= $article['idarticolo'] ?>, 'approve')">Approva</button>
                         </div>
                     </div>
-                    <div>
-                        <button type="button">Leggi</button> // <-- NON FA NULLA
-                        <button type="button" onclick="handleArticle(<?= $article['idarticolo'] ?>, 'approve')">Approva</button>
-                        <button type="button" onclick="handleArticle(<?= $article['idarticolo'] ?>, 'reject')">Rifiuta</button>
-                    </div>
                 </div>
-            </article>
-        <?php endforeach; ?>
-    <?php endif; ?>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
 </div>
 
 <script>
@@ -43,12 +63,17 @@ function handleArticle(id, action) {
     .then(data => {
         if (data.success) {
             const articleElement = document.getElementById('article-' + id);
-            if (articleElement)
+            if (articleElement) {
                 articleElement.remove();
-            if (document.querySelectorAll('article').length === 0)
-                document.getElementById('approvazione-container').innerHTML = '<p>Nessun articolo da approvare.</p>';
-        } else
-            alert('Errore durante l\'operazione.');
+            }
+            
+            const container = document.getElementById('approvazione-container');
+            if (container.children.length === 0) {
+                container.innerHTML = '<div class="alert alert-info" role="alert">Nessun articolo da approvare al momento.</div>';
+            }
+        } else {
+            alert('Errore durante l\'operazione: ' + (data.message || 'Sconosciuto'));
+        }
     })
     .catch(error => {
         console.error('Error:', error);

@@ -1,72 +1,88 @@
-<div>
-    <h2>Gestione Utenti</h2>
-
-    <div>
-        <div>
-            <input type="text" id="searchUser" placeholder="Cerca utente per username...">
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="display-5 fw-bold">Gestione Utenti</h2>
+            <p class="text-muted">Amministra gli utenti e i loro permessi</p>
         </div>
     </div>
 
-    <div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Username</th>
-                    <th>Ruolo</th>
-                    <th>Azioni</th>
-                </tr>
-            </thead>
-            <tbody id="usersTableBody">
-                <!-- Populated by JS -->
-            </tbody>
-        </table>
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                <h3 class="card-title mb-0">Utenti</h3>
+                <button type="button" class="btn btn-primary" onclick="openUserModal()">
+                    Nuovo Utente
+                </button>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-12 col-md-6">
+                    <input type="text" id="searchUser" class="form-control" placeholder="Cerca utente per username...">
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Username</th>
+                            <th>Ruolo</th>
+                            <th class="text-end">Azioni</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
 <!-- Modal Utente -->
-<div id="userModal" tabindex="-1">
-    <div>
-        <div>
-            <div>
-                <h5 id="userModalTitle">Nuovo Utente</h5>
-                <button type="button">Chiudi</button>
+<div class="modal fade" id="userModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userModalTitle">Nuovo Utente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div>
+            <div class="modal-body">
                 <form id="userForm">
                     <input type="hidden" id="userId" name="id">
-                    <div>
-                        <label for="username">Username</label>
-                        <input type="text" id="username" name="username" required>
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
                     </div>
-                    <div>
-                        <label for="ruolo">Ruolo</label>
-                        <select id="ruolo" name="ruolo">
+                    <div class="mb-3">
+                        <label for="ruolo" class="form-label">Ruolo</label>
+                        <select class="form-select" id="ruolo" name="ruolo">
                             <option value="0">Utente Standard</option>
                             <option value="1">Amministratore</option>
                         </select>
                     </div>
-                    <div>
-                        <label for="password">Password</label>
-                        <input type="password" id="password" name="password" placeholder="Lascia vuoto per non modificare">
-                        <div>Obbligatoria per nuovi utenti.</div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Lascia vuoto per non modificare">
+                        <div class="form-text">Obbligatoria per nuovi utenti.</div>
                     </div>
                 </form>
             </div>
-            <div>
-                <button type="button">Annulla</button>
-                <button type="button" onclick="saveUser()">Salva</button>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                <button type="button" class="btn btn-primary" onclick="saveUser()">Salva</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
+let userModalBS = null;
+
 document.addEventListener('DOMContentLoaded', function() {
+    userModalBS = new bootstrap.Modal(document.getElementById('userModal'));
     loadUsers();
     document.getElementById('searchUser').addEventListener('input', debounce(loadUsers, 300));
 });
-
-// const userModal = new bootstrap.Modal(document.getElementById('userModal'));
 
 function debounce(func, wait) {
     let timeout;
@@ -88,16 +104,18 @@ function loadUsers() {
                 tbody.innerHTML = '';
                 data.data.forEach(user => {
                     const roleBadge = user.isAdmin == 1 
-                        ? '<span>Admin</span>' 
-                        : '<span>User</span>';
+                        ? '<span class="badge bg-primary">Admin</span>' 
+                        : '<span class="badge bg-secondary">User</span>';
                         
                     tbody.innerHTML += `
                         <tr>
-                            <td>${user.username}</td>
+                            <td><strong>${user.username}</strong></td>
                             <td>${roleBadge}</td>
-                            <td>
-                                <button type="button" onclick="editUser(${user.idutente})">Modifica</button>
-                                <button type="button" onclick="deleteUser(${user.idutente})">Elimina</button>
+                            <td class="text-end">
+                                <div class="btn-group btn-group-sm">
+                                    <button type="button" class="btn btn-outline-secondary" onclick="editUser(${user.idutente})">Modifica</button>
+                                    <button type="button" class="btn btn-outline-danger" onclick="deleteUser(${user.idutente})">Elimina</button>
+                                </div>
                             </td>
                         </tr>
                     `;
@@ -110,7 +128,7 @@ function openUserModal() {
     document.getElementById('userForm').reset();
     document.getElementById('userId').value = '';
     document.getElementById('userModalTitle').innerText = 'Nuovo Utente';
-    // userModal.show();
+    userModalBS.show();
 }
 
 function editUser(id) {
@@ -124,6 +142,7 @@ function editUser(id) {
                 document.getElementById('ruolo').value = user.isAdmin;
                 document.getElementById('password').value = '';
                 document.getElementById('userModalTitle').innerText = 'Modifica Utente';
+                userModalBS.show();
             }
         });
 }
@@ -139,9 +158,9 @@ function saveUser() {
     .then(response => response.json())
     .then(data => {
         if(data.success) {
-            // userModal.hide();
+            userModalBS.hide();
             loadUsers();
-            alert('Utente salvato!');
+            // alert('Utente salvato!');
         } else {
             alert('Errore: ' + data.message);
         }

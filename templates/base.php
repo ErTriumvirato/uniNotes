@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,12 +10,12 @@
     <link rel="icon" href="uploads/img/favicon.png" type="image/x-icon" />
 </head>
 
-<body class="d-flex flex-column min-vh-100 bg-light">
+<body class="d-flex flex-column min-vh-100">
 
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+        <nav class="navbar navbar-expand-lg navbar-light shadow-sm fixed-top">
             <div class="container-fluid">
-                
+
                 <a class="navbar-brand" href="index.php">
                     <img src="uploads/img/logo.png" alt="uniNotes Logo" class="logo-img">
                 </a>
@@ -36,24 +37,23 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="corsi.php">Corsi</a>
                             </li>
-                            <?php if(isUserLoggedIn()) { ?>
+                            <?php if (isUserLoggedIn()) { ?>
                                 <li class="nav-item">
                                     <a class="nav-link" href="creazione-articoli.php">Carica appunti</a>
                                 </li>
                             <?php } ?>
-                            <?php if(isUserAdmin()) { ?>
+                            <?php if (isUserAdmin()) { ?>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="area-admin.php">Area Admin</a>
+                                    <a class="nav-link" href="area-admin.php">Area Amministratore</a>
                                 </li>
                             <?php } ?>
                         </ul>
-
-                        <div class="d-flex justify-content-center gap-2">
-                            <?php if((!isUserLoggedIn())) { ?>
-                                <a href="login.php" class="btn btn-outline-primary btn-sm px-4">Login</a>
+                        <div class="d-flex justify-content-center justify-content-lg-end gap-2">
+                            <?php if ((!isUserLoggedIn())) { ?>
+                                <a href="login.php" class="btn btn-outline-primary btn-sm px-4">Accedi</a>
                             <?php } else { ?>
                                 <a href="impostazioni.php" class="btn btn-outline-secondary btn-sm">Impostazioni</a>
-                                <a href="logout.php" class="btn btn-danger btn-sm">Logout</a>
+                                <a href="logout.php" class="btn btn-danger btn-sm">Esci</a>
                             <?php } ?>
                         </div>
                     </div>
@@ -62,6 +62,7 @@
         </nav>
     </header>
 
+    <!-- Contenuto princinpale -->
     <main class="container flex-grow-1 mt-5 pt-5">
         <div class="py-4">
             <?php if (isset($templateParams["nome"])) require($templateParams["nome"]); ?>
@@ -76,4 +77,5 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
+
 </html>

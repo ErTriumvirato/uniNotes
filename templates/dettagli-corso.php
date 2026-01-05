@@ -6,68 +6,83 @@ $isFollowing = $idutente ? $dbh->isFollowingCourse($idutente, $idCorso) : false;
 $articoli = $dbh->getApprovedArticlesByCourse($idCorso);
 ?>
 
-<div>
-
-    <header>
-        <h1><?php echo htmlspecialchars($corso['nome']); ?></h1>
-        <p>SSD: <?php echo htmlspecialchars($corso['nomeSSD']); ?></p>
-
-        <div>
-            <p><?php echo nl2br(htmlspecialchars($corso['descrizione'])); ?></p>
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-10">
+        <div class="card shadow-sm border-0 mb-5">
+            <div class="card-body p-4 p-md-5">
+                <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+                    <div>
+                        <h1 class="display-5 fw-bold mb-2"><?php echo htmlspecialchars($corso['nome']); ?></h1>
+                        <span class="badge bg-secondary mb-3"><?php echo htmlspecialchars($corso['nomeSSD']); ?></span>
+                    </div>
+                    <button type="button" id="followBtn" class="btn <?php echo $isFollowing ? 'btn-outline-danger' : 'btn-primary'; ?> btn-lg" data-idcorso="<?php echo $idCorso; ?>">
+                        <?php echo $isFollowing ? 'Smetti di seguire' : 'Segui corso'; ?>
+                    </button>
+                </div>
+                <p class="lead mt-3"><?php echo nl2br(htmlspecialchars($corso['descrizione'])); ?></p>
+            </div>
         </div>
 
-        <button type="button" id="followBtn" data-idcorso="<?php echo $idCorso; ?>">
-            <span>
-                <img src="uploads/img/<?php echo $isFollowing ? 'unfollow.svg' : 'follow.svg'; ?>" alt="">
-                <span><?php echo $isFollowing ? 'Smetti di seguire' : 'Segui'; ?></span>
-            </span>
-        </button>
-    </header>
-
-    <div>
-        <div>
-            <div>
-                <label for="ajax-sort">Ordina per:</label>
-                <select id="ajax-sort">
+        <div class="row g-3 mb-4 align-items-end">
+            <div class="col-12 col-md-6">
+                <h3 class="mb-0">Appunti disponibili</h3>
+            </div>
+            <div class="col-6 col-md-3">
+                <label for="ajax-sort" class="form-label small text-muted">Ordina per</label>
+                <select id="ajax-sort" class="form-select form-select-sm">
                     <option value="data_pubblicazione">Data di caricamento</option>
                     <option value="media_recensioni">Valutazione media</option>
                     <option value="numero_visualizzazioni">Numero di visualizzazioni</option>
                 </select>
             </div>
-            <div>
-                <label for="ajax-order">Ordine:</label>
-                <select id="ajax-order">
+            <div class="col-6 col-md-3">
+                <label for="ajax-order" class="form-label small text-muted">Ordine</label>
+                <select id="ajax-order" class="form-select form-select-sm">
                     <option value="DESC">Decrescente</option>
                     <option value="ASC">Crescente</option>
                 </select>
             </div>
         </div>
-    </div>
 
-    <div id="articles-container">
-        <?php if (!empty($articoli)): foreach ($articoli as $articolo): ?>
-                <article>
-                    <a href="articolo.php?id=<?php echo $articolo['idarticolo']; ?>">
-                        <div>
-                            <h2>
-                                <?php echo htmlspecialchars($articolo['titolo']); ?>
-                            </h2>
-                            <div>
-                                <span><?php echo htmlspecialchars($articolo['autore']); ?></span>
-                                <span>|</span>
-                                <span>Media recensioni: <?php echo $articolo['media_recensioni'] ?: '0.0'; ?></span>
-                                <span>|</span>
-                                <span><?php echo (int)$articolo['numero_visualizzazioni']; ?></span>
-                                <span>|</span>
-                                <span><?php echo date('d/m/y', strtotime($articolo['data_pubblicazione'])); ?></span>
+        <!-- Articles List -->
+        <div id="articles-container" class="d-flex flex-column gap-3">
+            <?php if (!empty($articoli)): foreach ($articoli as $articolo): ?>
+                <div class="card shadow-sm border-0 article-card">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-12 col-md-8">
+                                <h5 class="card-title mb-1">
+                                    <a href="articolo.php?id=<?php echo $articolo['idarticolo']; ?>" class="text-decoration-none text-dark stretched-link">
+                                        <?php echo htmlspecialchars($articolo['titolo']); ?>
+                                    </a>
+                                </h5>
+                                <p class="card-text text-muted small mb-2">
+                                    di <?php echo htmlspecialchars($articolo['autore']); ?>
+                                </p>
+                            </div>
+                            <div class="col-12 col-md-4 text-md-end mt-2 mt-md-0">
+                                <div class="d-flex gap-2 justify-content-md-end flex-wrap">
+                                    <span class="badge bg-light text-dark border" title="Media recensioni">
+                                        ★ <?php echo $articolo['media_recensioni'] ?: '0.0'; ?>
+                                    </span>
+                                    <span class="badge bg-light text-dark border" title="Visualizzazioni">
+                                        👁 <?php echo (int)$articolo['numero_visualizzazioni']; ?>
+                                    </span>
+                                    <span class="badge bg-light text-dark border" title="Data pubblicazione">
+                                        📅 <?php echo date('d/m/y', strtotime($articolo['data_pubblicazione'])); ?>
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                    </a>
-                </article>
+                    </div>
+                </div>
             <?php endforeach;
-        else: ?>
-            <p>Nessun appunto disponibile per questo corso.</p>
-        <?php endif; ?>
+            else: ?>
+                <div class="alert alert-info text-center" role="alert">
+                    Nessun appunto disponibile per questo corso.
+                </div>
+            <?php endif; ?>
+        </div>
     </div>
 </div>
 
@@ -91,12 +106,15 @@ $articoli = $dbh->getApprovedArticlesByCourse($idCorso);
             })
             .then(res => res.json())
             .then(data => {
-                const icon = data.following ? 'unfollow.svg' : 'follow.svg';
-                const text = data.following ? 'Smetti di seguire' : 'Segui';
-                btn.innerHTML = `<span>
-                                <img src="uploads/img/${icon}" alt="">
-                                <span>${text}</span>
-                             </span>`;
+                if (data.following) {
+                    btn.textContent = 'Smetti di seguire';
+                    btn.classList.remove('btn-primary');
+                    btn.classList.add('btn-outline-danger');
+                } else {
+                    btn.textContent = 'Segui corso';
+                    btn.classList.remove('btn-outline-danger');
+                    btn.classList.add('btn-primary');
+                }
                 btn.disabled = false;
             });
     });
@@ -113,25 +131,39 @@ $articoli = $dbh->getApprovedArticlesByCourse($idCorso);
             .then(data => {
                 container.innerHTML = '';
                 if (data.length === 0) {
-                    container.innerHTML = '<p>Nessun appunto trovato.</p>';
+                    container.innerHTML = '<div class="alert alert-info text-center" role="alert">Nessun appunto disponibile per questo corso.</div>';
                 } else {
                     data.forEach(art => {
                         container.insertAdjacentHTML('beforeend', `
-                            <article>
-                                <a href="articolo.php?id=${art.idarticolo}">
-                                    <div>
-                                        <h2>${art.titolo}</h2>
-                                        <div>
-                                            <span>${art.autore}</span>
-                                            <span>Media recensioni: ${art.media_recensioni}</span>
-                                            <span>|</span>
-                                            <span>Visualizzazioni: ${art.views}</span>
-                                            <span>|</span>
-                                            <span>${art.data_formattata}</span>
+                            <div class="card shadow-sm border-0 article-card">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-12 col-md-8">
+                                            <h5 class="card-title mb-1">
+                                                <a href="articolo.php?id=${art.idarticolo}" class="text-decoration-none text-dark stretched-link">
+                                                    ${art.titolo}
+                                                </a>
+                                            </h5>
+                                            <p class="card-text text-muted small mb-2">
+                                                di ${art.autore}
+                                            </p>
+                                        </div>
+                                        <div class="col-12 col-md-4 text-md-end mt-2 mt-md-0">
+                                            <div class="d-flex gap-2 justify-content-md-end flex-wrap">
+                                                <span class="badge bg-light text-dark border" title="Media recensioni">
+                                                    ★ ${art.media_recensioni || '0.0'}
+                                                </span>
+                                                <span class="badge bg-light text-dark border" title="Visualizzazioni">
+                                                    👁 ${art.views}
+                                                </span>
+                                                <span class="badge bg-light text-dark border" title="Data pubblicazione">
+                                                    📅 ${art.data_formattata}
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
-                                </a>
-                            </article>`);
+                                </div>
+                            </div>`);
                     });
                 }
             });

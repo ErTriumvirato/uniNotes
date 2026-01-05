@@ -1,20 +1,47 @@
 /* Variabili per i colori principali */
 :root {
-    --primary-color: #0d6efd;
-    --secondary-color: #6c757d;
-    --bg-light: #f8f9fa;
-    --color: #333;
+    --primary-color: #00693E; /* #e7802c*/
+    --bg-color:#F0FFF0;
+    --nav-color: white;
+    --color: #000000; /*#333     altro verde chiaro: #F0FFF0*/
+}
+
+:root {
+    --bs-primary: #512888;/* converti il tuo colore in RGB */
+    --bs-secondary: #8000FF;
+    --bs-success: #663399;
+    --bs-danger: #800080;
+    --bs-warning: #6F00FF;
+    --bs-info: #8806CE;
+    --bs-light: #00693E;
+    --bs-dark: #013220;
+    --si: #177245;
+    --no: #008000;
 }
 
 body {
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
-    background-color: var(--bg-light);
-    color: var(--color);
+    background-color: var(--bg-color) !important;
+    color: var(--color) !important;
+}
+
+.btn {
+    border-color: var(--primary-color) !important;
+    background-color: var(--primary-color) !important;
+    color: var(--bg-color) !important;
 }
 
 .navbar {
     padding-top: 12px;
     padding-bottom: 12px;
+    background-color: var(--nav-color);
+}
+
+.navbar .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.5;
 }
 
 .navbar-brand .logo-img {
@@ -45,4 +72,35 @@ footer {
         margin-top: 8px;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     }
+}
+
+/* Form Card (Login, Registration, Settings) */
+.form-card {
+    background-color: #fff;
+}
+
+.form-card .form-control {
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    transition: all 0.3s ease;
+}
+
+.form-card .form-control:focus {
+    background-color: #fff;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15);
+}
+
+/* Lista corsi e articoli */
+.course-card, .article-card, .admin-card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.course-card:hover, .article-card:hover, .admin-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 2px 2px rgba(0,0,0,.15)!important;
+}
+
+.card {
+    border-radius: 14px;
 }

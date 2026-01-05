@@ -1,37 +1,45 @@
-<div>
-    <h2>Gestione Corsi e SSD</h2>
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="display-5 fw-bold">Gestione Corsi e SSD</h2>
+            <p class="text-muted">Amministra i corsi di studio e i Settori Scientifico Disciplinari</p>
+        </div>
+    </div>
 
-    <div>
-        <!-- Sezione Corsi -->
-        <div id="corsi-section">
-            <h3>Corsi</h3>
-            <div>
-                <div>
-                    <input type="text" id="searchCourse" placeholder="Cerca corso...">
+    <!-- Sezione Corsi -->
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                <h3 class="card-title mb-0">Corsi</h3>
+                <button type="button" class="btn btn-primary" onclick="openCourseModal()">
+                    Nuovo Corso
+                </button>
+            </div>
+
+            <div class="row g-3 mb-4">
+                <div class="col-12 col-md-4">
+                    <input type="text" id="searchCourse" class="form-control" placeholder="Cerca corso...">
                 </div>
-                <div>
-                    <select id="filterSSD">
+                <div class="col-12 col-md-4">
+                    <select id="filterSSD" class="form-select">
                         <option value="">Tutti gli SSD</option>
                     </select>
                 </div>
-                <div>
-                     <select id="sortCourses">
+                <div class="col-12 col-md-4">
+                     <select id="sortCourses" class="form-select">
                         <option value="nome">Ordina per Nome</option>
                     </select>
                 </div>
-                <div>
-                    <button type="button" onclick="openCourseModal()">Nuovo Corso</button>
-                </div>
             </div>
 
-            <div>
-                <table>
-                    <thead>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
                         <tr>
                             <th>Nome</th>
                             <th>SSD</th>
                             <th>Descrizione</th>
-                            <th>Azioni</th>
+                            <th class="text-end">Azioni</th>
                         </tr>
                     </thead>
                     <tbody id="coursesTableBody">
@@ -39,24 +47,25 @@
                 </table>
             </div>
         </div>
+    </div>
 
-        <hr>
-
-        <!-- Sezione SSD -->
-        <div id="ssd-section">
-            <h3>SSD</h3>
-            <div>
-                <div>
-                    <button type="button" onclick="openSSDModal()">Nuovo SSD</button>
-                </div>
+    <!-- Sezione SSD -->
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                <h3 class="card-title mb-0">SSD (Settori Scientifico Disciplinari)</h3>
+                <button type="button" class="btn btn-secondary" onclick="openSSDModal()">
+                    Nuovo SSD
+                </button>
             </div>
-            <div>
-                <table>
-                    <thead>
+            
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
                         <tr>
                             <th>Codice</th>
                             <th>Descrizione</th>
-                            <th>Azioni</th>
+                            <th class="text-end">Azioni</th>
                         </tr>
                     </thead>
                     <tbody id="ssdTableBody">
@@ -68,71 +77,77 @@
 </div>
 
 <!-- Modal Corso -->
-<div id="courseModal" hidden>
-    <div>
-        <div>
-            <div>
-                <h5 id="courseModalTitle">Nuovo Corso</h5>
-                <button type="button" onclick="closeModal('courseModal')">Chiudi</button>
+<div class="modal fade" id="courseModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="courseModalTitle">Nuovo Corso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div>
+            <div class="modal-body">
                 <form id="courseForm">
                     <input type="hidden" id="courseId" name="id">
-                    <div>
-                        <label for="courseName">Nome Corso</label>
-                        <input type="text" id="courseName" name="nome" required>
+                    <div class="mb-3">
+                        <label for="courseName" class="form-label">Nome Corso</label>
+                        <input type="text" class="form-control" id="courseName" name="nome" required>
                     </div>
-                    <div>
-                        <label for="courseSSD">SSD</label>
-                        <select id="courseSSD" name="idssd" required>
+                    <div class="mb-3">
+                        <label for="courseSSD" class="form-label">SSD</label>
+                        <select class="form-select" id="courseSSD" name="idssd" required>
                             <!-- Populated by JS -->
                         </select>
                     </div>
-                    <div>
-                        <label for="courseDesc">Descrizione</label>
-                        <textarea id="courseDesc" name="descrizione" rows="3" required></textarea>
+                    <div class="mb-3">
+                        <label for="courseDesc" class="form-label">Descrizione</label>
+                        <textarea class="form-control" id="courseDesc" name="descrizione" rows="3" required></textarea>
                     </div>
                 </form>
             </div>
-            <div>
-                <button type="button" onclick="closeModal('courseModal')">Annulla</button>
-                <button type="button" onclick="saveCourse()">Salva</button>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                <button type="button" class="btn btn-primary" onclick="saveCourse()">Salva</button>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Modal SSD -->
-<div id="ssdModal" hidden>
-    <div>
-        <div>
-            <div>
-                <h5 id="ssdModalTitle">Nuovo SSD</h5>
-                <button type="button" onclick="closeModal('ssdModal')">Chiudi</button>
+<div class="modal fade" id="ssdModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ssdModalTitle">Nuovo SSD</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div>
+            <div class="modal-body">
                 <form id="ssdForm">
                     <input type="hidden" id="ssdId" name="id">
-                    <div>
-                        <label for="ssdName">Codice (es. INF/01)</label>
-                        <input type="text" id="ssdName" name="nome" required>
+                    <div class="mb-3">
+                        <label for="ssdName" class="form-label">Codice (es. INF/01)</label>
+                        <input type="text" class="form-control" id="ssdName" name="nome" required>
                     </div>
-                    <div>
-                        <label for="ssdDesc">Descrizione</label>
-                        <textarea id="ssdDesc" name="descrizione" rows="3" required></textarea>
+                    <div class="mb-3">
+                        <label for="ssdDesc" class="form-label">Descrizione</label>
+                        <textarea class="form-control" id="ssdDesc" name="descrizione" rows="3" required></textarea>
                     </div>
                 </form>
             </div>
-            <div>
-                <button type="button" onclick="closeModal('ssdModal')">Annulla</button>
-                <button type="button" onclick="saveSSD()">Salva</button>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                <button type="button" class="btn btn-primary" onclick="saveSSD()">Salva</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
+let courseModalBS = null;
+let ssdModalBS = null;
+
 document.addEventListener('DOMContentLoaded', function() {
+    courseModalBS = new bootstrap.Modal(document.getElementById('courseModal'));
+    ssdModalBS = new bootstrap.Modal(document.getElementById('ssdModal'));
+
     loadCourses();
     loadSSDs();
     
@@ -140,13 +155,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('searchCourse').addEventListener('input', debounce(loadCourses, 300));
     document.getElementById('filterSSD').addEventListener('change', loadCourses);
 });
-
-// const courseModal = new bootstrap.Modal(document.getElementById('courseModal'));
-// const ssdModal = new bootstrap.Modal(document.getElementById('ssdModal'));
-
-function closeModal(modalId) {
-    document.getElementById(modalId).hidden = true;
-}
 
 function debounce(func, wait) {
     let timeout;
@@ -170,12 +178,14 @@ function loadCourses() {
                 data.data.forEach(course => {
                     tbody.innerHTML += `
                         <tr>
-                            <td>${course.nomeCorso}</td>
-                            <td><span>${course.nomeSSD}</span></td>
-                            <td><small>${course.descrizioneCorso.substring(0, 50)}...</small></td>
-                            <td>
-                                <button type="button" onclick="editCourse(${course.idcorso})">Modifica</button>
-                                <button type="button" onclick="deleteCourse(${course.idcorso})">Elimina</button>
+                            <td><strong>${course.nomeCorso}</strong></td>
+                            <td><span class="badge bg-light text-dark border">${course.nomeSSD}</span></td>
+                            <td><small class="text-muted">${course.descrizioneCorso.substring(0, 50)}...</small></td>
+                            <td class="text-end">
+                                <div class="btn-group btn-group-sm">
+                                    <button type="button" class="btn btn-outline-secondary" onclick="editCourse(${course.idcorso})">Modifica</button>
+                                    <button type="button" class="btn btn-outline-danger" onclick="deleteCourse(${course.idcorso})">Elimina</button>
+                                </div>
                             </td>
                         </tr>
                     `;
@@ -208,9 +218,11 @@ function loadSSDs() {
                         <tr>
                             <td><strong>${ssd.nome}</strong></td>
                             <td>${ssd.descrizione}</td>
-                            <td>
-                                <button type="button" onclick="editSSD(${ssd.idssd})">Modifica</button>
-                                <button type="button" onclick="deleteSSD(${ssd.idssd})">Elimina</button>
+                            <td class="text-end">
+                                <div class="btn-group btn-group-sm">
+                                    <button type="button" class="btn btn-outline-secondary" onclick="editSSD(${ssd.idssd})">Modifica</button>
+                                    <button type="button" class="btn btn-outline-danger" onclick="deleteSSD(${ssd.idssd})">Elimina</button>
+                                </div>
                             </td>
                         </tr>
                     `;
@@ -232,7 +244,7 @@ function openCourseModal() {
     document.getElementById('courseForm').reset();
     document.getElementById('courseId').value = '';
     document.getElementById('courseModalTitle').innerText = 'Nuovo Corso';
-    document.getElementById('courseModal').hidden = false;
+    courseModalBS.show();
 }
 
 function editCourse(id) {
@@ -244,9 +256,9 @@ function editCourse(id) {
                 document.getElementById('courseId').value = course.idcorso;
                 document.getElementById('courseName').value = course.nome;
                 document.getElementById('courseDesc').value = course.descrizione;
-                document.getElementById('courseSSD').value = course.idssd; // Assuming getCourseById returns idssd
+                document.getElementById('courseSSD').value = course.idssd; 
                 document.getElementById('courseModalTitle').innerText = 'Modifica Corso';
-                document.getElementById('courseModal').hidden = false;
+                courseModalBS.show();
             }
         });
 }
@@ -262,9 +274,9 @@ function saveCourse() {
     .then(response => response.json())
     .then(data => {
         if(data.success) {
-            closeModal('courseModal');
+            courseModalBS.hide();
             loadCourses();
-            alert('Corso salvato!');
+            // alert('Corso salvato!');
         } else {
             alert('Errore: ' + data.message);
         }
@@ -297,7 +309,7 @@ function openSSDModal() {
     document.getElementById('ssdForm').reset();
     document.getElementById('ssdId').value = '';
     document.getElementById('ssdModalTitle').innerText = 'Nuovo SSD';
-    document.getElementById('ssdModal').hidden = false;
+    ssdModalBS.show();
 }
 
 function editSSD(id) {
@@ -310,7 +322,7 @@ function editSSD(id) {
                 document.getElementById('ssdName').value = ssd.nome;
                 document.getElementById('ssdDesc').value = ssd.descrizione;
                 document.getElementById('ssdModalTitle').innerText = 'Modifica SSD';
-                document.getElementById('ssdModal').hidden = false;
+                ssdModalBS.show();
             }
         });
 }
@@ -326,10 +338,10 @@ function saveSSD() {
     .then(response => response.json())
     .then(data => {
         if(data.success) {
-            closeModal('ssdModal');
+            ssdModalBS.hide();
             loadSSDs();
-            loadCourses(); // Reload courses as SSD names might have changed
-            alert('SSD salvato!');
+            loadCourses(); 
+            // alert('SSD salvato!');
         } else {
             alert('Errore: ' + data.message);
         }

@@ -5,57 +5,58 @@ $idutente = $_SESSION["idutente"] ?? null;
 $ssds = $templateParams["ssds"];
 ?>
 
-<div>
-    <div>
-        <div>
-            <input type="text" id="search" placeholder="Cerca corso...">
-        </div>
-        <div>
-            <select id="ssd">
-                <option value="">Tutti gli SSD</option>
-                <?php foreach ($ssds as $ssd): ?>
-                    <option value="<?= htmlspecialchars($ssd['nome']) ?>"><?= htmlspecialchars($ssd['nome']) ?></option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-        <div>
-            <select id="filterType">
-                <option value="all">Tutti i corsi</option>
-                <?php if ($idutente): ?>
-                    <option value="followed">Corsi seguiti</option>
-                    <option value="not_followed">Corsi non seguiti</option>
-                <?php endif; ?>
-            </select>
-        </div>
+<div class="row g-3 mb-4">
+    <div class="col-12 col-md-4">
+        <input type="text" id="search" class="form-control" placeholder="Cerca corso...">
+    </div>
+    <div class="col-12 col-md-4">
+        <select id="ssd" class="form-select">
+            <option value="">Tutti gli SSD</option>
+            <?php foreach ($ssds as $ssd): ?>
+                <option value="<?= htmlspecialchars($ssd['nome']) ?>"><?= htmlspecialchars($ssd['nome']) ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <div class="col-12 col-md-4">
+        <select id="filterType" class="form-select">
+            <option value="all">Tutti i corsi</option>
+            <?php if ($idutente): ?>
+                <option value="followed">Corsi seguiti</option>
+                <option value="not_followed">Corsi non seguiti</option>
+            <?php endif; ?>
+        </select>
     </div>
 </div>
 
-<div id="courses-container">
+<div id="courses-container" class="row g-4">
 <?php foreach ($corsi as $corso):
     $isFollowing = $idutente ? $dbh->isFollowingCourse($idutente, $corso['idcorso']) : false;
 ?>
-    <article>
-        <div>
-            <h2>
-                <a href="corso.php?id=<?php echo (int)$corso['idcorso']; ?>">
-                    <?php echo htmlspecialchars($corso['nomeCorso']); ?>
-                </a>
-            </h2>
-            <p>
-                SSD: <strong><?php echo htmlspecialchars($corso['nomeSSD']); ?></strong>
-            </p>
-            <button type="button" data-idcorso="<?= (int)$corso['idcorso'] ?>"
-                    data-following="<?= $isFollowing ? 'true' : 'false' ?>">
-                <?php if ($isFollowing): ?>
-                    <img src="uploads/img/unfollow.svg" alt="Unfollow">
-                    Smetti di seguire
-                <?php else: ?>
-                    <img src="uploads/img/follow.svg" alt="Follow">
-                    Segui corso
-                <?php endif; ?>
-            </button>
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0 course-card">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">
+                    <a href="corso.php?id=<?php echo (int)$corso['idcorso']; ?>" class="text-decoration-none text-dark stretched-link">
+                        <?php echo htmlspecialchars($corso['nomeCorso']); ?>
+                    </a>
+                </h5>
+                <p class="card-text text-muted mb-4">
+                    SSD: <span class="badge bg-light text-dark border"><?php echo htmlspecialchars($corso['nomeSSD']); ?></span>
+                </p>
+                <div class="mt-auto">
+                    <button type="button" class="btn btn-sm w-100 position-relative z-2 <?php echo $isFollowing ? 'btn-outline-danger' : 'btn-outline-primary'; ?>"
+                            data-idcorso="<?= (int)$corso['idcorso'] ?>"
+                            data-following="<?= $isFollowing ? 'true' : 'false' ?>">
+                        <?php if ($isFollowing): ?>
+                            Smetti di seguire
+                        <?php else: ?>
+                            Segui corso
+                        <?php endif; ?>
+                    </button>
+                </div>
+            </div>
         </div>
-    </article>
+    </div>
 <?php endforeach; ?>
 </div>
 
@@ -78,10 +79,12 @@ function attachFollowListeners() {
             .then(res => res.json())
             .then(data => {
                 if (data.following) {
-                    button.innerHTML = '<img src="uploads/img/unfollow.svg" alt="Unfollow"> Smetti di seguire';
+                    button.innerHTML = 'Smetti di seguire';
+                    button.className = 'btn btn-sm w-100 position-relative z-2 btn-outline-danger';
                     button.dataset.following = 'true';
                 } else {
-                    button.innerHTML = '<img src="uploads/img/follow.svg" alt="Follow"> Segui corso';
+                    button.innerHTML = 'Segui corso';
+                    button.className = 'btn btn-sm w-100 position-relative z-2 btn-outline-primary';
                     button.dataset.following = 'false';
                 }
                 button.disabled = false;
@@ -112,35 +115,40 @@ function filterCourses() {
     .then(data => {
         coursesContainer.innerHTML = '';
         if (data.length === 0) {
-            coursesContainer.innerHTML = '<p>Nessun corso trovato.</p>';
+            coursesContainer.innerHTML = '<div class="col-12"><p class="text-center text-muted">Nessun corso trovato.</p></div>';
             return;
         }
 
         data.forEach(corso => {
-            const article = document.createElement('article');
+            const col = document.createElement('div');
+            col.className = 'col-12 col-md-6 col-lg-4';
 
             const isFollowing = corso.isFollowing;
             const followText = isFollowing ? 'Smetti di seguire' : 'Segui corso';
-            const followIcon = isFollowing ? 'uploads/img/unfollow.svg' : 'uploads/img/follow.svg';
+            const btnClass = isFollowing ? 'btn-outline-danger' : 'btn-outline-primary';
 
-            article.innerHTML = `
-                <div>
-                    <h2>
-                        <a href="corso.php?id=${corso.idcorso}">
-                            ${corso.nomeCorso}
-                        </a>
-                    </h2>
-                    <p>
-                        SSD: <strong>${corso.nomeSSD}</strong>
-                    </p>
-                    <button type="button" data-idcorso="${corso.idcorso}"
-                            data-following="${isFollowing}">
-                        <img src="${followIcon}" alt="${isFollowing ? 'Unfollow' : 'Follow'}">
-                        ${followText}
-                    </button>
+            col.innerHTML = `
+                <div class="card h-100 shadow-sm border-0 course-card">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">
+                            <a href="corso.php?id=${corso.idcorso}" class="text-decoration-none text-dark stretched-link">
+                                ${corso.nomeCorso}
+                            </a>
+                        </h5>
+                        <p class="card-text text-muted mb-4">
+                            SSD: <span class="badge bg-light text-dark border">${corso.nomeSSD}</span>
+                        </p>
+                        <div class="mt-auto">
+                            <button type="button" class="btn btn-sm w-100 position-relative z-2 ${btnClass}"
+                                    data-idcorso="${corso.idcorso}"
+                                    data-following="${isFollowing}">
+                                ${followText}
+                            </button>
+                        </div>
+                    </div>
                 </div>
             `;
-            coursesContainer.appendChild(article);
+            coursesContainer.appendChild(col);
         });
         attachFollowListeners();
     })

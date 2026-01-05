@@ -1,40 +1,44 @@
-<div>
-    <div>
-        <div>
-            <h1>Area Amministrazione</h1>
+<div class="container">
+    <div class="row justify-content-center mb-5">
+        <div class="col-12 text-center">
+            <h1 class="display-5 fw-bold">Area Amministrazione</h1>
+            <p class="text-muted">Gestisci i contenuti e gli utenti della piattaforma</p>
         </div>
     </div>
     
-    <div>
+    <div class="row g-4 justify-content-center">
         <!-- Gestione Corsi -->
-        <div>
-            <a href="gestione-corsi.php">
-                <div>
-                    <h3>Gestione Corsi</h3>
-                    <p>Gestisci i corsi, aggiungi nuove materie e organizza il piano di studi.</p>
-                    <span>Vai a Corsi</span>
+        <div class="col-12 col-md-6 col-lg-4">
+            <a href="gestione-corsi.php" class="text-decoration-none">
+                <div class="card h-100 shadow-sm border-0 admin-card text-center p-4">
+                    <div class="card-body">
+                        <h3 class="card-title h4 text-dark">Gestione Corsi</h3>
+                        <p class="card-text text-muted small">Aggiungi, modifica o rimuovi i corsi disponibili.</p>
+                    </div>
                 </div>
             </a>
         </div>
 
         <!-- Gestione Utenti -->
-        <div>
-            <a href="gestione-utenti.php">
-                <div>
-                    <h3>Gestione Utenti</h3>
-                    <p>Amministra gli account utente, i permessi e i ruoli.</p>
-                    <span>Vai a Utenti</span>
+        <div class="col-12 col-md-6 col-lg-4">
+            <a href="gestione-utenti.php" class="text-decoration-none">
+                <div class="card h-100 shadow-sm border-0 admin-card text-center p-4">
+                    <div class="card-body">
+                        <h3 class="card-title h4 text-dark">Gestione Utenti</h3>
+                        <p class="card-text text-muted small">Visualizza e gestisci gli utenti registrati.</p>
+                    </div>
                 </div>
             </a>
         </div>
 
         <!-- Gestione Articoli -->
-        <div>
-            <a href="gestione-articoli.php">
-                <div>
-                    <h3>Gestione Articoli</h3>
-                    <p>Pubblica, modifica o rimuovi gli articoli e gli appunti.</p>
-                    <span>Vai a Articoli</span>
+        <div class="col-12 col-md-6 col-lg-4">
+            <a href="gestione-articoli.php" class="text-decoration-none">
+                <div class="card h-100 shadow-sm border-0 admin-card text-center p-4">
+                    <div class="card-body">
+                        <h3 class="card-title h4 text-dark">Gestione Articoli</h3>
+                        <p class="card-text text-muted small">Approva o rimuovi gli appunti caricati.</p>
+                    </div>
                 </div>
             </a>
         </div>
