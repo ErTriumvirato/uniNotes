@@ -6,7 +6,7 @@
                 
                 <?php if (isset($templateParams["error"])): ?>
                     <div class="alert alert-danger" role="alert">
-                        <?php echo $templateParams["error"]; ?>
+                        <?php echo htmlspecialchars($templateParams["error"]); ?>
                     </div>
                 <?php endif; ?>
 

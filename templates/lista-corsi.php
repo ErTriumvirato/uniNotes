@@ -36,7 +36,7 @@ $ssds = $templateParams["ssds"];
             <div class="card h-100 shadow-sm border-0 course-card">
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title">
-                        <a href="corso.php?id=<?php echo (int)$corso['idcorso']; ?>" class="text-decoration-none text-dark stretched-link">
+                        <a href="corso.php?id=<?php echo htmlspecialchars((int)$corso['idcorso']); ?>" class="text-decoration-none text-dark stretched-link">
                             <?php echo htmlspecialchars($corso['nomeCorso']); ?>
                         </a>
                     </h5>
@@ -44,9 +44,9 @@ $ssds = $templateParams["ssds"];
                         SSD: <span class="badge bg-light text-dark border"><?php echo htmlspecialchars($corso['nomeSSD']); ?></span>
                     </p>
                     <div class="mt-auto">
-                        <button type="button" class="btn btn-sm w-100 position-relative z-2 <?php echo $isFollowing ? 'btn-outline-danger' : 'btn-outline-primary'; ?>"
-                            data-idcorso="<?= (int)$corso['idcorso'] ?>"
-                            data-following="<?= $isFollowing ? 'true' : 'false' ?>">
+                        <button type="button" class="btn btn-sm w-100 position-relative z-2 <?php echo htmlspecialchars($isFollowing ? 'btn-outline-danger' : 'btn-outline-primary'); ?>"
+                            data-idcorso="<?= htmlspecialchars((int)$corso['idcorso']) ?>"
+                            data-following="<?= htmlspecialchars($isFollowing ? 'true' : 'false') ?>">
                             <?php if ($isFollowing): ?>
                                 Smetti di seguire
                             <?php else: ?>

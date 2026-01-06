@@ -6,7 +6,7 @@
                 
                 <?php if(isset($templateParams["messaggio"])): ?>
                     <div class="alert alert-info" role="alert">
-                        <?php echo $templateParams["messaggio"]; ?>
+                        <?php echo htmlspecialchars($templateParams["messaggio"]); ?>
                     </div>
                 <?php endif; ?>
 

@@ -16,23 +16,20 @@ foreach ($articoli as $articolo) { ?>
                 <p>
                     Pubblicato il
                     <?php
-                    echo date(
-                        'd/m/Y',
-                        strtotime($articolo['data_pubblicazione'])
-                    );
+                    echo htmlspecialchars(date('d/m/Y', strtotime($articolo['data_pubblicazione'])));
                     ?>
                 </p>
                 <p>
                     <?php
                     if ($articolo['media_recensioni'] !== null) {
-                        echo "⭐ " . $articolo['media_recensioni'] . " / 5.0";
+                        echo "⭐ " . htmlspecialchars($articolo['media_recensioni']) . " / 5.0";
                     } else {
                         echo "⭐ Nessuna recensione";
                     }
                     ?>
                 </p>
                 <p>
-                    <?php echo (int)$articolo['numero_visualizzazioni']; ?> visualizzazioni
+                    <?php echo htmlspecialchars((int)$articolo['numero_visualizzazioni']); ?> visualizzazioni
                 </p>
 
             </div>

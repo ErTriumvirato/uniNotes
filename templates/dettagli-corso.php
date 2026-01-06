@@ -63,13 +63,13 @@ $articoli = $dbh->getApprovedArticlesByCourse($idCorso);
                             <div class="col-12 col-md-4 text-md-end mt-2 mt-md-0">
                                 <div class="d-flex gap-2 justify-content-md-end flex-wrap">
                                     <span class="badge bg-light text-dark border" title="Media recensioni">
-                                        ★ <?php echo $articolo['media_recensioni'] ?: '0.0'; ?>
+                                        ★ <?php echo htmlspecialchars($articolo['media_recensioni'] ?: '0.0'); ?>
                                     </span>
                                     <span class="badge bg-light text-dark border" title="Visualizzazioni">
-                                        👁 <?php echo (int)$articolo['numero_visualizzazioni']; ?>
+                                        👁 <?php echo htmlspecialchars((int)$articolo['numero_visualizzazioni']); ?>
                                     </span>
                                     <span class="badge bg-light text-dark border" title="Data pubblicazione">
-                                        📅 <?php echo date('d/m/y', strtotime($articolo['data_pubblicazione'])); ?>
+                                        📅 <?php echo htmlspecialchars(date('d/m/y', strtotime($articolo['data_pubblicazione']))); ?>
                                     </span>
                                 </div>
                             </div>
