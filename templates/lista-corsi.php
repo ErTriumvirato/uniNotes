@@ -63,45 +63,45 @@ $ssds = $templateParams["ssds"];
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         attachFollowListeners();
+        
+    function attachFollowListeners() {
+        document.querySelectorAll('button[data-idcorso]').forEach(btn => {
+            const newBtn = btn.cloneNode(true);
+            btn.parentNode.replaceChild(newBtn, btn);
 
-        function attachFollowListeners() {
-            document.querySelectorAll('button[data-idcorso]').forEach(btn => {
-                const newBtn = btn.cloneNode(true);
-                btn.parentNode.replaceChild(newBtn, btn);
+            newBtn.addEventListener('click', function() {
+                const idcorso = this.dataset.idcorso;
+                const button = this;
+                button.disabled = true;
 
-                newBtn.addEventListener('click', function() {
-                    const idcorso = this.dataset.idcorso;
-                    const button = this;
-                    button.disabled = true;
-
-                    fetch('corsi.php', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/x-www-form-urlencoded'
-                            },
-                            body: 'toggleFollow=' + encodeURIComponent(idcorso)
-                        })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.following) {
-                                button.innerHTML = 'Smetti di seguire';
-                                button.className = 'btn btn-sm w-100 position-relative z-2 btn-outline-danger';
-                                button.dataset.following = 'true';
-                            } else {
-                                button.innerHTML = 'Segui corso';
-                                button.className = 'btn btn-sm w-100 position-relative z-2 btn-outline-primary';
-                                button.dataset.following = 'false';
-                            }
-                            button.disabled = false;
-                        })
-                        .catch(err => {
-                            console.error(err);
-                            alert('Errore durante l\'operazione. Riprova.');
-                            button.disabled = false;
-                        });
-                });
+                fetch('corsi.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: 'toggleFollow=' + encodeURIComponent(idcorso)
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.following) {
+                            button.innerHTML = 'Smetti di seguire';
+                            button.className = 'btn btn-sm w-100 position-relative z-2 btn-outline-danger';
+                            button.dataset.following = 'true';
+                        } else {
+                            button.innerHTML = 'Segui corso';
+                            button.className = 'btn btn-sm w-100 position-relative z-2 btn-outline-primary';
+                            button.dataset.following = 'false';
+                        }
+                        button.disabled = false;
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        alert('Errore durante l\'operazione. Riprova.');
+                        button.disabled = false;
+                    });
             });
-        }
+        });
+    }
         const searchInput = document.getElementById('search');
         const ssdSelect = document.getElementById('ssd');
         const filterTypeSelect = document.getElementById('filterType');
