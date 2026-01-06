@@ -29,10 +29,10 @@ if (!empty($articolo)) {
 
                 <footer class="d-flex gap-3 pt-3 border-top">
                     <span class="badge bg-light text-dark border p-2">
-                        👁 <?php echo $articolo['numero_visualizzazioni']; ?> Visualizzazioni
+                        👁 <?php echo htmlspecialchars($articolo['numero_visualizzazioni']); ?> Visualizzazioni
                     </span>
                     <span class="badge bg-light text-dark border p-2">
-                        ★ <?php echo $articolo['media_recensioni'] ?: 'N/A'; ?> Media voti
+                        ★ <?php echo htmlspecialchars($articolo['media_recensioni'] ?: 'N/A'); ?> Media voti
                     </span>
                 </footer>
             </div>
@@ -46,7 +46,7 @@ if (!empty($articolo)) {
                 <div class="card shadow-sm border-0 mb-4 form-card">
                     <div class="card-body p-4">
                         <h5 class="card-title mb-3">Lascia una recensione</h5>
-                        <form action="articolo.php?id=<?php echo $articolo['idarticolo']; ?>" method="POST">
+                        <form action="articolo.php?id=<?php echo htmlspecialchars($articolo['idarticolo']); ?>" method="POST">
                             <div class="mb-3">
                                 <label for="valutazione" class="form-label">Valutazione</label>
                                 <select name="valutazione" id="valutazione" class="form-select" required>

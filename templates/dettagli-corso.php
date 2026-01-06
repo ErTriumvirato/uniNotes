@@ -15,8 +15,8 @@ $articoli = $dbh->getApprovedArticlesByCourse($idCorso);
                         <h1 class="display-5 fw-bold mb-2"><?php echo htmlspecialchars($corso['nome']); ?></h1>
                         <span class="badge bg-secondary mb-3"><?php echo htmlspecialchars($corso['nomeSSD']); ?></span>
                     </div>
-                    <button type="button" id="followBtn" class="btn <?php echo $isFollowing ? 'btn-outline-danger' : 'btn-primary'; ?> btn-lg" data-idcorso="<?php echo $idCorso; ?>">
-                        <?php echo $isFollowing ? 'Smetti di seguire' : 'Segui corso'; ?>
+                    <button type="button" id="followBtn" class="btn <?php echo htmlspecialchars($isFollowing ? 'btn-outline-danger' : 'btn-primary'); ?> btn-lg" data-idcorso="<?php echo htmlspecialchars($idCorso); ?>">
+                        <?php echo htmlspecialchars($isFollowing ? 'Smetti di seguire' : 'Segui corso'); ?>
                     </button>
                 </div>
                 <p class="lead mt-3"><?php echo nl2br(htmlspecialchars($corso['descrizione'])); ?></p>
@@ -52,7 +52,7 @@ $articoli = $dbh->getApprovedArticlesByCourse($idCorso);
                         <div class="row align-items-center">
                             <div class="col-12 col-md-8">
                                 <h5 class="card-title mb-1">
-                                    <a href="articolo.php?id=<?php echo $articolo['idarticolo']; ?>" class="text-decoration-none text-dark stretched-link">
+                                    <a href="articolo.php?id=<?php echo htmlspecialchars($articolo['idarticolo']); ?>" class="text-decoration-none text-dark stretched-link">
                                         <?php echo htmlspecialchars($articolo['titolo']); ?>
                                     </a>
                                 </h5>
