@@ -15,11 +15,9 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light shadow-sm fixed-top">
             <div class="container-fluid">
-
                 <a class="navbar-brand" href="index.php">
                     <img src="uploads/img/logo.png" alt="uniNotes Logo" class="logo-img">
                 </a>
-
                 <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -50,10 +48,10 @@
                         </ul>
                         <div class="d-flex justify-content-center justify-content-lg-end gap-2">
                             <?php if ((!isUserLoggedIn())) { ?>
-                                <a href="login.php" class="btn btn-outline-primary btn-sm px-4">Accedi</a>
+                                <a href="login.php" class="btn btn-primary btn-sm px-4">Accedi</a>
                             <?php } else { ?>
-                                <a href="impostazioni.php" class="btn btn-outline-secondary btn-sm">Impostazioni</a>
-                                <a href="logout.php" class="btn btn-danger btn-sm">Esci</a>
+                                <a href="impostazioni.php" class="btn btn-primary btn-sm">Impostazioni</a>
+                                <a href="logout.php" class="btn btn-primary btn-sm">Esci</a>
                             <?php } ?>
                         </div>
                     </div>
@@ -62,7 +60,7 @@
         </nav>
     </header>
 
-    <!-- Contenuto princinpale -->
+    <!-- Contenuto principale -->
     <main class="container flex-grow-1 mt-5 pt-5">
         <div class="py-4">
             <?php if (isset($templateParams["nome"])) require($templateParams["nome"]); ?>

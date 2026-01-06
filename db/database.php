@@ -101,6 +101,47 @@ class DatabaseHelper
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
+    public function getHomeArticles($idutente = null, $orderBy = 'data_pubblicazione', $limit = 6)
+    {
+        $query = "SELECT articoli.*, utenti.username AS autore, 
+                ROUND(AVG(recensioni.valutazione), 1) AS media_recensioni
+                FROM articoli
+                JOIN utenti ON articoli.idutente = utenti.idutente
+                LEFT JOIN recensioni ON articoli.idarticolo = recensioni.idarticolo";
+        
+        $params = [];
+        $types = "";
+
+        if ($idutente !== null) {
+            $query .= " JOIN iscrizioni ON articoli.idcorso = iscrizioni.idcorso AND iscrizioni.idutente = ?";
+            $params[] = $idutente;
+            $types .= "i";
+        }
+
+        $query .= " WHERE articoli.approvato = TRUE";
+
+        $query .= " GROUP BY articoli.idarticolo";
+
+        if ($orderBy === 'numero_visualizzazioni') {
+            $query .= " ORDER BY articoli.numero_visualizzazioni DESC, articoli.data_pubblicazione DESC";
+        } else {
+            $query .= " ORDER BY articoli.data_pubblicazione DESC";
+        }
+
+        $query .= " LIMIT ?";
+        $params[] = $limit;
+        $types .= "i";
+
+        $stmt = $this->db->prepare($query);
+        if (!empty($params)) {
+             $stmt->bind_param($types, ...$params);
+        }
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
     public function getApprovedArticlesByCourse($idcorso)
     {
         $query = "SELECT articoli.*, utenti.username AS autore, ROUND(AVG(recensioni.valutazione), 1) AS media_recensioni
@@ -138,15 +179,6 @@ class DatabaseHelper
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-
-    public function getUnapprovedArticles()
-    {
-        $stmt = $this->db->prepare("SELECT * FROM articoli WHERE approvato = false");
-        $stmt->execute();
-        $result = $stmt->get_result();
-        return $result->fetch_all(MYSQLI_ASSOC);
-    }
-
     public function getArticles()
     {
         $query = "SELECT articoli.*, ROUND(AVG(recensioni.valutazione), 1) AS media_recensioni
@@ -160,39 +192,6 @@ class DatabaseHelper
         $result = $stmt->get_result();
 
         return $result->fetch_all(MYSQLI_ASSOC);
-    }
-
-    public function getUsersNumber()
-    {
-        $query = "SELECT COUNT(*) AS total FROM utenti";
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-
-        return $row['total'];
-    }
-
-    public function getCoursesNumber()
-    {
-        $query = "SELECT COUNT(*) AS total FROM corsi";
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-
-        return $row['total'];
-    }
-
-    public function getArticlesNumber()
-    {
-        $query = "SELECT COUNT(*) AS total FROM articoli";
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-
-        return $row['total'];
     }
 
     public function getArticleById($idarticolo)
@@ -355,7 +354,6 @@ class DatabaseHelper
         return $stmt->get_result()->fetch_assoc();
     }
 
-    // Admin Course Management
     public function createCourse($nome, $descrizione, $idssd) {
         $stmt = $this->db->prepare("INSERT INTO corsi (nome, descrizione, idssd) VALUES (?, ?, ?)");
         $stmt->bind_param("ssi", $nome, $descrizione, $idssd);
@@ -374,7 +372,6 @@ class DatabaseHelper
         return $stmt->execute();
     }
 
-    // Admin SSD Management
     public function createSSD($nome, $descrizione) {
         $stmt = $this->db->prepare("INSERT INTO ssd (nome, descrizione) VALUES (?, ?)");
         $stmt->bind_param("ss", $nome, $descrizione);
@@ -400,7 +397,6 @@ class DatabaseHelper
         return $stmt->get_result()->fetch_assoc();
     }
 
-    // Admin User Management
     public function getAllUsers($search = null) {
         $query = "SELECT idutente, username, isAdmin FROM utenti";
         $params = [];

@@ -1,47 +1,24 @@
-/* Variabili per i colori principali */
 :root {
-    --primary-color: #00693E; /* #e7802c*/
-    --bg-color:#F0FFF0;
-    --nav-color: white;
-    --color: #000000; /*#333     altro verde chiaro: #F0FFF0*/
-}
-
-:root {
-    --bs-primary: #512888;/* converti il tuo colore in RGB */
-    --bs-secondary: #8000FF;
-    --bs-success: #663399;
-    --bs-danger: #800080;
-    --bs-warning: #6F00FF;
-    --bs-info: #8806CE;
-    --bs-light: #00693E;
-    --bs-dark: #013220;
-    --si: #177245;
-    --no: #008000;
+    --primary-color: #00693E;
+    --primary-hover: #005a35;
+    --bg-color: #F0FFF0;
+    --nav-bg: white;
+    
+    /* Sovrascrizione di Bootstrap*/
+    --bs-body-bg: var(--bg-color);
+    --bs-primary: var(--primary-color); 
+    --bs-primary-rgb: 0, 105, 62;
+    --bs-link-hover-color: var(--primary-color);
+    --focus-ring-color: rgba(0, 105, 62, 0.25);
 }
 
 body {
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
-    background-color: var(--bg-color) !important;
-    color: var(--color) !important;
-}
-
-.btn {
-    border-color: var(--primary-color) !important;
-    background-color: var(--primary-color) !important;
-    color: var(--bg-color) !important;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 .navbar {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    background-color: var(--nav-color);
-}
-
-.navbar .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1.5;
+    padding-block: 12px;
+    background-color: var(--nav-bg);
 }
 
 .navbar-brand .logo-img {
@@ -49,22 +26,72 @@ body {
     width: auto;
 }
 
+.navbar .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .nav-link {
-    font-weight: 500;
-    color: var(--color) !important;
-    transition: color 1s ease; /* Durata transizione */
+    transition: color 0.3s ease;
 }
 
-.nav-link:hover,
-.nav-link.active {
-    color: var(--primary-color) !important;
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active,
+.article-card:hover .article-title-link {
+    color: var(--primary-color);
 }
 
-footer {
-    font-size: 15px;
+.card {
+    background-color: white;
+    border-radius: 14px;
 }
 
-@media (max-width: 991.98px) { /* Applicati a cellulari e tablet (max 992px), .98 per evitare che vengano applicate entrambe gli stili*/
+.form-control, 
+.form-select,
+.table {
+    background-color: white;
+    --bs-table-bg: white;
+}
+
+.form-card .form-control {
+    background-color: white;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: white;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px var(--focus-ring-color);
+}
+
+/* Hover */
+.course-card, 
+.article-card, 
+.admin-card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.course-card:hover, 
+.article-card:hover, 
+.admin-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 8px 16px rgba(0,0,0,.15);
+}
+
+.article-title-link {
+    color: var(--bs-body-color);
+    transition: color 0.3s ease;
+}
+
+.badge-vote {
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}
+
+/* Applicato a telefoni e tablet */
+@media (max-width: 991.98px) {
     .navbar-collapse {
         background-color: white;
         padding: 16px;
@@ -72,35 +99,4 @@ footer {
         margin-top: 8px;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     }
-}
-
-/* Form Card (Login, Registration, Settings) */
-.form-card {
-    background-color: #fff;
-}
-
-.form-card .form-control {
-    background-color: #f8f9fa;
-    border: 1px solid #ced4da;
-    transition: all 0.3s ease;
-}
-
-.form-card .form-control:focus {
-    background-color: #fff;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15);
-}
-
-/* Lista corsi e articoli */
-.course-card, .article-card, .admin-card {
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-}
-
-.course-card:hover, .article-card:hover, .admin-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 2px 2px rgba(0,0,0,.15)!important;
-}
-
-.card {
-    border-radius: 14px;
 }
