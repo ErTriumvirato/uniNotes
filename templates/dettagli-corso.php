@@ -6,6 +6,8 @@ $isFollowing = $idutente ? $dbh->isFollowingCourse($idutente, $idCorso) : false;
 $articoli = $dbh->getApprovedArticlesByCourse($idCorso);
 ?>
 
+<a href="corsi.php"><img src="uploads/img/back.png" alt="Torna alla pagina precedente" class="back-img"/></a>
+
 <div class="row justify-content-center">
     <div class="col-12 col-lg-10">
         <div class="card shadow-sm border-0 mb-5">
@@ -47,36 +49,36 @@ $articoli = $dbh->getApprovedArticlesByCourse($idCorso);
         <!-- Articles List -->
         <div id="articles-container" class="d-flex flex-column gap-3">
             <?php if (!empty($articoli)): foreach ($articoli as $articolo): ?>
-                <div class="card shadow-sm border-0 article-card">
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col-12 col-md-8">
-                                <h5 class="card-title mb-1">
-                                    <a href="articolo.php?id=<?php echo htmlspecialchars($articolo['idarticolo']); ?>" class="text-decoration-none text-dark stretched-link">
-                                        <?php echo htmlspecialchars($articolo['titolo']); ?>
-                                    </a>
-                                </h5>
-                                <p class="card-text text-muted small mb-2">
-                                    di <?php echo htmlspecialchars($articolo['autore']); ?>
-                                </p>
-                            </div>
-                            <div class="col-12 col-md-4 text-md-end mt-2 mt-md-0">
-                                <div class="d-flex gap-2 justify-content-md-end flex-wrap">
-                                    <span class="badge bg-light text-dark border" title="Media recensioni">
-                                        ★ <?php echo htmlspecialchars($articolo['media_recensioni'] ?: '0.0'); ?>
-                                    </span>
-                                    <span class="badge bg-light text-dark border" title="Visualizzazioni">
-                                        👁 <?php echo htmlspecialchars((int)$articolo['numero_visualizzazioni']); ?>
-                                    </span>
-                                    <span class="badge bg-light text-dark border" title="Data pubblicazione">
-                                        📅 <?php echo htmlspecialchars(date('d/m/y', strtotime($articolo['data_pubblicazione']))); ?>
-                                    </span>
+                    <div class="card shadow-sm border-0 article-card">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-12 col-md-8">
+                                    <h5 class="card-title mb-1">
+                                        <a href="articolo.php?id=<?php echo htmlspecialchars($articolo['idarticolo']); ?>" class="text-decoration-none text-dark stretched-link">
+                                            <?php echo htmlspecialchars($articolo['titolo']); ?>
+                                        </a>
+                                    </h5>
+                                    <p class="card-text text-muted small mb-2">
+                                        di <?php echo htmlspecialchars($articolo['autore']); ?>
+                                    </p>
+                                </div>
+                                <div class="col-12 col-md-4 text-md-end mt-2 mt-md-0">
+                                    <div class="d-flex gap-2 justify-content-md-end flex-wrap">
+                                        <span class="badge bg-light text-dark border" title="Media recensioni">
+                                            ★ <?php echo htmlspecialchars($articolo['media_recensioni'] ?: '0.0'); ?>
+                                        </span>
+                                        <span class="badge bg-light text-dark border" title="Visualizzazioni">
+                                            👁 <?php echo htmlspecialchars((int)$articolo['numero_visualizzazioni']); ?>
+                                        </span>
+                                        <span class="badge bg-light text-dark border" title="Data pubblicazione">
+                                            📅 <?php echo htmlspecialchars(date('d/m/y', strtotime($articolo['data_pubblicazione']))); ?>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            <?php endforeach;
+                <?php endforeach;
             else: ?>
                 <div class="alert alert-info text-center" role="alert">
                     Nessun appunto disponibile per questo corso.

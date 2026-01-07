@@ -5,6 +5,9 @@ $reviews = $dbh->getReviewsByArticle($_GET['id']);
 
 if (!empty($articolo)) {
 ?>
+
+<a href="corso.php?id=<?php echo htmlspecialchars($articolo['idcorso']); ?>"><img src="uploads/img/back.png" alt="Torna alla pagina precedente" class="back-img"/></a>
+
 <div class="row justify-content-center">
     <div class="col-12 col-lg-10">
         <!-- Article Content -->

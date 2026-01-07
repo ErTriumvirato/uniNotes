@@ -2,6 +2,8 @@
 $articles = $dbh->getArticlesToApprove();
 ?>
 
+<a href="area-admin.php"><img src="uploads/img/back.png" alt="Torna alla pagina precedente" class="back-img"/></a>
+
 <div class="container">
     <div class="row mb-4">
         <div class="col-12">
@@ -50,34 +52,34 @@ $articles = $dbh->getArticlesToApprove();
 </div>
 
 <script>
-function handleArticle(id, action) {
-    const formData = new FormData();
-    formData.append('action', action);
-    formData.append('idarticolo', id);
+    function handleArticle(id, action) {
+        const formData = new FormData();
+        formData.append('action', action);
+        formData.append('idarticolo', id);
 
-    fetch('gestione-articoli.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            const articleElement = document.getElementById('article-' + id);
-            if (articleElement) {
-                articleElement.remove();
-            }
-            
-            const container = document.getElementById('approvazione-container');
-            if (container.children.length === 0) {
-                container.innerHTML = '<div class="alert alert-info" role="alert">Nessun articolo da approvare al momento.</div>';
-            }
-        } else {
-            alert('Errore durante l\'operazione: ' + (data.message || 'Sconosciuto'));
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Errore di comunicazione con il server.');
-    });
-}
+        fetch('gestione-articoli.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const articleElement = document.getElementById('article-' + id);
+                    if (articleElement) {
+                        articleElement.remove();
+                    }
+
+                    const container = document.getElementById('approvazione-container');
+                    if (container.children.length === 0) {
+                        container.innerHTML = '<div class="alert alert-info" role="alert">Nessun articolo da approvare al momento.</div>';
+                    }
+                } else {
+                    alert('Errore durante l\'operazione: ' + (data.message || 'Sconosciuto'));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Errore di comunicazione con il server.');
+            });
+    }
 </script>

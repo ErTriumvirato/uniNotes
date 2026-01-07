@@ -90,6 +90,13 @@ body {
     border: 1px solid var(--primary-color);
 }
 
+.back-img {
+    width: 32px;
+    height: auto;
+    margin-bottom: 16px;
+    cursor: pointer;
+}
+
 /* Applicato a telefoni e tablet */
 @media (max-width: 991.98px) {
     .navbar-collapse {
