@@ -2,7 +2,22 @@
 $userId = isUserLoggedIn() ? $_SESSION['idutente'] : null;
 $latestArticles = $dbh->getHomeArticles($userId, 'data_pubblicazione', 6);
 $mostViewedArticles = $dbh->getHomeArticles($userId, 'numero_visualizzazioni', 6);
+$hasFollowedCourses = $userId ? $dbh->hasFollowedCourses($userId) : false;
 ?>
+
+<div class="row mb-5">
+    <div class="col-12 text-center">
+        <h1 class="display-4 fw-bold">Benvenutə<?php if(isUserLoggedIn()) echo ' ' . $_SESSION['username']?>!</h1>
+    </div>
+</div>
+
+<?php if ($userId && !$hasFollowedCourses): ?>
+    <div class="alert alert-info mb-5" role="alert">
+    <h4 class="alert-heading">Non segui ancora nessun corso!</h4>
+    <p>Inizia a seguire dei corsi per poter visualizzare degli articoli qui.</p>
+    <a href="corsi.php" class="btn btn-primary">Esplora i corsi</a>
+</div>
+<?php endif; ?>
 
 <section class="mb-5">
     <h2 class="mb-4">Ultimi appunti usciti</h2>

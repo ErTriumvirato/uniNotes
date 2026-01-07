@@ -2,7 +2,6 @@
     <div class="row justify-content-center mb-5">
         <div class="col-12 text-center">
             <h1 class="display-5 fw-bold">Area Amministrazione</h1>
-            <p class="text-muted">Gestisci i contenuti e gli utenti della piattaforma</p>
         </div>
     </div>
     

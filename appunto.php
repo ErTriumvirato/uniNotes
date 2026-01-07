@@ -6,8 +6,27 @@ if (!isset($_GET['id']) || empty($_GET['id']) || !is_numeric($_GET['id']) || $_G
     exit();
 }
 
+$appunto = $dbh->getArticleById($_GET['id']);
+
+if (!$appunto) {
+    // Appunto non trovato, lasciamo gestire al template o redirect
+} else {
+    $isApproved = $appunto['approvato'];
+    $isAuthor = isUserLoggedIn() && ($_SESSION['idutente'] == $appunto['idutente']);
+    $isAdmin = isUserAdmin();
+
+    if (!$isApproved && !$isAuthor && !$isAdmin) {
+        // Accesso negato
+        header("Location: index.php");
+        exit();
+    }
+}
+
+$templateParams["appunto"] = $appunto;
+
 if (isset($_POST['valutazione'])) {
     if (isUserLoggedIn()) {
+
         $idappunto = $_GET['id'];
         $idutente = $_SESSION['idutente'];
         $valutazione = intval($_POST['valutazione']);

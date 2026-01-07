@@ -1,9 +1,9 @@
 <?php
-$appunto = $dbh->getArticleById($_GET['id']);
-$dbh->incrementArticleViews($_GET['id']);
-$reviews = $dbh->getReviewsByArticle($_GET['id']);
+$appunto = $templateParams["appunto"]; 
 
 if (!empty($appunto)) {
+    $dbh->incrementArticleViews($_GET['id']);
+    $reviews = $dbh->getReviewsByArticle($_GET['id']);
 ?>
 
 <div class="row justify-content-center">
@@ -15,12 +15,13 @@ if (!empty($appunto)) {
                     <h1 class="display-5 fw-bold mb-3"><?php echo htmlspecialchars($appunto['titolo']); ?></h1>
                     <div class="d-flex flex-wrap gap-3 text-muted align-items-center">
                         <div class="d-flex align-items-center gap-2">
-                            <span>Autore: <strong><?php echo htmlspecialchars($appunto['autore']); ?></strong></span>
+                            <span>Autore: <a href="profilo.php?id=<?php echo $appunto['idutente']; ?>" class="text-decoration-none fw-bold"><?php echo htmlspecialchars($appunto['autore']); ?></a></span>
                         </div>
                         <div class="vr d-none d-md-block"></div>
                         <div class="d-flex align-items-center gap-2">
                             <span>Corso: <a href="corso.php?id=<?php echo $appunto['idcorso']; ?>" class="text-decoration-none fw-bold"><?php echo htmlspecialchars($appunto['nome_corso']); ?></a></span>
                         </div>
+
                         <div class="vr d-none d-md-block"></div>
                         <div>
                             <span><?php echo date_format(date_create($appunto['data_pubblicazione']), 'd/m/Y H:i'); ?></span>

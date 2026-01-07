@@ -1,102 +1,128 @@
 :root {
-    --primary-color: #00663C;
-    --primary-hover: #005a35;
-    --bg-color: #F0FFF0;
-    --nav-bg: fuchsia;
-    
-    /* Sovrascrizione di Bootstrap */
-    --bs-body-bg: var(--bg-color);
-    --bs-primary: var(--primary-color); 
-    --bs-primary-rgb: 0, 105, 62;
-    --bs-link-hover-color: var(--primary-color);
-    --focus-ring-color: rgba(0, 105, 62, 0.25);
+	--primary-color: #00663c;
+	--primary-hover: #005a35;
+	--bg-color: #f0fff0;
+	--nav-bg: fuchsia;
+
+	/* Sovrascrizione di Bootstrap */
+	--bs-body-bg: var(--bg-color);
+	--bs-primary: var(--primary-color);
+	--bs-primary-rgb: 0, 105, 62;
+	--bs-link-hover-color: var(--primary-color);
+	--focus-ring-color: rgba(0, 105, 62, 0.25);
 }
 
 body {
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.btn {
+	background-color: var(--primary-color);
+	border-color: var(--primary-color);
+	color: white;
+	transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn:hover {
+	background-color: var(--primary-hover);
+	border-color: var(--primary-hover);
+}
+
+.btn:focus {
+	background-color: var(--primary-hover);
+	border-color: var(--primary-hover);
+}
+
+.btn:active {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
 }
 
 .navbar {
-    padding-block: 12px;
-    background-color: var(--nav-bg);
+	padding-block: 12px;
+	background-color: var(--nav-bg);
 }
 
 .navbar-brand .logo-img {
-    height: 40px;
-    width: auto;
+	height: 40px;
+	width: auto;
 }
 
 .navbar .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .nav-link {
-    transition: color 0.3s ease;
+	transition: color 0.3s ease;
 }
 
 .navbar-nav .nav-link:hover,
 .navbar-nav .nav-link.active,
 .article-card:hover .article-title-link {
-    color: var(--primary-color);
+	color: var(--primary-color);
 }
 
 .card {
-    background-color: white;
-    border-radius: 14px;
+	background-color: white;
+	border-radius: 14px;
 }
 
-.form-control, 
+.form-control,
 .form-select,
 .table {
-    background-color: white;
-    --bs-table-bg: white;
+	background-color: white;
+	--bs-table-bg: white;
 }
 
 .form-card .form-control {
-    background-color: white;
-    transition: all 0.3s ease;
+	background-color: white;
+	transition: all 0.3s ease;
 }
 
 .form-control:focus,
 .form-select:focus {
-    background-color: white;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 4px var(--focus-ring-color);
+	background-color: white;
+	border-color: var(--primary-color);
+	box-shadow: 0 0 0 4px var(--focus-ring-color);
 }
 
 /* Hover */
-.course-card, 
-.article-card, 
+.course-card,
+.article-card,
 .admin-card {
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+	transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
-.course-card:hover, 
-.article-card:hover, 
+.course-card:hover,
+.article-card:hover,
 .admin-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 8px 16px rgba(0,0,0,.15);
+	transform: translateY(-2px);
+	box-shadow: 8px 16px rgba(0, 0, 0, 0.15);
 }
 
 .article-title-link {
-    color: var(--bs-body-color);
-    transition: color 0.3s ease;
+	color: var(--bs-body-color);
+	transition: color 0.3s ease;
 }
 
 .badge-vote {
-    color: var(--primary-color);
-    border: 1px solid var(--primary-color);
+	color: var(--primary-color);
+	border: 1px solid var(--primary-color);
+}
+
+.offcanvas, .offcanvas-end{
+    background-color: var(--bg-color);
 }
 
 /* Applicato a telefoni e tablet */
 @media (max-width: 991.98px) {
-    .navbar-collapse {
-        background-color: white;
-        padding: 16px;
-        border-radius: 8px;
-        margin-top: 8px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    }
+	.navbar-collapse {
+		background-color: white;
+		padding: 16px;
+		border-radius: 8px;
+		margin-top: 8px;
+		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+	}
 }

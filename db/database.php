@@ -245,6 +245,16 @@ class DatabaseHelper
         return $row['count'] > 0;
     }
 
+    public function hasFollowedCourses($idutente)
+    {
+        $stmt = $this->db->prepare("SELECT COUNT(*) as count FROM iscrizioni WHERE idutente = ?");
+        $stmt->bind_param("i", $idutente);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        return $row['count'] > 0;
+    }
+
     public function createArticle($idcorso, $titolo, $contenuto, $idutente)
     {
         $stmt = $this->db->prepare("INSERT INTO appunti (idcorso, titolo, contenuto, idutente, data_pubblicazione, approvato, numero_visualizzazioni) VALUES (?, ?, ?, ?, NOW(), false, 0)");
@@ -457,5 +467,96 @@ class DatabaseHelper
         $stmt = $this->db->prepare("DELETE FROM utenti WHERE idutente = ?");
         $stmt->bind_param("i", $idutente);
         return $stmt->execute();
+    }
+
+    public function getFollowedCoursesCount($idutente) {
+        $stmt = $this->db->prepare("SELECT COUNT(*) as count FROM iscrizioni WHERE idutente = ?");
+        $stmt->bind_param("i", $idutente);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_assoc()['count'];
+    }
+
+    public function getArticlesCountByAuthor($idutente, $onlyApproved = false) {
+        $query = "SELECT COUNT(*) as count FROM appunti WHERE idutente = ?";
+        if ($onlyApproved) {
+            $query .= " AND approvato = TRUE";
+        }
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param("i", $idutente);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_assoc()['count'];
+    }
+
+    public function getAuthorAverageRating($idutente) {
+        $query = "SELECT ROUND(AVG(r.valutazione), 1) as avg_rating 
+                  FROM recensioni r 
+                  JOIN appunti a ON r.idappunto = a.idappunto 
+                  WHERE a.idutente = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param("i", $idutente);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        return $row['avg_rating'] !== null ? $row['avg_rating'] : 0;
+    }
+
+    public function getArticlesByAuthor($idutente, $onlyApproved = false) {
+        $query = "SELECT appunti.*, corsi.nome AS nome_corso, 
+                  ROUND(AVG(recensioni.valutazione), 1) AS media_recensioni
+                  FROM appunti
+                  JOIN corsi ON appunti.idcorso = corsi.idcorso
+                  LEFT JOIN recensioni ON appunti.idappunto = recensioni.idappunto
+                  WHERE appunti.idutente = ?";
+        
+        if ($onlyApproved) {
+            $query .= " AND appunti.approvato = TRUE";
+        }
+
+        $query .= " GROUP BY appunti.idappunto
+                  ORDER BY appunti.data_pubblicazione DESC";
+        
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param("i", $idutente);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getUnapprovedArticlesByAuthor($idutente)
+    {
+        $query = "SELECT appunti.*, corsi.nome AS nome_corso
+                  FROM appunti
+                  JOIN corsi ON appunti.idcorso = corsi.idcorso
+                  WHERE appunti.idutente = ? AND appunti.approvato = FALSE
+                  ORDER BY appunti.data_pubblicazione DESC";
+        
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param("i", $idutente);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getApprovedArticlesByUserIdWithFilters($idutente, $sort, $order)
+    {
+        $allowedSort = ['data_pubblicazione', 'media_recensioni', 'numero_visualizzazioni'];
+        $allowedOrder = ['ASC', 'DESC'];
+
+        $sort = in_array($sort, $allowedSort) ? $sort : 'data_pubblicazione';
+        $order = in_array($order, $allowedOrder) ? $order : 'DESC';
+
+        $query = "SELECT appunti.*, corsi.nome AS nome_corso,
+              ROUND(AVG(recensioni.valutazione), 1) AS media_recensioni
+              FROM appunti
+              JOIN corsi ON appunti.idcorso = corsi.idcorso
+              LEFT JOIN recensioni ON appunti.idappunto = recensioni.idappunto
+              WHERE appunti.idutente = ? AND appunti.approvato = true
+              GROUP BY appunti.idappunto
+              ORDER BY $sort $order";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $idutente);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 }

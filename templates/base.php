@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="it">
 
+<?php
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+?>
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -37,12 +43,15 @@
                             </li>
                             <?php if (isUserLoggedIn()) { ?>
                                 <li class="nav-item">
+                                    <a class="nav-link" href="profilo.php">Il tuo profilo</a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link" href="creazione-appunti.php">Carica appunti</a>
                                 </li>
                             <?php } ?>
                             <?php if (isUserAdmin()) { ?>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="area-admin.php">Area Amministratore</a>
+                                    <a class="nav-link" href="area-admin.php">Area Amministrazione</a>
                                 </li>
                             <?php } ?>
                         </ul>
@@ -62,7 +71,11 @@
 
     <!-- Contenuto principale -->
     <main class="container flex-grow-1 mt-5 pt-5">
-        <button onclick="goBack()">← Indietro</button>
+        <?php
+        if (($templateParams["nome"] === "templates/dettagli-corso.php") || ($templateParams["nome"] === "templates/gestione-corsi.php") || ($templateParams["nome"] === "templates/gestione-utenti.php") || ($templateParams["nome"] === "templates/approvazione-appunti.php") || ($templateParams["nome"] === "templates/dettagli-appunto.php")) { ?>
+            <button class="btn btn-secondary mb-3" onclick="goBack()">← Indietro</button>
+        <?php
+        } ?>
         <div class="py-4">
             <?php if (isset($templateParams["nome"])) require($templateParams["nome"]); ?>
         </div>
@@ -76,6 +89,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
+        window.addEventListener('unload', function() {});
+
         function goBack() {
             const referrer = document.referrer;
             const currentDomain = window.location.origin;
@@ -86,7 +101,6 @@
                 currentUrl !== currentDomain &&
                 currentUrl !== currentDomain + '/' &&
                 currentUrl !== currentDomain + '/index.php' &&
-                currentUrl !== currentDomain + '/index.html' &&
                 referrer !== currentUrl) {
 
                 history.back();

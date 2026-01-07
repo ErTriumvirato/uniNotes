@@ -12,5 +12,6 @@ if(isset($_POST["invia"]) && isset($_POST["course"]) &&isset($_POST["title"]) &&
 
 $templateParams["titolo"] = "uniNotes - Creazione appunti";
 $templateParams["nome"] = "templates/upload-form.php";
+$templateParams["unapprovedArticles"] = $dbh->getUnapprovedArticlesByAuthor($_SESSION["idutente"]);
 
 require_once 'templates/base.php';
