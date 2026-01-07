@@ -20,6 +20,7 @@ $articoli = $dbh->getApprovedArticlesByCourse($idCorso);
                     <button type="button" id="followBtn" class="btn <?php echo htmlspecialchars($isFollowing ? 'btn-outline-danger' : 'btn-primary'); ?> btn-lg" data-idcorso="<?php echo htmlspecialchars($idCorso); ?>">
                         <?php echo htmlspecialchars($isFollowing ? 'Smetti di seguire' : 'Segui corso'); ?>
                     </button>
+                    <a href="creazione-articoli.php?idcorso=<?php echo htmlspecialchars($idCorso); ?>" class="btn btn-outline-secondary btn-lg">Crea articolo</a>
                 </div>
                 <p class="lead mt-3"><?php echo nl2br(htmlspecialchars($corso['descrizione'])); ?></p>
             </div>
