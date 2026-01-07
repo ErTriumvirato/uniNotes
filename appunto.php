@@ -8,13 +8,13 @@ if (!isset($_GET['id']) || empty($_GET['id']) || !is_numeric($_GET['id']) || $_G
 
 if (isset($_POST['valutazione'])) {
     if (isUserLoggedIn()) {
-        $idarticolo = $_GET['id'];
+        $idappunto = $_GET['id'];
         $idutente = $_SESSION['idutente'];
         $valutazione = intval($_POST['valutazione']);
         
-        if ($valutazione >= 1 && $valutazione <= 5 && !$dbh->hasUserReviewed($idarticolo, $idutente)) {
-            $dbh->addReview($idarticolo, $idutente, $valutazione);
-            header("Location: articolo.php?id=" . $idarticolo);
+        if ($valutazione >= 1 && $valutazione <= 5 && !$dbh->hasUserReviewed($idappunto, $idutente)) {
+            $dbh->addReview($idappunto, $idutente, $valutazione);
+            header("Location: appunto.php?id=" . $idappunto);
             exit();
         }
     }
@@ -22,6 +22,6 @@ if (isset($_POST['valutazione'])) {
 
 // templateParams
 $templateParams["titolo"] = "uniNotes - nome aricolo";
-$templateParams["nome"] = "templates/dettagli-articolo.php";
+$templateParams["nome"] = "templates/dettagli-appunto.php";
 
 require_once 'templates/base.php';

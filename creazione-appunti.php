@@ -2,7 +2,7 @@
 require_once 'config.php';
 
 if(!isUserLoggedIn()) {
-    header("Location: index.php");
+    header("Location: login.php");
     exit();
 }
 

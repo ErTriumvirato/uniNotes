@@ -1,12 +1,10 @@
 <?php
-$articolo = $dbh->getArticleById($_GET['id']);
+$appunto = $dbh->getArticleById($_GET['id']);
 $dbh->incrementArticleViews($_GET['id']);
 $reviews = $dbh->getReviewsByArticle($_GET['id']);
 
-if (!empty($articolo)) {
+if (!empty($appunto)) {
 ?>
-
-<a href="corso.php?id=<?php echo htmlspecialchars($articolo['idcorso']); ?>"><img src="uploads/img/back.png" alt="Torna alla pagina precedente" class="back-img"/></a>
 
 <div class="row justify-content-center">
     <div class="col-12 col-lg-10">
@@ -14,28 +12,32 @@ if (!empty($articolo)) {
         <article class="card shadow-sm border-0 mb-5">
             <div class="card-body p-4 p-md-5">
                 <header class="mb-4 border-bottom pb-3">
-                    <h1 class="display-5 fw-bold mb-3"><?php echo htmlspecialchars($articolo['titolo']); ?></h1>
+                    <h1 class="display-5 fw-bold mb-3"><?php echo htmlspecialchars($appunto['titolo']); ?></h1>
                     <div class="d-flex flex-wrap gap-3 text-muted align-items-center">
                         <div class="d-flex align-items-center gap-2">
-                            <span>Autore: <strong><?php echo htmlspecialchars($articolo['autore']); ?></strong></span>
+                            <span>Autore: <strong><?php echo htmlspecialchars($appunto['autore']); ?></strong></span>
+                        </div>
+                        <div class="vr d-none d-md-block"></div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span>Corso: <a href="corso.php?id=<?php echo $appunto['idcorso']; ?>" class="text-decoration-none fw-bold"><?php echo htmlspecialchars($appunto['nome_corso']); ?></a></span>
                         </div>
                         <div class="vr d-none d-md-block"></div>
                         <div>
-                            <span><?php echo date_format(date_create($articolo['data_pubblicazione']), 'd/m/Y H:i'); ?></span>
+                            <span><?php echo date_format(date_create($appunto['data_pubblicazione']), 'd/m/Y H:i'); ?></span>
                         </div>
                     </div>
                 </header>
 
                 <div class="article-content mb-4">
-                    <?php echo nl2br(htmlspecialchars($articolo['contenuto'])); ?>
+                    <?php echo nl2br(htmlspecialchars($appunto['contenuto'])); ?>
                 </div>
 
                 <footer class="d-flex gap-3 pt-3 border-top">
                     <span class="badge bg-light text-dark border p-2">
-                        👁 <?php echo htmlspecialchars($articolo['numero_visualizzazioni']); ?> Visualizzazioni
+                        <?php echo htmlspecialchars($appunto['numero_visualizzazioni']); ?> Visualizzazioni
                     </span>
                     <span class="badge bg-light text-dark border p-2">
-                        ★ <?php echo htmlspecialchars($articolo['media_recensioni'] ?: 'N/A'); ?> Media voti
+                        ★ <?php echo htmlspecialchars($appunto['media_recensioni'] ?: 'N/A'); ?> Media voti
                     </span>
                 </footer>
             </div>
@@ -45,11 +47,11 @@ if (!empty($articolo)) {
         <section>
             <h3 class="mb-4">Recensioni</h3>
             
-            <?php if (isUserLoggedIn() && !$dbh->hasUserReviewed($articolo['idarticolo'], $_SESSION['idutente'])): ?>
+            <?php if (isUserLoggedIn() && !$dbh->hasUserReviewed($appunto['idappunto'], $_SESSION['idutente'])): ?>
                 <div class="card shadow-sm border-0 mb-4 form-card">
                     <div class="card-body p-4">
                         <h5 class="card-title mb-3">Lascia una recensione</h5>
-                        <form action="articolo.php?id=<?php echo htmlspecialchars($articolo['idarticolo']); ?>" method="POST">
+                        <form action="appunto.php?id=<?php echo htmlspecialchars($appunto['idappunto']); ?>" method="POST">
                             <div class="mb-3">
                                 <label for="valutazione" class="form-label">Valutazione</label>
                                 <select name="valutazione" id="valutazione" class="form-select" required>
@@ -67,7 +69,7 @@ if (!empty($articolo)) {
                 </div>
             <?php elseif (isUserLoggedIn()): ?>
                 <div class="alert alert-info mb-4" role="alert">
-                    Hai già recensito questo articolo.
+                    Hai già recensito questo appunto.
                 </div>
             <?php else: ?>
                 <div class="alert alert-warning mb-4" role="alert">
@@ -99,6 +101,6 @@ if (!empty($articolo)) {
 </div>
 <?php
 } else {
-    echo '<div class="alert alert-danger text-center" role="alert">Articolo non trovato.</div>';
+    echo '<div class="alert alert-danger text-center" role="alert">Appunto non trovato.</div>';
 }
 

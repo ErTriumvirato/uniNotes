@@ -2,9 +2,9 @@
     --primary-color: #00663C;
     --primary-hover: #005a35;
     --bg-color: #F0FFF0;
-    --nav-bg: white;
+    --nav-bg: fuchsia;
     
-    /* Sovrascrizione di Bootstrap*/
+    /* Sovrascrizione di Bootstrap */
     --bs-body-bg: var(--bg-color);
     --bs-primary: var(--primary-color); 
     --bs-primary-rgb: 0, 105, 62;
@@ -88,13 +88,6 @@ body {
 .badge-vote {
     color: var(--primary-color);
     border: 1px solid var(--primary-color);
-}
-
-.back-img {
-    width: 32px;
-    height: auto;
-    margin-bottom: 16px;
-    cursor: pointer;
 }
 
 /* Applicato a telefoni e tablet */

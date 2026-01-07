@@ -31,12 +31,12 @@
             </a>
         </div>
 
-        <!-- Gestione Articoli -->
+        <!-- Gestione Appunti -->
         <div class="col-12 col-md-6 col-lg-4">
-            <a href="gestione-articoli.php" class="text-decoration-none">
+            <a href="gestione-appunti.php" class="text-decoration-none">
                 <div class="card h-100 shadow-sm border-0 admin-card text-center p-4">
                     <div class="card-body">
-                        <h3 class="card-title h4 text-dark">Gestione Articoli</h3>
+                        <h3 class="card-title h4 text-dark">Gestione Appunti</h3>
                         <p class="card-text text-muted small">Approva o rimuovi gli appunti caricati.</p>
                     </div>
                 </div>

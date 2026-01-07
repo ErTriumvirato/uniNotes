@@ -1,20 +1,21 @@
 <?php
 $courses = $dbh->getCourses();
+$selectedCourseId = isset($_GET['idcorso']) ? (int)$_GET['idcorso'] : null;
 ?>
 
 <div class="row justify-content-center">
     <div class="col-12 col-md-8 col-lg-6">
         <div class="card shadow-sm border-0 rounded-3 form-card">
             <div class="card-body p-4">
-                <h2 class="text-center mb-4">Carica Appunti</h2>
+                <h2 class="text-center mb-4">Carica appunti</h2>
 
-                <form action="gestione-articoli.php" method="post">
+                <form action="gestione-appunti.php" method="post">
                     <div class="mb-3">
                         <label for="course" class="form-label">Corso</label>
                         <select id="course" name="course" class="form-select" required>
-                            <option value="" disabled selected>Seleziona un corso</option>
+                            <option value="" disabled <?php echo !$selectedCourseId ? 'selected' : ''; ?>>Seleziona un corso</option>
                             <?php foreach ($courses as $course): ?>
-                                <option value="<?php echo htmlspecialchars($course['idcorso']); ?>">
+                                <option value="<?php echo htmlspecialchars($course['idcorso']); ?>" <?php echo ($selectedCourseId === $course['idcorso']) ? 'selected' : ''; ?>>
                                     <?php echo htmlspecialchars($course['nome']); ?>
                                 </option>
                             <?php endforeach; ?>

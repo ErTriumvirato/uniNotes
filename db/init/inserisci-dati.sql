@@ -14,7 +14,7 @@ INSERT INTO corsi (nome, descrizione, idssd) VALUES
 ('Fisica 1', 'Corso di Fisica per studenti di ingegneria', 2),
 ('Programmazione', 'Introduzione alla programmazione in C', 3);
 
-INSERT INTO articoli (titolo, contenuto, idutente, idcorso, numero_visualizzazioni, data_pubblicazione) VALUES
+INSERT INTO appunti (titolo, contenuto, idutente, idcorso, numero_visualizzazioni, data_pubblicazione) VALUES
 ('Appunti di Analisi Matematica', 'Questi sono gli appunti di Analisi Matematica...', 2, 1, 10, '2024-10-15 09:30:00'),
 ('Esame primo appello', 'hahahahhh', 3, 1, 5, '2024-10-20 11:15:00'),
 ('Esame secondo appello', 'hahahahhh', 3, 1, 5, '2024-10-20 11:15:00'),
@@ -26,7 +26,7 @@ INSERT INTO iscrizioni (idutente, idcorso) VALUES
 (2, 3),
 (3, 2);
 
-INSERT INTO recensioni (valutazione, idarticolo, idutente) VALUES
+INSERT INTO recensioni (valutazione, idappunto, idutente) VALUES
 (5, 1, 3),
 (4, 2, 2),
 (5, 3, 3);

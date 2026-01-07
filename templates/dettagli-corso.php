@@ -3,10 +3,8 @@ $idCorso = (int)$_GET['id'];
 $corso = $dbh->getCourseById($idCorso);
 $idutente = $_SESSION["idutente"] ?? null;
 $isFollowing = $idutente ? $dbh->isFollowingCourse($idutente, $idCorso) : false;
-$articoli = $dbh->getApprovedArticlesByCourse($idCorso);
+$appunti = $dbh->getApprovedArticlesByCourse($idCorso);
 ?>
-
-<a href="corsi.php"><img src="uploads/img/back.png" alt="Torna alla pagina precedente" class="back-img"/></a>
 
 <div class="row justify-content-center">
     <div class="col-12 col-lg-10">
@@ -20,7 +18,7 @@ $articoli = $dbh->getApprovedArticlesByCourse($idCorso);
                     <button type="button" id="followBtn" class="btn <?php echo htmlspecialchars($isFollowing ? 'btn-outline-danger' : 'btn-primary'); ?> btn-lg" data-idcorso="<?php echo htmlspecialchars($idCorso); ?>">
                         <?php echo htmlspecialchars($isFollowing ? 'Smetti di seguire' : 'Segui corso'); ?>
                     </button>
-                    <a href="creazione-articoli.php?idcorso=<?php echo htmlspecialchars($idCorso); ?>" class="btn btn-outline-secondary btn-lg">Crea articolo</a>
+                    <a href="creazione-appunti.php?idcorso=<?php echo htmlspecialchars($idCorso); ?>" class="btn btn-outline-secondary btn-lg">Carica appunti</a>
                 </div>
                 <p class="lead mt-3"><?php echo nl2br(htmlspecialchars($corso['descrizione'])); ?></p>
             </div>
@@ -49,30 +47,30 @@ $articoli = $dbh->getApprovedArticlesByCourse($idCorso);
 
         <!-- Articles List -->
         <div id="articles-container" class="d-flex flex-column gap-3">
-            <?php if (!empty($articoli)): foreach ($articoli as $articolo): ?>
+            <?php if (!empty($appunti)): foreach ($appunti as $appunto): ?>
                     <div class="card shadow-sm border-0 article-card">
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-12 col-md-8">
                                     <h5 class="card-title mb-1">
-                                        <a href="articolo.php?id=<?php echo htmlspecialchars($articolo['idarticolo']); ?>" class="text-decoration-none text-dark stretched-link">
-                                            <?php echo htmlspecialchars($articolo['titolo']); ?>
+                                        <a href="appunto.php?id=<?php echo htmlspecialchars($appunto['idappunto']); ?>" class="text-decoration-none text-dark stretched-link">
+                                            <?php echo htmlspecialchars($appunto['titolo']); ?>
                                         </a>
                                     </h5>
                                     <p class="card-text text-muted small mb-2">
-                                        di <?php echo htmlspecialchars($articolo['autore']); ?>
+                                        di <?php echo htmlspecialchars($appunto['autore']); ?>
                                     </p>
                                 </div>
                                 <div class="col-12 col-md-4 text-md-end mt-2 mt-md-0">
                                     <div class="d-flex gap-2 justify-content-md-end flex-wrap">
                                         <span class="badge bg-light text-dark border" title="Media recensioni">
-                                            ★ <?php echo htmlspecialchars($articolo['media_recensioni'] ?: '0.0'); ?>
+                                            ★ <?php echo htmlspecialchars($appunto['media_recensioni'] ?: '0.0'); ?>
                                         </span>
                                         <span class="badge bg-light text-dark border" title="Visualizzazioni">
-                                            👁 <?php echo htmlspecialchars((int)$articolo['numero_visualizzazioni']); ?>
+                                            <?php echo htmlspecialchars((int)$appunto['numero_visualizzazioni']); ?> Visualizzazioni
                                         </span>
                                         <span class="badge bg-light text-dark border" title="Data pubblicazione">
-                                            📅 <?php echo htmlspecialchars(date('d/m/y', strtotime($articolo['data_pubblicazione']))); ?>
+                                            📅 <?php echo htmlspecialchars(date('d/m/y', strtotime($appunto['data_pubblicazione']))); ?>
                                         </span>
                                     </div>
                                 </div>
@@ -143,7 +141,7 @@ $articoli = $dbh->getApprovedArticlesByCourse($idCorso);
                                     <div class="row align-items-center">
                                         <div class="col-12 col-md-8">
                                             <h5 class="card-title mb-1">
-                                                <a href="articolo.php?id=${art.idarticolo}" class="text-decoration-none text-dark stretched-link">
+                                                <a href="appunto.php?id=${art.idappunto}" class="text-decoration-none text-dark stretched-link">
                                                     ${art.titolo}
                                                 </a>
                                             </h5>
@@ -157,7 +155,7 @@ $articoli = $dbh->getApprovedArticlesByCourse($idCorso);
                                                     ★ ${art.media_recensioni || '0.0'}
                                                 </span>
                                                 <span class="badge bg-light text-dark border" title="Visualizzazioni">
-                                                    👁 ${art.views}
+                                                    ${art.views} Visualizzazioni
                                                 </span>
                                                 <span class="badge bg-light text-dark border" title="Data pubblicazione">
                                                     📅 ${art.data_formattata}

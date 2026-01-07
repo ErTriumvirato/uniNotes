@@ -103,29 +103,30 @@ class DatabaseHelper
 
     public function getHomeArticles($idutente = null, $orderBy = 'data_pubblicazione', $limit = 6)
     {
-        $query = "SELECT articoli.*, utenti.username AS autore, 
+        $query = "SELECT appunti.*, utenti.username AS autore, corsi.nome AS nome_corso,
                 ROUND(AVG(recensioni.valutazione), 1) AS media_recensioni
-                FROM articoli
-                JOIN utenti ON articoli.idutente = utenti.idutente
-                LEFT JOIN recensioni ON articoli.idarticolo = recensioni.idarticolo";
+                FROM appunti
+                JOIN utenti ON appunti.idutente = utenti.idutente
+                JOIN corsi ON appunti.idcorso = corsi.idcorso
+                LEFT JOIN recensioni ON appunti.idappunto = recensioni.idappunto";
         
         $params = [];
         $types = "";
 
         if ($idutente !== null) {
-            $query .= " JOIN iscrizioni ON articoli.idcorso = iscrizioni.idcorso AND iscrizioni.idutente = ?";
+            $query .= " JOIN iscrizioni ON appunti.idcorso = iscrizioni.idcorso AND iscrizioni.idutente = ?";
             $params[] = $idutente;
             $types .= "i";
         }
 
-        $query .= " WHERE articoli.approvato = TRUE";
+        $query .= " WHERE appunti.approvato = TRUE";
 
-        $query .= " GROUP BY articoli.idarticolo";
+        $query .= " GROUP BY appunti.idappunto";
 
         if ($orderBy === 'numero_visualizzazioni') {
-            $query .= " ORDER BY articoli.numero_visualizzazioni DESC, articoli.data_pubblicazione DESC";
+            $query .= " ORDER BY appunti.numero_visualizzazioni DESC, appunti.data_pubblicazione DESC";
         } else {
-            $query .= " ORDER BY articoli.data_pubblicazione DESC";
+            $query .= " ORDER BY appunti.data_pubblicazione DESC";
         }
 
         $query .= " LIMIT ?";
@@ -144,13 +145,13 @@ class DatabaseHelper
 
     public function getApprovedArticlesByCourse($idcorso)
     {
-        $query = "SELECT articoli.*, utenti.username AS autore, ROUND(AVG(recensioni.valutazione), 1) AS media_recensioni
-            FROM articoli
-            JOIN utenti ON articoli.idutente = utenti.idutente
-            LEFT JOIN recensioni ON articoli.idarticolo = recensioni.idarticolo
-            WHERE articoli.idcorso = ?
-            AND articoli.approvato = true
-            GROUP BY articoli.idarticolo
+        $query = "SELECT appunti.*, utenti.username AS autore, ROUND(AVG(recensioni.valutazione), 1) AS media_recensioni
+            FROM appunti
+            JOIN utenti ON appunti.idutente = utenti.idutente
+            LEFT JOIN recensioni ON appunti.idappunto = recensioni.idappunto
+            WHERE appunti.idcorso = ?
+            AND appunti.approvato = true
+            GROUP BY appunti.idappunto
             ORDER BY data_pubblicazione DESC, media_recensioni DESC
         ";
         $stmt = $this->db->prepare($query);
@@ -163,15 +164,15 @@ class DatabaseHelper
 
     public function getApprovedArticles()
     {
-        $query = "SELECT articoli.*,  utenti.username AS autore,
+        $query = "SELECT appunti.*,  utenti.username AS autore,
             ROUND(AVG(recensioni.valutazione), 1) AS media_recensioni,
             COUNT(recensioni.idrecensione) AS numero_recensioni
-        FROM articoli
-        JOIN utenti ON articoli.idutente = utenti.idutente
-        LEFT JOIN recensioni ON articoli.idarticolo = recensioni.idarticolo
-        WHERE articoli.approvato = TRUE
-        GROUP BY articoli.idarticolo
-        ORDER BY articoli.data_pubblicazione DESC, media_recensioni DESC
+        FROM appunti
+        JOIN utenti ON appunti.idutente = utenti.idutente
+        LEFT JOIN recensioni ON appunti.idappunto = recensioni.idappunto
+        WHERE appunti.approvato = TRUE
+        GROUP BY appunti.idappunto
+        ORDER BY appunti.data_pubblicazione DESC, media_recensioni DESC
     ";
         $stmt = $this->db->prepare($query);
         $stmt->execute();
@@ -181,10 +182,10 @@ class DatabaseHelper
 
     public function getArticles()
     {
-        $query = "SELECT articoli.*, ROUND(AVG(recensioni.valutazione), 1) AS media_recensioni
-            FROM articoli
-            LEFT JOIN recensioni ON articoli.idarticolo = recensioni.idarticolo
-            GROUP BY articoli.idarticolo
+        $query = "SELECT appunti.*, ROUND(AVG(recensioni.valutazione), 1) AS media_recensioni
+            FROM appunti
+            LEFT JOIN recensioni ON appunti.idappunto = recensioni.idappunto
+            GROUP BY appunti.idappunto
             ORDER BY data_pubblicazione DESC, media_recensioni DESC
         ";
         $stmt = $this->db->prepare($query);
@@ -194,27 +195,29 @@ class DatabaseHelper
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getArticleById($idarticolo)
+    public function getArticleById($idappunto)
     {
-        $query = "SELECT articoli.*, utenti.username AS autore, ROUND(AVG(recensioni.valutazione), 1) AS media_recensioni
-            FROM articoli
-            JOIN utenti ON articoli.idutente = utenti.idutente
-            LEFT JOIN recensioni ON articoli.idarticolo = recensioni.idarticolo
-            WHERE articoli.idarticolo = ?
-            GROUP BY articoli.idarticolo
+        $query = "SELECT appunti.*, utenti.username AS autore, corsi.nome AS nome_corso,
+            ROUND(AVG(recensioni.valutazione), 1) AS media_recensioni
+            FROM appunti
+            JOIN utenti ON appunti.idutente = utenti.idutente
+            JOIN corsi ON appunti.idcorso = corsi.idcorso
+            LEFT JOIN recensioni ON appunti.idappunto = recensioni.idappunto
+            WHERE appunti.idappunto = ?
+            GROUP BY appunti.idappunto
         ";
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param('i', $idarticolo);
+        $stmt->bind_param('i', $idappunto);
         $stmt->execute();
         $result = $stmt->get_result();
 
         return $result->fetch_assoc();
     }
 
-    public function incrementArticleViews($idarticolo)
+    public function incrementArticleViews($idappunto)
     {
-        $stmt = $this->db->prepare("UPDATE articoli SET numero_visualizzazioni = numero_visualizzazioni + 1 WHERE idarticolo = ?");
-        $stmt->bind_param("i", $idarticolo);
+        $stmt = $this->db->prepare("UPDATE appunti SET numero_visualizzazioni = numero_visualizzazioni + 1 WHERE idappunto = ?");
+        $stmt->bind_param("i", $idappunto);
         $stmt->execute();
     }
 
@@ -244,7 +247,7 @@ class DatabaseHelper
 
     public function createArticle($idcorso, $titolo, $contenuto, $idutente)
     {
-        $stmt = $this->db->prepare("INSERT INTO articoli (idcorso, titolo, contenuto, idutente, data_pubblicazione, approvato, numero_visualizzazioni) VALUES (?, ?, ?, ?, NOW(), false, 0)");
+        $stmt = $this->db->prepare("INSERT INTO appunti (idcorso, titolo, contenuto, idutente, data_pubblicazione, approvato, numero_visualizzazioni) VALUES (?, ?, ?, ?, NOW(), false, 0)");
         $stmt->bind_param("issi", $idcorso, $titolo, $contenuto, $idutente);
         $stmt->execute();
     }
@@ -261,11 +264,11 @@ class DatabaseHelper
 
     public function getArticlesToApprove()
     {
-        $query = "SELECT articoli.*, utenti.username AS autore, corsi.nome AS nome_corso
-            FROM articoli
-            JOIN utenti ON articoli.idutente = utenti.idutente
-            JOIN corsi ON articoli.idcorso = corsi.idcorso
-            WHERE articoli.approvato = FALSE
+        $query = "SELECT appunti.*, utenti.username AS autore, corsi.nome AS nome_corso
+            FROM appunti
+            JOIN utenti ON appunti.idutente = utenti.idutente
+            JOIN corsi ON appunti.idcorso = corsi.idcorso
+            WHERE appunti.approvato = FALSE
             ORDER BY data_pubblicazione DESC
         ";
         $stmt = $this->db->prepare($query);
@@ -275,45 +278,45 @@ class DatabaseHelper
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function approveArticle($idarticolo)
+    public function approveArticle($idappunto)
     {
-        $stmt = $this->db->prepare("UPDATE articoli SET approvato = true WHERE idarticolo = ?");
-        $stmt->bind_param("i", $idarticolo);
+        $stmt = $this->db->prepare("UPDATE appunti SET approvato = true WHERE idappunto = ?");
+        $stmt->bind_param("i", $idappunto);
         return $stmt->execute();
     }
 
-    public function deleteArticle($idarticolo)
+    public function deleteArticle($idappunto)
     {
-        $stmt = $this->db->prepare("DELETE FROM articoli WHERE idarticolo = ?");
-        $stmt->bind_param("i", $idarticolo);
+        $stmt = $this->db->prepare("DELETE FROM appunti WHERE idappunto = ?");
+        $stmt->bind_param("i", $idappunto);
         return $stmt->execute();
     }
 
-    public function addReview($idarticolo, $idutente, $valutazione)
+    public function addReview($idappunto, $idutente, $valutazione)
     {
-        $stmt = $this->db->prepare("INSERT INTO recensioni (idarticolo, idutente, valutazione) VALUES (?, ?, ?)");
-        $stmt->bind_param("iii", $idarticolo, $idutente, $valutazione);
+        $stmt = $this->db->prepare("INSERT INTO recensioni (idappunto, idutente, valutazione) VALUES (?, ?, ?)");
+        $stmt->bind_param("iii", $idappunto, $idutente, $valutazione);
         return $stmt->execute();
     }
 
-    public function getReviewsByArticle($idarticolo)
+    public function getReviewsByArticle($idappunto)
     {
         $query = "SELECT recensioni.*, utenti.username 
                   FROM recensioni 
                   JOIN utenti ON recensioni.idutente = utenti.idutente 
-                  WHERE idarticolo = ? 
+                  WHERE idappunto = ? 
                   ORDER BY idrecensione DESC";
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param("i", $idarticolo);
+        $stmt->bind_param("i", $idappunto);
         $stmt->execute();
         $result = $stmt->get_result();
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function hasUserReviewed($idarticolo, $idutente)
+    public function hasUserReviewed($idappunto, $idutente)
     {
-        $stmt = $this->db->prepare("SELECT COUNT(*) as count FROM recensioni WHERE idarticolo = ? AND idutente = ?");
-        $stmt->bind_param("ii", $idarticolo, $idutente);
+        $stmt = $this->db->prepare("SELECT COUNT(*) as count FROM recensioni WHERE idappunto = ? AND idutente = ?");
+        $stmt->bind_param("ii", $idappunto, $idutente);
         $stmt->execute();
         $result = $stmt->get_result();
         $row = $result->fetch_assoc();
@@ -328,12 +331,12 @@ class DatabaseHelper
         $sort = in_array($sort, $allowedSort) ? $sort : 'data_pubblicazione';
         $order = in_array($order, $allowedOrder) ? $order : 'DESC';
 
-        $query = "SELECT articoli.*, utenti.username AS autore, ROUND(AVG(recensioni.valutazione), 1) AS media_recensioni
-              FROM articoli
-              JOIN utenti ON articoli.idutente = utenti.idutente
-              LEFT JOIN recensioni ON articoli.idarticolo = recensioni.idarticolo
-              WHERE articoli.idcorso = ? AND articoli.approvato = true
-              GROUP BY articoli.idarticolo
+        $query = "SELECT appunti.*, utenti.username AS autore, ROUND(AVG(recensioni.valutazione), 1) AS media_recensioni
+              FROM appunti
+              JOIN utenti ON appunti.idutente = utenti.idutente
+              LEFT JOIN recensioni ON appunti.idappunto = recensioni.idappunto
+              WHERE appunti.idcorso = ? AND appunti.approvato = true
+              GROUP BY appunti.idappunto
               ORDER BY $sort $order";
 
         $stmt = $this->db->prepare($query);
@@ -440,6 +443,14 @@ class DatabaseHelper
             $stmt->bind_param("sii", $username, $ruolo, $idutente);
         }
         return $stmt->execute();
+    }
+
+    public function getAdminCount() {
+        $stmt = $this->db->prepare("SELECT COUNT(*) as count FROM utenti WHERE isAdmin = 1");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        return $row['count'];
     }
 
     public function deleteUser($idutente) {

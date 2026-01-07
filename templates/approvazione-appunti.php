@@ -2,8 +2,6 @@
 $articles = $dbh->getArticlesToApprove();
 ?>
 
-<a href="area-admin.php"><img src="uploads/img/back.png" alt="Torna alla pagina precedente" class="back-img"/></a>
-
 <div class="container">
     <div class="row mb-4">
         <div class="col-12">
@@ -19,7 +17,7 @@ $articles = $dbh->getArticlesToApprove();
             </div>
         <?php else: ?>
             <?php foreach ($articles as $article): ?>
-                <div class="card shadow-sm border-0" id="article-<?= $article['idarticolo'] ?>">
+                <div class="card shadow-sm border-0" id="article-<?= $article['idappunto'] ?>">
                     <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-3">
                             <div>
@@ -29,20 +27,20 @@ $articles = $dbh->getArticlesToApprove();
                                     <span>Autore: <strong><?= htmlspecialchars($article['autore']) ?></strong></span>
                                 </div>
                             </div>
-                            <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseContent-<?= $article['idarticolo'] ?>" aria-expanded="false" aria-controls="collapseContent-<?= $article['idarticolo'] ?>">
+                            <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseContent-<?= $article['idappunto'] ?>" aria-expanded="false" aria-controls="collapseContent-<?= $article['idappunto'] ?>">
                                 Leggi Contenuto
                             </button>
                         </div>
 
-                        <div class="collapse mb-4" id="collapseContent-<?= $article['idarticolo'] ?>">
+                        <div class="collapse mb-4" id="collapseContent-<?= $article['idappunto'] ?>">
                             <div class="card card-body bg-light border-0">
                                 <?= nl2br(htmlspecialchars($article['contenuto'])) ?>
                             </div>
                         </div>
 
                         <div class="d-flex gap-2 justify-content-end">
-                            <button type="button" class="btn btn-outline-danger" onclick="handleArticle(<?= $article['idarticolo'] ?>, 'reject')">Rifiuta</button>
-                            <button type="button" class="btn btn-primary" onclick="handleArticle(<?= $article['idarticolo'] ?>, 'approve')">Approva</button>
+                            <button type="button" class="btn btn-outline-danger" onclick="handleArticle(<?= $article['idappunto'] ?>, 'reject')">Rifiuta</button>
+                            <button type="button" class="btn btn-primary" onclick="handleArticle(<?= $article['idappunto'] ?>, 'approve')">Approva</button>
                         </div>
                     </div>
                 </div>
@@ -55,9 +53,9 @@ $articles = $dbh->getArticlesToApprove();
     function handleArticle(id, action) {
         const formData = new FormData();
         formData.append('action', action);
-        formData.append('idarticolo', id);
+        formData.append('idappunto', id);
 
-        fetch('gestione-articoli.php', {
+        fetch('gestione-appunti.php', {
                 method: 'POST',
                 body: formData
             })
@@ -71,7 +69,7 @@ $articles = $dbh->getArticlesToApprove();
 
                     const container = document.getElementById('approvazione-container');
                     if (container.children.length === 0) {
-                        container.innerHTML = '<div class="alert alert-info" role="alert">Nessun articolo da approvare al momento.</div>';
+                        container.innerHTML = '<div class="alert alert-info" role="alert">Nessun appunto da approvare al momento.</div>';
                     }
                 } else {
                     alert('Errore durante l\'operazione: ' + (data.message || 'Sconosciuto'));

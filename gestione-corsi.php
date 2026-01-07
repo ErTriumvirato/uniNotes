@@ -62,7 +62,7 @@ if (!empty($action)) {
                 if ($dbh->deleteCourse($id)) {
                     echo json_encode(['success' => true, 'message' => 'Corso eliminato']);
                 } else {
-                    throw new Exception("Impossibile eliminare il corso (potrebbe avere articoli o iscritti collegati)");
+                    throw new Exception("Impossibile eliminare il corso (potrebbe avere appunti o iscritti collegati)");
                 }
                 break;
 

@@ -37,7 +37,7 @@
                             </li>
                             <?php if (isUserLoggedIn()) { ?>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="creazione-articoli.php">Carica appunti</a>
+                                    <a class="nav-link" href="creazione-appunti.php">Carica appunti</a>
                                 </li>
                             <?php } ?>
                             <?php if (isUserAdmin()) { ?>
@@ -62,6 +62,7 @@
 
     <!-- Contenuto principale -->
     <main class="container flex-grow-1 mt-5 pt-5">
+        <button onclick="goBack()">← Indietro</button>
         <div class="py-4">
             <?php if (isset($templateParams["nome"])) require($templateParams["nome"]); ?>
         </div>
@@ -74,6 +75,26 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        function goBack() {
+            const referrer = document.referrer;
+            const currentDomain = window.location.origin;
+            const currentUrl = window.location.href;
+
+            if (referrer &&
+                referrer.startsWith(currentDomain) &&
+                currentUrl !== currentDomain &&
+                currentUrl !== currentDomain + '/' &&
+                currentUrl !== currentDomain + '/index.php' &&
+                currentUrl !== currentDomain + '/index.html' &&
+                referrer !== currentUrl) {
+
+                history.back();
+            } else if (!referrer.startsWith(currentDomain)) {
+                window.location.href = '/';
+            }
+        }
+    </script>
 </body>
 
 </html>

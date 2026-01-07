@@ -23,8 +23,8 @@ CREATE TABLE corsi (
     FOREIGN KEY (idssd) REFERENCES ssd(idssd) ON DELETE CASCADE
 );
 
-CREATE TABLE articoli (
-    idarticolo INTEGER PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE appunti (
+    idappunto INTEGER PRIMARY KEY AUTO_INCREMENT,
     titolo VARCHAR(100) NOT NULL,
     contenuto TEXT NOT NULL,
     data_pubblicazione DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -48,9 +48,9 @@ CREATE TABLE iscrizioni (
 CREATE TABLE recensioni (
     idrecensione INTEGER PRIMARY KEY AUTO_INCREMENT,
     valutazione INTEGER NOT NULL,
-    idarticolo INTEGER NOT NULL,
+    idappunto INTEGER NOT NULL,
     idutente INTEGER NOT NULL,
-    FOREIGN KEY (idarticolo) REFERENCES articoli(idarticolo) ON DELETE CASCADE,
+    FOREIGN KEY (idappunto) REFERENCES appunti(idappunto) ON DELETE CASCADE,
     FOREIGN KEY (idutente) REFERENCES utenti(idutente) ON DELETE CASCADE
 );
 

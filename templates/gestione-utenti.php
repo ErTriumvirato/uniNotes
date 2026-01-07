@@ -1,5 +1,3 @@
-    <a href="area-admin.php"><img src="uploads/img/back.png" alt="Torna alla pagina precedente" class="back-img"/></a>
-
     <div class="container">
         <div class="row mb-4">
             <div class="col-12">

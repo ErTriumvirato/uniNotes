@@ -6,9 +6,9 @@ if(!isUserAdmin()){
     exit();
 }
 
-if (isset($_POST['action'], $_POST['idarticolo'])) {
+if (isset($_POST['action'], $_POST['idappunto'])) {
     $action = $_POST['action'];
-    $id = intval($_POST['idarticolo']);
+    $id = intval($_POST['idappunto']);
     $success = false;
 
     if ($action === 'approve') {
@@ -22,6 +22,6 @@ if (isset($_POST['action'], $_POST['idarticolo'])) {
     exit;
 }
 
-$templateParams["titolo"] = "uniNotes - Approvazione Appunti";
-$templateParams["nome"] = "templates/approvazione-articoli.php";
+$templateParams["titolo"] = "uniNotes - Approvazione appunti";
+$templateParams["nome"] = "templates/approvazione-appunti.php";
 require_once 'templates/base.php';

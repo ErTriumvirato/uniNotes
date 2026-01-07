@@ -30,6 +30,14 @@
                         <input type="submit" name="submit" class="btn btn-primary btn-lg" value="Salva Modifiche" />
                     </div>
                 </form>
+
+                <hr class="my-4">
+                
+                <form action="impostazioni.php" method="POST" onsubmit="return confirm('Sei sicuro di voler eliminare il tuo account? Questa azione è irreversibile e cancellerà tutti i tuoi dati.');">
+                    <div class="d-grid gap-2">
+                        <button type="submit" name="delete_account" class="btn btn-outline-danger">Elimina Account</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

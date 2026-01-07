@@ -5,31 +5,32 @@ $mostViewedArticles = $dbh->getHomeArticles($userId, 'numero_visualizzazioni', 6
 ?>
 
 <section class="mb-5">
-    <h2 class="mb-4">Ultimi Articoli Usciti</h2>
+    <h2 class="mb-4">Ultimi appunti usciti</h2>
     <?php if (empty($latestArticles)): ?>
-        <p>Nessun articolo trovato.</p>
+        <p>Nessun appunto trovato.</p>
     <?php else: ?>
         <div class="row g-4">
-            <?php foreach ($latestArticles as $articolo): ?>
+            <?php foreach ($latestArticles as $appunto): ?>
                 <div class="col-12 col-md-6 col-lg-4">
                     <article class="card h-100 border-0 shadow-sm article-card">
                         <div class="card-body d-flex flex-column">
                             <h3 class="h5 card-title mb-3">
-                                <a href="articolo.php?id=<?php echo $articolo['idarticolo']; ?>" class="text-decoration-none stretched-link article-title-link">
-                                    <?php echo htmlspecialchars($articolo['titolo']); ?>
+                                <a href="appunto.php?id=<?php echo $appunto['idappunto']; ?>" class="text-decoration-none stretched-link article-title-link">
+                                    <?php echo htmlspecialchars($appunto['titolo']); ?>
                                 </a>
                             </h3>
                             <div class="mt-auto">
+                                <small class="text-muted mb-2 d-block"><?php echo htmlspecialchars($appunto['nome_corso']); ?></small>
                                 <p class="mb-2 small">
-                                    di <strong><?php echo htmlspecialchars($articolo['autore']); ?></strong>
+                                    di <strong><?php echo htmlspecialchars($appunto['autore']); ?></strong>
                                     <br>
-                                    <?php echo date('d/m/Y', strtotime($articolo['data_pubblicazione'])); ?>
+                                    <?php echo date('d/m/Y', strtotime($appunto['data_pubblicazione'])); ?>
                                 </p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="badge border badge-vote">
-                                        ★ <?php echo $articolo['media_recensioni'] ? htmlspecialchars($articolo['media_recensioni']) : '-'; ?>
+                                        ★ <?php echo $appunto['media_recensioni'] ? htmlspecialchars($appunto['media_recensioni']) : '-'; ?>
                                     </span>
-                                    <small><?php echo $articolo['numero_visualizzazioni']; ?> views</small>
+                                    <small><?php echo $appunto['numero_visualizzazioni']; ?> visualizzazioni</small>
                                 </div>
                             </div>
                         </div>
@@ -41,31 +42,32 @@ $mostViewedArticles = $dbh->getHomeArticles($userId, 'numero_visualizzazioni', 6
 </section>
 
 <section>
-    <h2 class="mb-4">Articoli Più Visualizzati</h2>
+    <h2 class="mb-4">Appunti più visualizzati</h2>
     <?php if (empty($mostViewedArticles)): ?>
-        <p>Nessun articolo visualizzato.</p>
+        <p>Nessun appunto visualizzato.</p>
     <?php else: ?>
         <div class="row g-4">
-            <?php foreach ($mostViewedArticles as $articolo): ?>
+            <?php foreach ($mostViewedArticles as $appunto): ?>
                 <div class="col-12 col-md-6 col-lg-4">
                     <article class="card h-100 border-0 shadow-sm article-card">
                         <div class="card-body d-flex flex-column">
                             <h3 class="h5 card-title mb-3">
-                                <a href="articolo.php?id=<?php echo $articolo['idarticolo']; ?>" class="text-decoration-none stretched-link article-title-link">
-                                    <?php echo htmlspecialchars($articolo['titolo']); ?>
+                                <a href="appunto.php?id=<?php echo $appunto['idappunto']; ?>" class="text-decoration-none stretched-link article-title-link">
+                                    <?php echo htmlspecialchars($appunto['titolo']); ?>
                                 </a>
                             </h3>
                             <div class="mt-auto">
+                                <small class="text-muted mb-2 d-block"><?php echo htmlspecialchars($appunto['nome_corso']); ?></small>
                                 <p class="mb-2 small">
-                                    di <strong><?php echo htmlspecialchars($articolo['autore']); ?></strong>
+                                    di <strong><?php echo htmlspecialchars($appunto['autore']); ?></strong>
                                     <br>
-                                    <?php echo date('d/m/Y', strtotime($articolo['data_pubblicazione'])); ?>
+                                    <?php echo date('d/m/Y', strtotime($appunto['data_pubblicazione'])); ?>
                                 </p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="badge border badge-vote">
-                                        ★ <?php echo $articolo['media_recensioni'] ? htmlspecialchars($articolo['media_recensioni']) : '-'; ?>
+                                        ★ <?php echo $appunto['media_recensioni'] ? htmlspecialchars($appunto['media_recensioni']) : '-'; ?>
                                     </span>
-                                    <small><?php echo $articolo['numero_visualizzazioni']; ?> views</small>
+                                    <small><?php echo $appunto['numero_visualizzazioni']; ?> visualizzazioni</small>
                                 </div>
                             </div>
                         </div>

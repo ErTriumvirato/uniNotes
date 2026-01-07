@@ -13,14 +13,14 @@ if (isset($_GET['action']) && $_GET['action'] === 'filter') {
     $sort = $_GET['sort'] ?? 'data_pubblicazione';
     $order = $_GET['order'] ?? 'DESC';
 
-    $articoli = $dbh->getApprovedArticlesByCourseWithFilters($idCorso, $sort, $order);
+    $appunti = $dbh->getApprovedArticlesByCourseWithFilters($idCorso, $sort, $order);
 
     $response = array_map(function ($art) {
         $art['views'] = (int)$art['numero_visualizzazioni'];
         $art['data_formattata'] = date('d/m/y', strtotime($art['data_pubblicazione']));
         $art['media_recensioni'] = $art['media_recensioni'] ?: '0.0';
         return $art;
-    }, $articoli);
+    }, $appunti);
 
     header('Content-Type: application/json');
     echo json_encode($response);

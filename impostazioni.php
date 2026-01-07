@@ -11,9 +11,14 @@ $currentUser = $dbh->getUserById($_SESSION['idutente']);
 if(isset($_POST['submit'])) {
     $newUsername = trim($_POST['username']);
     $newPassword = $_POST['password'];
+    $confirmPassword = $_POST['confirm_password'];
+
+    if (!empty($newPassword) && $newPassword !== $confirmPassword) {
+        $templateParams["messaggio"] = "Errore: Le password non coincidono!";
+    }
     
     // Controllo se username è cambiato e se è già in uso
-    if($newUsername !== $currentUser['username']) {
+    if(!isset($templateParams["messaggio"]) && $newUsername !== $currentUser['username']) {
         $existingUser = $dbh->getUserByUsername($newUsername);
         if($existingUser) {
             $templateParams["messaggio"] = "Errore: Username già in uso!";
@@ -34,6 +39,26 @@ if(isset($_POST['submit'])) {
             $currentUser['username'] = $newUsername;
         } else {
             $templateParams["messaggio"] = "Errore durante l'aggiornamento del profilo.";
+        }
+    }
+}
+
+if(isset($_POST['delete_account'])) {
+    $canDelete = true;
+    if ($currentUser['isAdmin']) {
+        if ($dbh->getAdminCount() <= 1) {
+            $canDelete = false;
+            $templateParams["messaggio"] = "Errore: Sei l'ultimo amministratore!";
+        }
+    }
+
+    if ($canDelete) {
+        if($dbh->deleteUser($currentUser['idutente'])) {
+            session_destroy();
+            header("Location: index.php");
+            exit();
+        } else {
+            $templateParams["messaggio"] = "Errore durante l'eliminazione dell'account.";
         }
     }
 }
