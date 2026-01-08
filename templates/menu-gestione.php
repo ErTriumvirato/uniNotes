@@ -32,7 +32,7 @@
 
         <!-- Gestione Appunti -->
         <div class="col-12 col-md-6 col-lg-4">
-            <a href="gestione-appunti.php" class="text-decoration-none">
+            <a href="area-admin-appunti.php" class="text-decoration-none">
                 <div class="card h-100 shadow-sm border-0 admin-card text-center p-4">
                     <div class="card-body">
                         <h3 class="card-title h4 text-dark">Gestione Appunti</h3>

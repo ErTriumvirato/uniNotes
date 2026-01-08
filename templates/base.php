@@ -72,7 +72,14 @@ header("Pragma: no-cache");
     <!-- Contenuto principale -->
     <main class="container flex-grow-1 mt-5 pt-5">
         <?php
-        if (($templateParams["nome"] === "templates/dettagli-corso.php") || ($templateParams["nome"] === "templates/gestione-corsi.php") || ($templateParams["nome"] === "templates/gestione-utenti.php") || ($templateParams["nome"] === "templates/approvazione-appunti.php") || ($templateParams["nome"] === "templates/dettagli-appunto.php")) { ?>
+        if (($templateParams["nome"] === "templates/dettagli-corso.php")
+            || ($templateParams["nome"] === "templates/gestione-corsi.php")
+            || ($templateParams["nome"] === "templates/gestione-utenti.php")
+            || ($templateParams["nome"] === "templates/appunti-da-approvare.php")
+            || ($templateParams["nome"] === "templates/appunti-da-gestire.php")
+            || ($templateParams["nome"] === "templates/menu-appunti.php")
+            || ($templateParams["nome"] === "templates/dettagli-appunto.php")
+        ) { ?>
             <button class="btn btn-secondary mb-3" onclick="goBack()">← Indietro</button>
         <?php
         } ?>
@@ -101,7 +108,7 @@ header("Pragma: no-cache");
                 currentUrl !== currentDomain &&
                 currentUrl !== currentDomain + '/' &&
                 currentUrl !== currentDomain + '/index.php' &&
-                referrer !== currentUrl) {
+                currentUrl !== referrer) {
 
                 history.back();
             } else if (!referrer.startsWith(currentDomain)) {

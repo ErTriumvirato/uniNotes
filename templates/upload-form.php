@@ -49,12 +49,24 @@ $selectedCourseId = isset($_GET['idcorso']) ? (int)$_GET['idcorso'] : null;
                 <h3 class="text-center mb-4">In attesa di approvazione</h3>
                 <ul class="list-group list-group-flush">
                     <?php foreach ($templateParams["unapprovedArticles"] as $article): ?>
-                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0">
+                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-3">
                             <div>
                                 <div class="fw-bold"><?php echo htmlspecialchars($article['titolo']); ?></div>
                                 <div class="small text-muted"><?php echo htmlspecialchars($article['nome_corso']); ?></div>
+                                <?php if (!empty($article['motivo_rifiuto'])): ?>
+                                    <div class="text-danger small mt-1">
+                                        <strong>Rifiutato:</strong> <?php echo htmlspecialchars($article['motivo_rifiuto']); ?>
+                                    </div>
+                                <?php endif; ?>
                             </div>
-                            <span class="text-muted small"><?php echo date('d/m/Y', strtotime($article['data_pubblicazione'])); ?></span>
+                            <div class="d-flex align-items-center gap-3">
+                                <span class="text-muted small"><?php echo date('d/m/Y', strtotime($article['data_pubblicazione'])); ?></span>
+                                <?php if (!empty($article['motivo_rifiuto'])): ?>
+                                    <a href="modifica-appunti.php?id=<?php echo $article['idappunto']; ?>" class="btn btn-sm btn-outline-primary">Modifica</a>
+                                <?php else: ?>
+                                    <span class="badge bg-warning text-dark">In attesa</span>
+                                <?php endif; ?>
+                            </div>
                         </li>
                     <?php endforeach; ?>
                 </ul>

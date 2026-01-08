@@ -1,0 +1,49 @@
+<?php
+$courses = $dbh->getCourses();
+$article = $templateParams["article"];
+?>
+
+<div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="card shadow-sm border-0 rounded-3 form-card">
+            <div class="card-body p-4">
+                <h2 class="text-center mb-4">Modifica appunti</h2>
+                
+                <?php if (!empty($article['motivo_rifiuto'])): ?>
+                    <div class="alert alert-danger" role="alert">
+                        <strong>Motivo del rifiuto:</strong> <?php echo htmlspecialchars($article['motivo_rifiuto']); ?>
+                    </div>
+                <?php endif; ?>
+
+                <form action="modifica-appunti.php" method="post">
+                    <input type="hidden" name="idappunto" value="<?php echo $article['idappunto']; ?>">
+                    
+                    <div class="mb-3">
+                        <label for="course" class="form-label">Corso</label>
+                        <select id="course" name="course" class="form-select" required>
+                            <?php foreach ($courses as $course): ?>
+                                <option value="<?php echo htmlspecialchars($course['idcorso']); ?>" <?php echo ($article['idcorso'] == $course['idcorso']) ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($course['nome']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Titolo</label>
+                        <input type="text" class="form-control" id="title" name="title" value="<?php echo htmlspecialchars($article['titolo']); ?>" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="text" class="form-label">Testo</label>
+                        <textarea class="form-control" id="text" name="text" rows="7" required><?php echo htmlspecialchars($article['contenuto']); ?></textarea>
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <input type="submit" name="salva" class="btn btn-primary btn-lg" value="Salva modifiche e richiedi approvazione">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

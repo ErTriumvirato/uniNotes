@@ -5,7 +5,7 @@ $articles = $dbh->getArticlesToApprove();
 <div class="container">
     <div class="row mb-4">
         <div class="col-12">
-            <h2 class="display-5 fw-bold">Approvazione Articoli</h2>
+            <h2 class="display-5 fw-bold">Approvazione Appunti</h2>
             <p class="text-muted">Revisiona e approva gli articoli inviati dagli utenti</p>
         </div>
     </div>
@@ -51,11 +51,24 @@ $articles = $dbh->getArticlesToApprove();
 
 <script>
     function handleArticle(id, action) {
+        let reason = null;
+        if (action === 'reject') {
+            reason = prompt("Inserisci il motivo del rifiuto:");
+            if (reason === null) return; // Annullato dall'utente
+            if (reason.trim() === "") {
+                alert("È necessario specificare un motivo per il rifiuto.");
+                return;
+            }
+        }
+
         const formData = new FormData();
         formData.append('action', action);
         formData.append('idappunto', id);
+        if (reason) {
+            formData.append('reason', reason);
+        }
 
-        fetch('gestione-appunti.php', {
+        fetch('approvazione-appunti.php', {
                 method: 'POST',
                 body: formData
             })

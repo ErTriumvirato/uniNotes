@@ -1,10 +1,10 @@
 <?php
 $stats = [
     "followed_courses" => $dbh->getFollowedCoursesCount($idProfile),
-    "articles_written" => $dbh->getArticlesCountByAuthor($idProfile, !$viewAll),
+    "articles_written" => $dbh->getArticlesCountByAuthor($idProfile, true),
     "avg_rating" => $dbh->getAuthorAverageRating($idProfile)
 ];
-$appunti = $dbh->getArticlesByAuthor($templateParams['userProfile']['idutente'], !$viewAll);
+$appunti = $dbh->getArticlesByAuthor($templateParams['userProfile']['idutente'], true);
 ?>
 
 <h2 class="mb-4"><?php echo htmlspecialchars($templateParams['userProfile']['username']); ?></h2>
@@ -38,7 +38,7 @@ $appunti = $dbh->getArticlesByAuthor($templateParams['userProfile']['idutente'],
 
 <div class="row g-3 mb-4 align-items-end">
     <div class="col-12 col-md-6">
-        <h3 class="mb-0">Appunti disponibili</h3>
+        <h3 class="mb-0">Appunti scritti da <?= $templateParams['userProfile']['username'] ?></h3>
     </div>
     <div class="col-6 col-md-3">
         <label for="ajax-sort" class="form-label small text-muted">Ordina per</label>
@@ -102,7 +102,7 @@ $appunti = $dbh->getArticlesByAuthor($templateParams['userProfile']['idutente'],
     const container = document.getElementById('articles-container');
 
     function updateArticles() {
-        const url = `profilo.php<?php echo isUserLoggedIn() ? "" : "?id=" . $templateParams['userProfile']['idutente']; ?>&action=filter&sort=${sortSelect.value}&order=${orderSelect.value}`;
+        const url = `profilo.php?id=<?php echo $templateParams['userProfile']['idutente']; ?>&action=filter&sort=${sortSelect.value}&order=${orderSelect.value}`;
 
         fetch(url)
             .then(res => res.json())

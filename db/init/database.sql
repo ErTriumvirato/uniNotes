@@ -30,6 +30,7 @@ CREATE TABLE appunti (
     data_pubblicazione DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
     numero_visualizzazioni INTEGER DEFAULT 0 NOT NULL,
     approvato BOOLEAN DEFAULT FALSE NOT NULL,
+    motivo_rifiuto TEXT DEFAULT NULL,
     idutente INTEGER NOT NULL,
     idcorso INTEGER NOT NULL,
     FOREIGN KEY (idutente) REFERENCES utenti(idutente) ON DELETE CASCADE,

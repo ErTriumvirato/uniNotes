@@ -46,10 +46,10 @@ $templateParams["isOwner"] = $isOwner;
 
 $templateParams["stats"] = [
     "followed_courses" => $dbh->getFollowedCoursesCount($idProfile),
-    "articles_written" => $dbh->getArticlesCountByAuthor($idProfile, !$viewAll),
+    "articles_written" => $dbh->getArticlesCountByAuthor($idProfile, true),
     "avg_rating" => $dbh->getAuthorAverageRating($idProfile)
 ];
-$templateParams["articles"] = $dbh->getArticlesByAuthor($idProfile, !$viewAll);
+$templateParams["articles"] = $dbh->getArticlesByAuthor($idProfile, true);
 
 // templateParams
 $templateParams["titolo"] = "uniNotes - Profilo di " . $userProfile['username'];

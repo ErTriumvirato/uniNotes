@@ -10,15 +10,15 @@ $appunti = $dbh->getApprovedArticlesByCourse($idCorso);
     <div class="col-12 col-lg-10">
         <div class="card shadow-sm border-0 mb-5">
             <div class="card-body p-4 p-md-5">
-                <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
-                    <div>
-                        <h1 class="display-5 fw-bold mb-2"><?php echo htmlspecialchars($corso['nome']); ?></h1>
-                        <span class="badge bg-secondary mb-3"><?php echo htmlspecialchars($corso['nomeSSD']); ?></span>
-                    </div>
+                <div>
+                    <h1 class="display-5 fw-bold mb-2"><?php echo htmlspecialchars($corso['nome']); ?></h1>
+                    <span class="badge bg-secondary mb-3"><?php echo htmlspecialchars($corso['nomeSSD']); ?></span>
+                </div>
+                <div class="d-flex gap-2 flex-wrap">
                     <button type="button" id="followBtn" class="btn" data-idcorso="<?php echo htmlspecialchars($idCorso); ?>">
                         <?php echo htmlspecialchars($isFollowing ? 'Smetti di seguire' : 'Segui corso'); ?>
                     </button>
-                    <a href="creazione-appunti.php?idcorso=<?php echo htmlspecialchars($idCorso); ?>" class="btn btn-outline-secondary btn-lg">Carica appunti</a>
+                    <a href="creazione-appunti.php?idcorso=<?php echo htmlspecialchars($idCorso); ?>" class="btn btn-outline-secondary">Carica appunti</a>
                 </div>
                 <p class="lead mt-3"><?php echo nl2br(htmlspecialchars($corso['descrizione'])); ?></p>
             </div>
