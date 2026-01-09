@@ -3,7 +3,7 @@ $idCorso = (int)$_GET['id'];
 $corso = $dbh->getCourseById($idCorso);
 $idutente = $_SESSION["idutente"] ?? null;
 $isFollowing = $idutente ? $dbh->isFollowingCourse($idutente, $idCorso) : false;
-$appunti = $dbh->getApprovedArticlesByCourse($idCorso);
+$appunti = $dbh->getApprovedArticlesByCourseWithFilters($idCorso, 'data_pubblicazione', 'DESC');
 ?>
 
 <div class="row justify-content-center">
@@ -15,7 +15,7 @@ $appunti = $dbh->getApprovedArticlesByCourse($idCorso);
                     <span class="badge bg-secondary mb-3"><?php echo htmlspecialchars($corso['nomeSSD']); ?></span>
                 </div>
                 <div class="d-flex gap-2 flex-wrap">
-                    <button type="button" id="followBtn" class="btn" data-idcorso="<?php echo htmlspecialchars($idCorso); ?>">
+                    <button type="button" id="followBtn" class="btn" data-idcorso="<?php echo htmlspecialchars($idCorso); ?>" onclick="handleFollowClick(this)">
                         <?php echo htmlspecialchars($isFollowing ? 'Smetti di seguire' : 'Segui corso'); ?>
                     </button>
                     <a href="creazione-appunti.php?idcorso=<?php echo htmlspecialchars($idCorso); ?>" class="btn btn-outline-secondary">Carica appunti</a>
@@ -30,7 +30,7 @@ $appunti = $dbh->getApprovedArticlesByCourse($idCorso);
             </div>
             <div class="col-6 col-md-3">
                 <label for="ajax-sort" class="form-label small text-muted">Ordina per</label>
-                <select id="ajax-sort" class="form-select form-select-sm">
+                <select id="ajax-sort" class="form-select form-select-sm" onchange="updateArticles()">
                     <option value="data_pubblicazione">Data di caricamento</option>
                     <option value="media_recensioni">Valutazione media</option>
                     <option value="numero_visualizzazioni">Numero di visualizzazioni</option>
@@ -38,7 +38,7 @@ $appunti = $dbh->getApprovedArticlesByCourse($idCorso);
             </div>
             <div class="col-6 col-md-3">
                 <label for="ajax-order" class="form-label small text-muted">Ordine</label>
-                <select id="ajax-order" class="form-select form-select-sm">
+                <select id="ajax-order" class="form-select form-select-sm" onchange="updateArticles()">
                     <option value="DESC">Decrescente</option>
                     <option value="ASC">Crescente</option>
                 </select>
@@ -88,14 +88,13 @@ $appunti = $dbh->getApprovedArticlesByCourse($idCorso);
 </div>
 
 <script>
-    document.getElementById('followBtn')?.addEventListener('click', function() {
+    function handleFollowClick(btn) {
         <?php if (!$idutente): ?>
             window.location.href = 'login.php';
             return;
         <?php endif; ?>
 
-        const idcorso = this.dataset.idcorso;
-        const btn = this;
+        const idcorso = btn.dataset.idcorso;
         btn.disabled = true;
 
         fetch('corso.php?id=' + idcorso, {
@@ -118,7 +117,7 @@ $appunti = $dbh->getApprovedArticlesByCourse($idCorso);
                 }
                 btn.disabled = false;
             });
-    });
+    }
 
     const sortSelect = document.getElementById('ajax-sort');
     const orderSelect = document.getElementById('ajax-order');
@@ -169,7 +168,4 @@ $appunti = $dbh->getApprovedArticlesByCourse($idCorso);
                 }
             });
     }
-
-    sortSelect.addEventListener('change', updateArticles);
-    orderSelect.addEventListener('change', updateArticles);
 </script>

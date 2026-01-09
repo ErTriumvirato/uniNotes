@@ -69,6 +69,12 @@ header("Pragma: no-cache");
         </nav>
     </header>
 
+    <!-- Banner errori -->
+    <div id="error-banner" class="alert alert-danger alert-dismissible fade position-fixed top-0 start-50 translate-middle-x mt-5 pt-4" role="alert" style="display: none; max-width: 90%; margin-top: 80px !important; z-index: 2000;">
+        <span id="error-message"></span>
+        <button type="button" class="btn-close" onclick="hideError()" aria-label="Chiudi"></button>
+    </div>
+
     <!-- Contenuto principale -->
     <main class="container flex-grow-1 mt-5 pt-5">
         <?php
@@ -96,7 +102,36 @@ header("Pragma: no-cache");
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
-        window.addEventListener('unload', function() {});
+        let bannerTimeout;
+
+        function showBanner(message, type) {
+            const banner = document.getElementById('error-banner');
+            const msgSpan = document.getElementById('error-message');
+            msgSpan.textContent = message;
+            
+            banner.classList.remove('alert-danger', 'alert-success');
+            banner.classList.add('alert-' + type);
+            
+            banner.style.display = 'block';
+            setTimeout(() => banner.classList.add('show'), 10);
+            
+            if (bannerTimeout) clearTimeout(bannerTimeout);
+            bannerTimeout = setTimeout(hideError, 5000);
+        }
+
+        function showError(message) {
+            showBanner(message, 'danger');
+        }
+
+        function showSuccess(message) {
+            showBanner(message, 'success');
+        }
+
+        function hideError() {
+            const banner = document.getElementById('error-banner');
+            banner.classList.remove('show');
+            setTimeout(() => { banner.style.display = 'none'; }, 150);
+        }
 
         function goBack() {
             const referrer = document.referrer;

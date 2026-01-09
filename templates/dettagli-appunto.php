@@ -55,7 +55,7 @@ if (!empty($appunto)) {
                 <div id="review-form-card" class="card shadow-sm border-0 mb-4 form-card">
                     <div class="card-body p-4">
                         <h5 class="card-title mb-3">Lascia una recensione</h5>
-                        <form id="review-form" data-idappunto="<?php echo htmlspecialchars($appunto['idappunto']); ?>">
+                        <form id="review-form" data-idappunto="<?php echo htmlspecialchars($appunto['idappunto']); ?>" onsubmit="handleReviewFormSubmit(event)">
                             <div class="mb-3">
                                 <label for="valutazione" class="form-label">Valutazione</label>
                                 <select name="valutazione" id="valutazione" class="form-select" required>
@@ -96,7 +96,7 @@ if (!empty($appunto)) {
                                                 <?php for($i=0; $i<$review['valutazione']; $i++) echo "★"; for($i=$review['valutazione']; $i<5; $i++) echo "☆";?>
                                             </div>
                                             <?php if (isUserLoggedIn() && $_SESSION['idutente'] == $review['idutente']): ?>
-                                                <button class="btn btn-sm btn-outline-danger delete-review-btn" data-review-id="<?php echo $review['idrecensione']; ?>" aria-label="Elimina recensione">
+                                                <button class="btn btn-sm btn-outline-danger delete-review-btn" data-review-id="<?php echo $review['idrecensione']; ?>" aria-label="Elimina recensione" onclick="handleDeleteReview(this)">
                                                     Elimina
                                                 </button>
                                             <?php endif; ?>
@@ -124,7 +124,7 @@ if (!empty($appunto)) {
     function handleReviewFormSubmit(e) {
         e.preventDefault();
 
-        const form = this;
+        const form = e.target;
         const idappunto = form.dataset.idappunto;
         const valutazione = form.querySelector('#valutazione').value;
         const submitBtn = form.querySelector('button[type="submit"]');
@@ -183,7 +183,7 @@ if (!empty($appunto)) {
                                     <div class="text-warning">
                                         ${stars}
                                     </div>
-                                    <button class="btn btn-sm btn-outline-danger delete-review-btn" data-review-id="${data.review.idrecensione}" aria-label="Elimina recensione">
+                                    <button class="btn btn-sm btn-outline-danger delete-review-btn" data-review-id="${data.review.idrecensione}" aria-label="Elimina recensione" onclick="handleDeleteReview(this)">
                                         Elimina
                                     </button>
                                 </div>
@@ -196,105 +196,97 @@ if (!empty($appunto)) {
         .catch(() => {
             submitBtn.disabled = false;
             submitBtn.textContent = 'Invia Recensione';
-            alert('Si è verificato un errore. Riprova.');
+            showError('Si è verificato un errore. Riprova.');
         });
     }
 
-    // Aggiungi l'event listener al form iniziale
-    document.getElementById('review-form')?.addEventListener('submit', handleReviewFormSubmit);
+    // Gestione eliminazione recensioni
+    function handleDeleteReview(btn) {
+        const idrecensione = btn.dataset.reviewId;
+        const reviewCard = btn.closest('.card[data-review-id]');
 
-    // Gestione eliminazione recensioni (usa event delegation)
-    document.getElementById('reviews-list')?.addEventListener('click', function(e) {
-        if (e.target.classList.contains('delete-review-btn')) {
-            const btn = e.target;
-            const idrecensione = btn.dataset.reviewId;
-            const reviewCard = btn.closest('.card[data-review-id]');
-
-            if (!btn.dataset.confirm) {
-                btn.dataset.confirm = 'true';
-                btn.textContent = 'Conferma?';
-                btn.classList.remove('btn-outline-danger');
-                btn.classList.add('btn-danger');
-                setTimeout(() => {
-                    if (btn.dataset.confirm) {
-                        delete btn.dataset.confirm;
-                        btn.textContent = 'Elimina';
-                        btn.classList.remove('btn-danger');
-                        btn.classList.add('btn-outline-danger');
-                    }
-                }, 3000);
-                return;
-            }
-
-            btn.disabled = true;
-            btn.textContent = 'Eliminando...';
-
-            fetch('appunto.php?id=<?php echo htmlspecialchars($appunto['idappunto']); ?>', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: 'deleteReview=' + encodeURIComponent(idrecensione) + '&ajax=1'
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    // Rimuovi la card della recensione con animazione
-                    reviewCard.style.transition = 'opacity 0.3s';
-                    reviewCard.style.opacity = '0';
-                    setTimeout(() => {
-                        reviewCard.remove();
-
-                        // Controlla se non ci sono più recensioni
-                        const reviewsList = document.getElementById('reviews-list');
-                        const remainingReviews = reviewsList.querySelectorAll('.card[data-review-id]');
-                        if (remainingReviews.length === 0) {
-                            reviewsList.innerHTML = '<p class="text-muted">Nessuna recensione presente.</p>';
-                        }
-
-                        // Aggiorna la media delle recensioni
-                        const avgBadge = document.getElementById('avg-rating-badge');
-                        avgBadge.textContent = '★ ' + data.new_avg + ' Media voti';
-
-                        // Mostra il form per lasciare una nuova recensione
-                        const alreadyReviewedCard = document.getElementById('already-reviewed-card');
-                        if (alreadyReviewedCard) {
-                            alreadyReviewedCard.outerHTML = `
-                                <div id="review-form-card" class="card shadow-sm border-0 mb-4 form-card">
-                                    <div class="card-body p-4">
-                                        <h5 class="card-title mb-3">Lascia una recensione</h5>
-                                        <form id="review-form" data-idappunto="<?php echo htmlspecialchars($appunto['idappunto']); ?>">
-                                            <div class="mb-3">
-                                                <label for="valutazione" class="form-label">Valutazione</label>
-                                                <select name="valutazione" id="valutazione" class="form-select" required>
-                                                    <option value="" selected disabled>Seleziona un voto</option>
-                                                    <option value="5">5 - Eccellente</option>
-                                                    <option value="4">4 - Molto buono</option>
-                                                    <option value="3">3 - Buono</option>
-                                                    <option value="2">2 - Sufficiente</option>
-                                                    <option value="1">1 - Scarso</option>
-                                                </select>
-                                            </div>
-                                            <button type="submit" class="btn btn-primary">Invia Recensione</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            `;
-                            // Riaggiungi l'event listener al nuovo form
-                            document.getElementById('review-form')?.addEventListener('submit', handleReviewFormSubmit);
-                        }
-                    }, 300);
-                } else {
-                    alert(data.message || 'Errore durante l\'eliminazione della recensione.');
-                    btn.disabled = false;
+        if (!btn.dataset.confirm) {
+            btn.dataset.confirm = 'true';
+            btn.textContent = 'Conferma?';
+            btn.classList.remove('btn-outline-danger');
+            btn.classList.add('btn-danger');
+            setTimeout(() => {
+                if (btn.dataset.confirm) {
+                    delete btn.dataset.confirm;
                     btn.textContent = 'Elimina';
+                    btn.classList.remove('btn-danger');
+                    btn.classList.add('btn-outline-danger');
                 }
-            })
-            .catch(() => {
+            }, 3000);
+            return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = 'Eliminando...';
+
+        fetch('appunto.php?id=<?php echo htmlspecialchars($appunto['idappunto']); ?>', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'deleteReview=' + encodeURIComponent(idrecensione) + '&ajax=1'
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                // Rimuovi la card della recensione con animazione
+                reviewCard.style.transition = 'opacity 0.3s';
+                reviewCard.style.opacity = '0';
+                setTimeout(() => {
+                    reviewCard.remove();
+
+                    // Controlla se non ci sono più recensioni
+                    const reviewsList = document.getElementById('reviews-list');
+                    const remainingReviews = reviewsList.querySelectorAll('.card[data-review-id]');
+                    if (remainingReviews.length === 0) {
+                        reviewsList.innerHTML = '<p class="text-muted">Nessuna recensione presente.</p>';
+                    }
+
+                    // Aggiorna la media delle recensioni
+                    const avgBadge = document.getElementById('avg-rating-badge');
+                    avgBadge.textContent = '★ ' + data.new_avg + ' Media voti';
+
+                    // Mostra il form per lasciare una nuova recensione
+                    const alreadyReviewedCard = document.getElementById('already-reviewed-card');
+                    if (alreadyReviewedCard) {
+                        alreadyReviewedCard.outerHTML = `
+                            <div id="review-form-card" class="card shadow-sm border-0 mb-4 form-card">
+                                <div class="card-body p-4">
+                                    <h5 class="card-title mb-3">Lascia una recensione</h5>
+                                    <form id="review-form" data-idappunto="<?php echo htmlspecialchars($appunto['idappunto']); ?>" onsubmit="handleReviewFormSubmit(event)">
+                                        <div class="mb-3">
+                                            <label for="valutazione" class="form-label">Valutazione</label>
+                                            <select name="valutazione" id="valutazione" class="form-select" required>
+                                                <option value="" selected disabled>Seleziona un voto</option>
+                                                <option value="5">5 - Eccellente</option>
+                                                <option value="4">4 - Molto buono</option>
+                                                <option value="3">3 - Buono</option>
+                                                <option value="2">2 - Sufficiente</option>
+                                                <option value="1">1 - Scarso</option>
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Invia Recensione</button>
+                                    </form>
+                                </div>
+                            </div>
+                        `;
+                    }
+                }, 300);
+            } else {
+                showError(data.message || 'Errore durante l\'eliminazione della recensione.');
                 btn.disabled = false;
                 btn.textContent = 'Elimina';
-                alert('Si è verificato un errore. Riprova.');
-            });
-        }
-    });
+            }
+        })
+        .catch(() => {
+            btn.disabled = false;
+            btn.textContent = 'Elimina';
+            showError('Si è verificato un errore. Riprova.');
+        });
+    }
 </script>

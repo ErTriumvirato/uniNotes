@@ -49,7 +49,7 @@ $templateParams["stats"] = [
     "articles_written" => $dbh->getArticlesCountByAuthor($idProfile, true),
     "avg_rating" => $dbh->getAuthorAverageRating($idProfile)
 ];
-$templateParams["articles"] = $dbh->getArticlesByAuthor($idProfile, true);
+$templateParams["articles"] = $dbh->getApprovedArticlesByUserIdWithFilters($idProfile, 'data_pubblicazione', 'DESC');
 
 // templateParams
 $templateParams["titolo"] = "uniNotes - Profilo di " . $userProfile['username'];

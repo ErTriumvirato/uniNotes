@@ -17,7 +17,7 @@
 
                 <div class="row mb-4">
                     <div class="col-12 col-md-6">
-                        <input type="text" id="searchUser" class="form-control" placeholder="Cerca utente per username...">
+                        <input type="text" id="searchUser" class="form-control" placeholder="Cerca utente per username..." oninput="debouncedLoadUsers()">
                     </div>
                 </div>
 
@@ -77,21 +77,16 @@
 
     <script>
         let userModalBS = null;
+        let searchTimeout = null;
 
         document.addEventListener('DOMContentLoaded', function() {
             userModalBS = new bootstrap.Modal(document.getElementById('userModal'));
             loadUsers();
-            document.getElementById('searchUser').addEventListener('input', debounce(loadUsers, 300));
         });
 
-        function debounce(func, wait) {
-            let timeout;
-            return function() {
-                const context = this,
-                    args = arguments;
-                clearTimeout(timeout);
-                timeout = setTimeout(() => func.apply(context, args), wait);
-            };
+        function debouncedLoadUsers() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(loadUsers, 300);
         }
 
         function loadUsers() {
@@ -161,9 +156,9 @@
                     if (data.success) {
                         userModalBS.hide();
                         loadUsers();
-                        // alert('Utente salvato!');
+                        showSuccess(data.message);
                     } else {
-                        alert('Errore: ' + data.message);
+                        showError('Errore: ' + data.message);
                     }
                 });
         }
@@ -197,8 +192,9 @@
                     .then(data => {
                         if (data.success) {
                             loadUsers();
+                            showSuccess(data.message);
                         } else {
-                            alert('Errore: ' + data.message);
+                            showError('Errore: ' + data.message);
                         }
                     });
         }

@@ -143,43 +143,6 @@ class DatabaseHelper
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getApprovedArticlesByCourse($idcorso)
-    {
-        $query = "SELECT appunti.*, utenti.username AS autore, ROUND(AVG(recensioni.valutazione), 1) AS media_recensioni
-            FROM appunti
-            JOIN utenti ON appunti.idutente = utenti.idutente
-            LEFT JOIN recensioni ON appunti.idappunto = recensioni.idappunto
-            WHERE appunti.idcorso = ?
-            AND appunti.approvato = true
-            GROUP BY appunti.idappunto
-            ORDER BY data_pubblicazione DESC, media_recensioni DESC
-        ";
-        $stmt = $this->db->prepare($query);
-        $stmt->bind_param('i', $idcorso);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        return $result->fetch_all(MYSQLI_ASSOC);
-    }
-
-    public function getApprovedArticles()
-    {
-        $query = "SELECT appunti.*,  utenti.username AS autore,
-            ROUND(AVG(recensioni.valutazione), 1) AS media_recensioni,
-            COUNT(recensioni.idrecensione) AS numero_recensioni
-        FROM appunti
-        JOIN utenti ON appunti.idutente = utenti.idutente
-        LEFT JOIN recensioni ON appunti.idappunto = recensioni.idappunto
-        WHERE appunti.approvato = TRUE
-        GROUP BY appunti.idappunto
-        ORDER BY appunti.data_pubblicazione DESC, media_recensioni DESC
-    ";
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        return $result->fetch_all(MYSQLI_ASSOC);
-    }
-
     public function getAdminApprovedArticles($search = null, $orderBy = 'data_pubblicazione', $order = 'DESC')
     {
         $query = "SELECT appunti.*, utenti.username AS autore, corsi.nome AS nome_corso,
@@ -219,21 +182,6 @@ class DatabaseHelper
         }
         $stmt->execute();
         $result = $stmt->get_result();
-        return $result->fetch_all(MYSQLI_ASSOC);
-    }
-
-    public function getArticles()
-    {
-        $query = "SELECT appunti.*, ROUND(AVG(recensioni.valutazione), 1) AS media_recensioni
-            FROM appunti
-            LEFT JOIN recensioni ON appunti.idappunto = recensioni.idappunto
-            GROUP BY appunti.idappunto
-            ORDER BY data_pubblicazione DESC, media_recensioni DESC
-        ";
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
@@ -289,12 +237,7 @@ class DatabaseHelper
 
     public function hasFollowedCourses($idutente)
     {
-        $stmt = $this->db->prepare("SELECT COUNT(*) as count FROM iscrizioni WHERE idutente = ?");
-        $stmt->bind_param("i", $idutente);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-        return $row['count'] > 0;
+        return $this->getFollowedCoursesCount($idutente) > 0;
     }
 
     public function createArticle($idcorso, $titolo, $contenuto, $idutente)
@@ -563,27 +506,6 @@ class DatabaseHelper
         $result = $stmt->get_result();
         $row = $result->fetch_assoc();
         return $row['avg_rating'] !== null ? $row['avg_rating'] : 0;
-    }
-
-    public function getArticlesByAuthor($idutente, $onlyApproved = false) {
-        $query = "SELECT appunti.*, corsi.nome AS nome_corso, 
-                  ROUND(AVG(recensioni.valutazione), 1) AS media_recensioni
-                  FROM appunti
-                  JOIN corsi ON appunti.idcorso = corsi.idcorso
-                  LEFT JOIN recensioni ON appunti.idappunto = recensioni.idappunto
-                  WHERE appunti.idutente = ?";
-        
-        if ($onlyApproved) {
-            $query .= " AND appunti.approvato = TRUE";
-        }
-
-        $query .= " GROUP BY appunti.idappunto
-                  ORDER BY appunti.data_pubblicazione DESC";
-        
-        $stmt = $this->db->prepare($query);
-        $stmt->bind_param("i", $idutente);
-        $stmt->execute();
-        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 
     public function getUnapprovedArticlesByAuthor($idutente)

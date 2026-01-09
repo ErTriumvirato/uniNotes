@@ -56,7 +56,7 @@ $articles = $dbh->getArticlesToApprove();
             reason = prompt("Inserisci il motivo del rifiuto:");
             if (reason === null) return; // Annullato dall'utente
             if (reason.trim() === "") {
-                alert("È necessario specificare un motivo per il rifiuto.");
+                showError("È necessario specificare un motivo per il rifiuto.");
                 return;
             }
         }
@@ -85,11 +85,11 @@ $articles = $dbh->getArticlesToApprove();
                         container.innerHTML = '<div class="alert alert-info" role="alert">Nessun appunto da approvare al momento.</div>';
                     }
                 } else {
-                    alert('Errore durante l\'operazione: ' + (data.message || 'Sconosciuto'));
+                    showError('Errore durante l\'operazione: ' + (data.message || 'Sconosciuto'));
                 }
             })
             .catch(() => {
-                alert('Errore di comunicazione con il server.');
+                showError('Errore di comunicazione con il server.');
             });
     }
 </script>

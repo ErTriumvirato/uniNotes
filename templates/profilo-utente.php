@@ -4,7 +4,7 @@ $stats = [
     "articles_written" => $dbh->getArticlesCountByAuthor($idProfile, true),
     "avg_rating" => $dbh->getAuthorAverageRating($idProfile)
 ];
-$appunti = $dbh->getArticlesByAuthor($templateParams['userProfile']['idutente'], true);
+$appunti = $dbh->getApprovedArticlesByUserIdWithFilters($templateParams['userProfile']['idutente'], 'data_pubblicazione', 'DESC');
 ?>
 
 <h2 class="mb-4"><?php echo htmlspecialchars($templateParams['userProfile']['username']); ?></h2>
@@ -42,7 +42,7 @@ $appunti = $dbh->getArticlesByAuthor($templateParams['userProfile']['idutente'],
     </div>
     <div class="col-6 col-md-3">
         <label for="ajax-sort" class="form-label small text-muted">Ordina per</label>
-        <select id="ajax-sort" class="form-select form-select-sm">
+        <select id="ajax-sort" class="form-select form-select-sm" onchange="updateArticles()">
             <option value="data_pubblicazione">Data di caricamento</option>
             <option value="media_recensioni">Valutazione media</option>
             <option value="numero_visualizzazioni">Numero di visualizzazioni</option>
@@ -50,7 +50,7 @@ $appunti = $dbh->getArticlesByAuthor($templateParams['userProfile']['idutente'],
     </div>
     <div class="col-6 col-md-3">
         <label for="ajax-order" class="form-label small text-muted">Ordine</label>
-        <select id="ajax-order" class="form-select form-select-sm">
+        <select id="ajax-order" class="form-select form-select-sm" onchange="updateArticles()">
             <option value="DESC">Decrescente</option>
             <option value="ASC">Crescente</option>
         </select>
@@ -147,6 +147,4 @@ $appunti = $dbh->getArticlesByAuthor($templateParams['userProfile']['idutente'],
             });
     }
 
-    sortSelect.addEventListener('change', updateArticles);
-    orderSelect.addEventListener('change', updateArticles);
 </script>

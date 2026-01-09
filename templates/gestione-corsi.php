@@ -18,10 +18,10 @@
 
                 <div class="row g-3 mb-4">
                     <div class="col-12 col-md-6">
-                        <input type="text" id="searchCourse" class="form-control" placeholder="Cerca corso...">
+                        <input type="text" id="searchCourse" class="form-control" placeholder="Cerca corso..." oninput="debouncedLoadCourses()">
                     </div>
                     <div class="col-12 col-md-6">
-                        <select id="filterSSD" class="form-select">
+                        <select id="filterSSD" class="form-select" onchange="loadCourses()">
                             <option value="">Tutti gli SSD</option>
                         </select>
                     </div>
@@ -138,6 +138,7 @@
     <script>
         let courseModalBS = null;
         let ssdModalBS = null;
+        let searchTimeout = null;
 
         document.addEventListener('DOMContentLoaded', function() {
             courseModalBS = new bootstrap.Modal(document.getElementById('courseModal'));
@@ -145,18 +146,11 @@
 
             loadCourses();
             loadSSDs();
-
-            // Event Listeners for filters
-            document.getElementById('searchCourse').addEventListener('input', debounce(loadCourses, 300));
-            document.getElementById('filterSSD').addEventListener('change', loadCourses);
         });
 
-        function debounce(func, wait) {
-            let timeout;
-            return function(...args) {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => func.apply(this, args), wait);
-            };
+        function debouncedLoadCourses() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(loadCourses, 300);
         }
 
         function loadCourses() {
@@ -270,8 +264,9 @@
                     if (data.success) {
                         courseModalBS.hide();
                         loadCourses();
+                        showSuccess(data.message);
                     } else {
-                        alert('Errore: ' + data.message);
+                        showError('Errore: ' + data.message);
                     }
                 });
         }
@@ -305,8 +300,9 @@
                     .then(data => {
                         if (data.success) {
                             loadCourses();
+                            showSuccess(data.message);
                         } else {
-                            alert('Errore: ' + data.message);
+                            showError('Errore: ' + data.message);
                         }
                     });
         }
@@ -348,8 +344,9 @@
                         ssdModalBS.hide();
                         loadSSDs();
                         loadCourses();
+                        showSuccess(data.message);
                     } else {
-                        alert('Errore: ' + data.message);
+                        showError('Errore: ' + data.message);
                     }
                 });
         }
@@ -383,8 +380,10 @@
                     .then(data => {
                         if (data.success) {
                             loadSSDs();
+                            loadCourses();
+                            showSuccess(data.message);
                         } else {
-                            alert('Errore: ' + data.message);
+                            showError('Errore: ' + data.message);
                         }
                     });
         }

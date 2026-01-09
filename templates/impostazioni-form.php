@@ -5,9 +5,15 @@
                 <h2 class="text-center mb-4">Impostazioni Profilo</h2>
                 
                 <?php if(isset($templateParams["messaggio"])): ?>
-                    <div class="alert alert-info" role="alert">
-                        <?php echo htmlspecialchars($templateParams["messaggio"]); ?>
-                    </div>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            <?php if (strpos($templateParams["messaggio"], 'Errore') !== false): ?>
+                                showError("<?php echo addslashes($templateParams['messaggio']); ?>");
+                            <?php else: ?>
+                                showSuccess("<?php echo addslashes($templateParams['messaggio']); ?>");
+                            <?php endif; ?>
+                        });
+                    </script>
                 <?php endif; ?>
 
                 <form action="impostazioni.php" method="POST">

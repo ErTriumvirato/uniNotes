@@ -9,11 +9,11 @@
                 <form class="row g-3">
                     <div class="col-12 col-md-6">
                         <label for="search" class="form-label small text-muted">Cerca</label>
-                        <input type="text" class="form-control" id="search" placeholder="Titolo, autore, corso...">
+                        <input type="text" class="form-control" id="search" placeholder="Titolo, autore, corso..." oninput="debouncedUpdateArticles()">
                     </div>
                     <div class="col-6 col-md-3">
                         <label for="ajax-sort" class="form-label small text-muted">Ordina per</label>
-                        <select id="ajax-sort" class="form-select">
+                        <select id="ajax-sort" class="form-select" onchange="updateArticles()">
                             <option value="data_pubblicazione">Data</option>
                             <option value="media_recensioni">Media Voti</option>
                             <option value="numero_visualizzazioni">Visualizzazioni</option>
@@ -21,7 +21,7 @@
                     </div>
                     <div class="col-6 col-md-3">
                         <label for="ajax-order" class="form-label small text-muted">Ordine</label>
-                        <select id="ajax-order" class="form-select">
+                        <select id="ajax-order" class="form-select" onchange="updateArticles()">
                             <option value="DESC">Decrescente</option>
                             <option value="ASC">Crescente</option>
                         </select>
@@ -185,7 +185,7 @@
                     }
                 }, 500);
             } else {
-                alert('Errore durante l\'eliminazione');
+                showError('Errore durante l\'eliminazione');
                 btn.disabled = false;
                 btn.textContent = 'Elimina';
                 delete btn.dataset.confirm;
@@ -194,7 +194,7 @@
             }
         })
         .catch(() => {
-            alert('Errore di connessione');
+            showError('Errore di connessione');
             btn.disabled = false;
             btn.textContent = 'Elimina';
             delete btn.dataset.confirm;
@@ -204,11 +204,8 @@
     }
 
     let timeout;
-    searchInput.addEventListener('input', () => {
+    function debouncedUpdateArticles() {
         clearTimeout(timeout);
         timeout = setTimeout(updateArticles, 300);
-    });
-    
-    sortSelect.addEventListener('change', updateArticles);
-    orderSelect.addEventListener('change', updateArticles);
+    }
 </script>

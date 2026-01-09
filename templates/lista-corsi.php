@@ -7,10 +7,10 @@ $ssds = $templateParams["ssds"];
 
 <div class="row g-3 mb-4">
     <div class="col-12 col-md-4">
-        <input type="text" id="search" class="form-control" placeholder="Cerca corso...">
+        <input type="text" id="search" class="form-control" placeholder="Cerca corso..." oninput="filterCourses()">
     </div>
     <div class="col-12 col-md-4">
-        <select id="ssd" class="form-select">
+        <select id="ssd" class="form-select" onchange="filterCourses()">
             <option value="">Tutti gli SSD</option>
             <?php foreach ($ssds as $ssd): ?>
                 <option value="<?= htmlspecialchars($ssd['nome']) ?>"><?= htmlspecialchars($ssd['nome']) ?></option>
@@ -18,7 +18,7 @@ $ssds = $templateParams["ssds"];
         </select>
     </div>
     <div class="col-12 col-md-4">
-        <select id="filterType" class="form-select">
+        <select id="filterType" class="form-select" onchange="filterCourses()">
             <option value="all">Tutti i corsi</option>
             <?php if ($idutente): ?>
                 <option value="followed">Corsi seguiti</option>
@@ -46,7 +46,8 @@ $ssds = $templateParams["ssds"];
                     <div class="mt-auto">
                         <button type="button" class="btn btn-sm w-100 position-relative z-2 <?php echo htmlspecialchars($isFollowing ? 'btn-outline-danger' : 'btn-outline-primary'); ?>"
                             data-idcorso="<?= htmlspecialchars((int)$corso['idcorso']) ?>"
-                            data-following="<?= htmlspecialchars($isFollowing ? 'true' : 'false') ?>">
+                            data-following="<?= htmlspecialchars($isFollowing ? 'true' : 'false') ?>"
+                            onclick="handleFollowClick(this)">
                             <?php if ($isFollowing): ?>
                                 Smetti di seguire
                             <?php else: ?>
@@ -61,75 +62,65 @@ $ssds = $templateParams["ssds"];
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        attachFollowListeners();
-        
-    function attachFollowListeners() {
-        document.querySelectorAll('button[data-idcorso]').forEach(btn => {
-            const newBtn = btn.cloneNode(true);
-            btn.parentNode.replaceChild(newBtn, btn);
+    function handleFollowClick(button) {
+        const idcorso = button.dataset.idcorso;
+        button.disabled = true;
 
-            newBtn.addEventListener('click', function() {
-                const idcorso = this.dataset.idcorso;
-                const button = this;
-                button.disabled = true;
-
-                fetch('corsi.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded'
-                        },
-                        body: 'toggleFollow=' + encodeURIComponent(idcorso)
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.following) {
-                            button.innerHTML = 'Smetti di seguire';
-                            button.className = 'btn btn-sm w-100 position-relative z-2 btn-outline-danger';
-                            button.dataset.following = 'true';
-                        } else {
-                            button.innerHTML = 'Segui corso';
-                            button.className = 'btn btn-sm w-100 position-relative z-2 btn-outline-primary';
-                            button.dataset.following = 'false';
-                        }
-                        button.disabled = false;
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        alert('Errore durante l\'operazione. Riprova.');
-                        button.disabled = false;
-                    });
+        fetch('corsi.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'toggleFollow=' + encodeURIComponent(idcorso)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.following) {
+                    button.innerHTML = 'Smetti di seguire';
+                    button.className = 'btn btn-sm w-100 position-relative z-2 btn-outline-danger';
+                    button.dataset.following = 'true';
+                } else {
+                    button.innerHTML = 'Segui corso';
+                    button.className = 'btn btn-sm w-100 position-relative z-2 btn-outline-primary';
+                    button.dataset.following = 'false';
+                }
+                button.disabled = false;
+            })
+            .catch(err => {
+                console.error(err);
+                showError('Errore durante l\'operazione. Riprova.');
+                button.disabled = false;
             });
-        });
     }
-        const searchInput = document.getElementById('search');
-        const ssdSelect = document.getElementById('ssd');
-        const filterTypeSelect = document.getElementById('filterType');
-        const coursesContainer = document.getElementById('courses-container');
 
-        function filterCourses() {
-            const search = searchInput.value;
-            const ssd = ssdSelect.value;
-            const filterType = filterTypeSelect ? filterTypeSelect.value : 'all';
+    const searchInput = document.getElementById('search');
+    const ssdSelect = document.getElementById('ssd');
+    const filterTypeSelect = document.getElementById('filterType');
+    const coursesContainer = document.getElementById('courses-container');
 
-            fetch(`corsi.php?action=filter&search=${encodeURIComponent(search)}&ssd=${encodeURIComponent(ssd)}&filterType=${encodeURIComponent(filterType)}`)
-                .then(response => response.json())
-                .then(data => {
-                    coursesContainer.innerHTML = '';
-                    if (data.length === 0) {
-                        coursesContainer.innerHTML = '<div class="col-12"><p class="text-center text-muted">Nessun corso trovato.</p></div>';
-                        return;
-                    }
+    function filterCourses() {
+        const search = searchInput.value;
+        const ssd = ssdSelect.value;
+        const filterType = filterTypeSelect ? filterTypeSelect.value : 'all';
 
-                    data.forEach(corso => {
-                        const col = document.createElement('div');
-                        col.className = 'col-12 col-md-6 col-lg-4';
+        fetch(`corsi.php?action=filter&search=${encodeURIComponent(search)}&ssd=${encodeURIComponent(ssd)}&filterType=${encodeURIComponent(filterType)}`)
+            .then(response => response.json())
+            .then(data => {
+                coursesContainer.innerHTML = '';
+                if (data.length === 0) {
+                    coursesContainer.innerHTML = '<div class="col-12"><p class="text-center text-muted">Nessun corso trovato.</p></div>';
+                    return;
+                }
 
-                        const isFollowing = corso.isFollowing;
-                        const followText = isFollowing ? 'Smetti di seguire' : 'Segui corso';
-                        const btnClass = isFollowing ? 'btn-outline-danger' : 'btn-outline-primary';
+                data.forEach(corso => {
+                    const col = document.createElement('div');
+                    col.className = 'col-12 col-md-6 col-lg-4';
 
-                        col.innerHTML = `
+                    const isFollowing = corso.isFollowing;
+                    const followText = isFollowing ? 'Smetti di seguire' : 'Segui corso';
+                    const btnClass = isFollowing ? 'btn-outline-danger' : 'btn-outline-primary';
+
+                    col.innerHTML = `
                 <div class="card h-100 shadow-sm border-0 course-card">
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">
@@ -143,24 +134,17 @@ $ssds = $templateParams["ssds"];
                         <div class="mt-auto">
                             <button type="button" class="btn btn-sm w-100 position-relative z-2 ${btnClass}"
                                     data-idcorso="${corso.idcorso}"
-                                    data-following="${isFollowing}">
+                                    data-following="${isFollowing}"
+                                    onclick="handleFollowClick(this)">
                                 ${followText}
                             </button>
                         </div>
                     </div>
                 </div>
             `;
-                        coursesContainer.appendChild(col);
-                    });
-                    attachFollowListeners();
-                })
-                .catch(error => console.error('Error:', error));
-        }
-
-        searchInput.addEventListener('input', filterCourses);
-        ssdSelect.addEventListener('change', filterCourses);
-        if (filterTypeSelect) {
-            filterTypeSelect.addEventListener('change', filterCourses);
-        }
-    });
+                    coursesContainer.appendChild(col);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    }
 </script>
