@@ -1,12 +1,12 @@
 <div class="row justify-content-center">
     <div class="col-12 col-lg-10">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="display-5 fw-bold mb-0">Revisione Appunti</h1>
+            <h1 class="display-5 fw-bold mb-0">Revisione appunti</h1>
         </div>
 
         <div class="card shadow-sm border-0 mb-4 form-card">
             <div class="card-body p-4">
-                <form id="search-form" class="row g-3" onsubmit="event.preventDefault();">
+                <form class="row g-3">
                     <div class="col-12 col-md-6">
                         <label for="search" class="form-label small text-muted">Cerca</label>
                         <input type="text" class="form-control" id="search" placeholder="Titolo, autore, corso...">
@@ -48,15 +48,15 @@
                             <div class="col-12 col-md-6 text-md-end mt-2 mt-md-0">
                                 <div class="d-flex gap-2 justify-content-md-end align-items-center flex-wrap">
                                     <span class="badge bg-light text-dark border">
-                                        ★ <?php echo htmlspecialchars($appunto['media_recensioni'] ?: '0.0'); ?>
+                                        ★ <?php echo $appunto['media_recensioni'] ?: '0.0'; ?>
                                     </span>
                                     <span class="badge bg-light text-dark border">
-                                        <?php echo htmlspecialchars((int)$appunto['numero_visualizzazioni']); ?> Vis.
+                                        <?php echo (int)$appunto['numero_visualizzazioni']; ?> Vis.
                                     </span>
                                     <span class="badge bg-light text-dark border">
-                                        📅 <?php echo htmlspecialchars(date('d/m/y', strtotime($appunto['data_pubblicazione']))); ?>
+                                        📅 <?php echo date('d/m/y', strtotime($appunto['data_pubblicazione'])); ?>
                                     </span>
-                                    <button class="btn btn-sm btn-outline-danger ms-2 delete-btn" data-id="<?php echo $appunto['idappunto']; ?>" title="Elimina appunto">
+                                    <button class="btn btn-sm btn-outline-danger ms-2" onclick="handleDelete(this)" data-id="<?php echo $appunto['idappunto']; ?>" title="Elimina appunto">
                                          Elimina
                                     </button>
                                 </div>
@@ -115,7 +115,7 @@
                                     <span class="badge bg-light text-dark border">
                                         📅 ${art.data_formattata}
                                     </span>
-                                    <button class="btn btn-sm btn-outline-danger ms-2 delete-btn" data-id="${art.idappunto}" title="Elimina appunto">
+                                    <button class="btn btn-sm btn-outline-danger ms-2" onclick="handleDelete(this)" data-id="${art.idappunto}" title="Elimina appunto">
                                          Elimina
                                     </button>
                                 </div>
@@ -125,8 +125,10 @@
                 </div>`;
                         container.insertAdjacentHTML('beforeend', html);
                     });
-                    attachDeleteListeners();
                 }
+            })
+            .catch(() => {
+                container.innerHTML = '<div class="alert alert-danger text-center">Errore di connessione.</div>';
             });
     }
 
@@ -140,49 +142,64 @@
             .replace(/'/g, "&#039;");
     }
 
-    function attachDeleteListeners() {
-        document.querySelectorAll('.delete-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                if(!confirm('Sei sicuro di voler eliminare questo appunto?')) return;
-                
-                const id = this.dataset.id;
-                const card = document.getElementById(`article-${id}`);
-                const originalText = this.textContent;
-                this.disabled = true;
-                this.textContent = '...';
-                
-                const formData = new FormData();
-                formData.append('action', 'delete');
-                formData.append('idappunto', id);
-                formData.append('ajax', '1');
+    function handleDelete(btn) {
+        const id = btn.dataset.id;
+        const card = document.getElementById(`article-${id}`);
 
-                fetch('gestione-appunti.php', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if(data.success) {
-                        card.style.opacity = '0';
-                        setTimeout(() => { 
-                            card.remove(); 
-                            if(container.children.length === 0) {
-                                container.innerHTML = '<div class="alert alert-info text-center">Nessun appunto trovato.</div>';
-                            }
-                        }, 500);
-                    } else {
-                        alert('Errore durante l\'eliminazione');
-                        this.disabled = false;
-                        this.textContent = originalText;
+        if (!btn.dataset.confirm) {
+            btn.dataset.confirm = 'true';
+            btn.textContent = 'Conferma?';
+            btn.classList.remove('btn-outline-danger');
+            btn.classList.add('btn-danger');
+            setTimeout(() => {
+                if (btn.dataset.confirm) {
+                    delete btn.dataset.confirm;
+                    btn.textContent = 'Elimina';
+                    btn.classList.remove('btn-danger');
+                    btn.classList.add('btn-outline-danger');
+                }
+            }, 3000);
+            return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = '...';
+
+        const formData = new FormData();
+        formData.append('action', 'delete');
+        formData.append('idappunto', id);
+        formData.append('ajax', '1');
+
+        fetch('gestione-appunti.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.success) {
+                card.style.opacity = '0';
+                setTimeout(() => {
+                    card.remove();
+                    if(container.children.length === 0) {
+                        container.innerHTML = '<div class="alert alert-info text-center">Nessun appunto trovato.</div>';
                     }
-                })
-                .catch(err => {
-                    console.error(err);
-                    alert('Errore di connessione');
-                    this.disabled = false;
-                    this.textContent = originalText;
-                });
-            });
+                }, 500);
+            } else {
+                alert('Errore durante l\'eliminazione');
+                btn.disabled = false;
+                btn.textContent = 'Elimina';
+                delete btn.dataset.confirm;
+                btn.classList.remove('btn-danger');
+                btn.classList.add('btn-outline-danger');
+            }
+        })
+        .catch(() => {
+            alert('Errore di connessione');
+            btn.disabled = false;
+            btn.textContent = 'Elimina';
+            delete btn.dataset.confirm;
+            btn.classList.remove('btn-danger');
+            btn.classList.add('btn-outline-danger');
         });
     }
 
@@ -194,6 +211,4 @@
     
     sortSelect.addEventListener('change', updateArticles);
     orderSelect.addEventListener('change', updateArticles);
-    
-    attachDeleteListeners();
 </script>

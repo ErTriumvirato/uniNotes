@@ -115,7 +115,7 @@
                             <td class="text-end">
                                 <div class="btn-group btn-group-sm">
                                     <button type="button" class="btn btn-outline-secondary" onclick="editUser(${user.idutente})">Modifica</button>
-                                    <button type="button" class="btn btn-outline-danger" onclick="deleteUser(${user.idutente})">Elimina</button>
+                                    <button type="button" class="btn btn-outline-danger" onclick="deleteUser(${user.idutente}, this)">Elimina</button>
                                 </div>
                             </td>
                         </tr>
@@ -168,13 +168,28 @@
                 });
         }
 
-        function deleteUser(id) {
-            if (confirm('Sei sicuro di voler eliminare questo utente?')) {
-                const formData = new FormData();
-                formData.append('action', 'delete_user');
-                formData.append('id', id);
+        function deleteUser(id, btn) {
+            if (!btn.dataset.confirm) {
+                btn.dataset.confirm = 'true';
+                btn.textContent = 'Conferma?';
+                btn.classList.remove('btn-outline-danger');
+                btn.classList.add('btn-danger');
+                setTimeout(() => {
+                    if (btn.dataset.confirm) {
+                        delete btn.dataset.confirm;
+                        btn.textContent = 'Elimina';
+                        btn.classList.remove('btn-danger');
+                        btn.classList.add('btn-outline-danger');
+                    }
+                }, 3000);
+                return;
+            }
 
-                fetch('gestione-utenti.php', {
+            const formData = new FormData();
+            formData.append('action', 'delete_user');
+            formData.append('id', id);
+
+            fetch('gestione-utenti.php', {
                         method: 'POST',
                         body: formData
                     })
@@ -186,6 +201,5 @@
                             alert('Errore: ' + data.message);
                         }
                     });
-            }
         }
     </script>

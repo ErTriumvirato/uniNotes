@@ -32,13 +32,35 @@
                 </form>
 
                 <hr class="my-4">
-                
-                <form action="impostazioni.php" method="POST" onsubmit="return confirm('Sei sicuro di voler eliminare il tuo account? Questa azione è irreversibile e cancellerà tutti i tuoi dati.');">
+
+                <form action="impostazioni.php" method="POST" id="deleteAccountForm">
                     <div class="d-grid gap-2">
-                        <button type="submit" name="delete_account" class="btn btn-outline-danger">Elimina Account</button>
+                        <button type="button" onclick="handleDeleteAccount(this)" class="btn btn-outline-danger">Elimina Account</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    function handleDeleteAccount(btn) {
+        if (!btn.dataset.confirm) {
+            btn.dataset.confirm = 'true';
+            btn.textContent = 'Conferma eliminazione?';
+            btn.classList.remove('btn-outline-danger');
+            btn.classList.add('btn-danger');
+            setTimeout(() => {
+                if (btn.dataset.confirm) {
+                    delete btn.dataset.confirm;
+                    btn.textContent = 'Elimina Account';
+                    btn.classList.remove('btn-danger');
+                    btn.classList.add('btn-outline-danger');
+                }
+            }, 3000);
+            return;
+        }
+
+        document.getElementById('deleteAccountForm').submit();
+    }
+</script>

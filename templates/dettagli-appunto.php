@@ -35,10 +35,10 @@ if (!empty($appunto)) {
 
                 <footer class="d-flex gap-3 pt-3 border-top">
                     <span class="badge bg-light text-dark border p-2">
-                        <?php echo htmlspecialchars($appunto['numero_visualizzazioni']); ?> Visualizzazioni
+                        <?php echo (int)$appunto['numero_visualizzazioni']; ?> Visualizzazioni
                     </span>
                     <span id="avg-rating-badge" class="badge bg-light text-dark border p-2">
-                        ★ <?php echo htmlspecialchars($appunto['media_recensioni'] ?: 'N/A'); ?> Media voti
+                        ★ <?php echo $appunto['media_recensioni'] ?: 'N/A'; ?> Media voti
                     </span>
                 </footer>
             </div>
@@ -193,8 +193,7 @@ if (!empty($appunto)) {
                 `);
             }
         })
-        .catch(error => {
-            console.error('Errore:', error);
+        .catch(() => {
             submitBtn.disabled = false;
             submitBtn.textContent = 'Invia Recensione';
             alert('Si è verificato un errore. Riprova.');
@@ -211,7 +210,19 @@ if (!empty($appunto)) {
             const idrecensione = btn.dataset.reviewId;
             const reviewCard = btn.closest('.card[data-review-id]');
 
-            if (!confirm('Sei sicuro di voler eliminare questa recensione?')) {
+            if (!btn.dataset.confirm) {
+                btn.dataset.confirm = 'true';
+                btn.textContent = 'Conferma?';
+                btn.classList.remove('btn-outline-danger');
+                btn.classList.add('btn-danger');
+                setTimeout(() => {
+                    if (btn.dataset.confirm) {
+                        delete btn.dataset.confirm;
+                        btn.textContent = 'Elimina';
+                        btn.classList.remove('btn-danger');
+                        btn.classList.add('btn-outline-danger');
+                    }
+                }, 3000);
                 return;
             }
 
@@ -279,8 +290,7 @@ if (!empty($appunto)) {
                     btn.textContent = 'Elimina';
                 }
             })
-            .catch(error => {
-                console.error('Errore:', error);
+            .catch(() => {
                 btn.disabled = false;
                 btn.textContent = 'Elimina';
                 alert('Si è verificato un errore. Riprova.');

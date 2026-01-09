@@ -5,7 +5,7 @@ $articles = $dbh->getArticlesToApprove();
 <div class="container">
     <div class="row mb-4">
         <div class="col-12">
-            <h2 class="display-5 fw-bold">Approvazione Appunti</h2>
+            <h2 class="display-5 fw-bold">Approvazione appunti</h2>
             <p class="text-muted">Revisiona e approva gli articoli inviati dagli utenti</p>
         </div>
     </div>
@@ -88,8 +88,7 @@ $articles = $dbh->getArticlesToApprove();
                     alert('Errore durante l\'operazione: ' + (data.message || 'Sconosciuto'));
                 }
             })
-            .catch(error => {
-                console.error('Error:', error);
+            .catch(() => {
                 alert('Errore di comunicazione con il server.');
             });
     }

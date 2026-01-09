@@ -17,17 +17,12 @@
                 </div>
 
                 <div class="row g-3 mb-4">
-                    <div class="col-12 col-md-4">
+                    <div class="col-12 col-md-6">
                         <input type="text" id="searchCourse" class="form-control" placeholder="Cerca corso...">
                     </div>
-                    <div class="col-12 col-md-4">
+                    <div class="col-12 col-md-6">
                         <select id="filterSSD" class="form-select">
                             <option value="">Tutti gli SSD</option>
-                        </select>
-                    </div>
-                    <div class="col-12 col-md-4">
-                        <select id="sortCourses" class="form-select">
-                            <option value="nome">Ordina per Nome</option>
                         </select>
                     </div>
                 </div>
@@ -158,11 +153,9 @@
 
         function debounce(func, wait) {
             let timeout;
-            return function() {
-                const context = this,
-                    args = arguments;
+            return function(...args) {
                 clearTimeout(timeout);
-                timeout = setTimeout(() => func.apply(context, args), wait);
+                timeout = setTimeout(() => func.apply(this, args), wait);
             };
         }
 
@@ -185,7 +178,7 @@
                             <td class="text-end">
                                 <div class="btn-group btn-group-sm">
                                     <button type="button" class="btn btn-outline-secondary" onclick="editCourse(${course.idcorso})">Modifica</button>
-                                    <button type="button" class="btn btn-outline-danger" onclick="deleteCourse(${course.idcorso})">Elimina</button>
+                                    <button type="button" class="btn btn-outline-danger" onclick="deleteCourse(${course.idcorso}, this)">Elimina</button>
                                 </div>
                             </td>
                         </tr>
@@ -222,7 +215,7 @@
                             <td class="text-end">
                                 <div class="btn-group btn-group-sm">
                                     <button type="button" class="btn btn-outline-secondary" onclick="editSSD(${ssd.idssd})">Modifica</button>
-                                    <button type="button" class="btn btn-outline-danger" onclick="deleteSSD(${ssd.idssd})">Elimina</button>
+                                    <button type="button" class="btn btn-outline-danger" onclick="deleteSSD(${ssd.idssd}, this)">Elimina</button>
                                 </div>
                             </td>
                         </tr>
@@ -277,20 +270,34 @@
                     if (data.success) {
                         courseModalBS.hide();
                         loadCourses();
-                        // alert('Corso salvato!');
                     } else {
                         alert('Errore: ' + data.message);
                     }
                 });
         }
 
-        function deleteCourse(id) {
-            if (confirm('Sei sicuro di voler eliminare questo corso?')) {
-                const formData = new FormData();
-                formData.append('action', 'delete_course');
-                formData.append('id', id);
+        function deleteCourse(id, btn) {
+            if (!btn.dataset.confirm) {
+                btn.dataset.confirm = 'true';
+                btn.textContent = 'Conferma?';
+                btn.classList.remove('btn-outline-danger');
+                btn.classList.add('btn-danger');
+                setTimeout(() => {
+                    if (btn.dataset.confirm) {
+                        delete btn.dataset.confirm;
+                        btn.textContent = 'Elimina';
+                        btn.classList.remove('btn-danger');
+                        btn.classList.add('btn-outline-danger');
+                    }
+                }, 3000);
+                return;
+            }
 
-                fetch('gestione-corsi.php', {
+            const formData = new FormData();
+            formData.append('action', 'delete_course');
+            formData.append('id', id);
+
+            fetch('gestione-corsi.php', {
                         method: 'POST',
                         body: formData
                     })
@@ -302,7 +309,6 @@
                             alert('Errore: ' + data.message);
                         }
                     });
-            }
         }
 
         // SSD Operations
@@ -342,20 +348,34 @@
                         ssdModalBS.hide();
                         loadSSDs();
                         loadCourses();
-                        // alert('SSD salvato!');
                     } else {
                         alert('Errore: ' + data.message);
                     }
                 });
         }
 
-        function deleteSSD(id) {
-            if (confirm('Sei sicuro di voler eliminare questo SSD?')) {
-                const formData = new FormData();
-                formData.append('action', 'delete_ssd');
-                formData.append('id', id);
+        function deleteSSD(id, btn) {
+            if (!btn.dataset.confirm) {
+                btn.dataset.confirm = 'true';
+                btn.textContent = 'Conferma?';
+                btn.classList.remove('btn-outline-danger');
+                btn.classList.add('btn-danger');
+                setTimeout(() => {
+                    if (btn.dataset.confirm) {
+                        delete btn.dataset.confirm;
+                        btn.textContent = 'Elimina';
+                        btn.classList.remove('btn-danger');
+                        btn.classList.add('btn-outline-danger');
+                    }
+                }, 3000);
+                return;
+            }
 
-                fetch('gestione-corsi.php', {
+            const formData = new FormData();
+            formData.append('action', 'delete_ssd');
+            formData.append('id', id);
+
+            fetch('gestione-corsi.php', {
                         method: 'POST',
                         body: formData
                     })
@@ -367,6 +387,5 @@
                             alert('Errore: ' + data.message);
                         }
                     });
-            }
         }
     </script>
