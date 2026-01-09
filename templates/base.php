@@ -22,7 +22,7 @@ header("Pragma: no-cache");
         <nav class="navbar navbar-expand-lg navbar-light shadow-sm fixed-top">
             <div class="container-fluid">
                 <a class="navbar-brand" href="index.php">
-                    <img src="uploads/img/logo.png" alt="uniNotes Logo" class="logo-img">
+                    <img src="uploads/img/logo.png" alt="Logo uniNotes" class="logo-img">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>

@@ -67,6 +67,16 @@ if (isset($_POST['valutazione'])) {
         $idutente = $_SESSION['idutente'];
         $valutazione = intval($_POST['valutazione']);
 
+        if ($appunto['idutente'] == $idutente) {
+            if (isset($_POST['ajax'])) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => 'Non puoi recensire il tuo stesso appunto.']);
+                exit();
+            }
+            header("Location: appunto.php?id=" . $idappunto);
+            exit();
+        }
+
         if ($valutazione >= 1 && $valutazione <= 5 && !$dbh->hasUserReviewed($idappunto, $idutente)) {
             $dbh->addReview($idappunto, $idutente, $valutazione);
 

@@ -48,7 +48,10 @@ if (!empty($appunto)) {
         <section>
             <h3 class="mb-4">Recensioni</h3>
             
-            <?php if (isUserLoggedIn() && !$dbh->hasUserReviewed($appunto['idappunto'], $_SESSION['idutente'])): ?>
+            <?php 
+            $isAuthor = isUserLoggedIn() && $_SESSION['idutente'] == $appunto['idutente'];
+            if (isUserLoggedIn() && !$isAuthor && !$dbh->hasUserReviewed($appunto['idappunto'], $_SESSION['idutente'])): 
+            ?>
                 <div id="review-form-card" class="card shadow-sm border-0 mb-4 form-card">
                     <div class="card-body p-4">
                         <h5 class="card-title mb-3">Lascia una recensione</h5>
@@ -68,11 +71,13 @@ if (!empty($appunto)) {
                         </form>
                     </div>
                 </div>
-            <?php elseif (isUserLoggedIn()): ?>
-                <div id="already-reviewed-alert" class="alert alert-info mb-4" role="alert">
-                    Hai già recensito questo appunto.
+            <?php elseif (isUserLoggedIn() && !$isAuthor): ?>
+                <div id="already-reviewed-card" class="card shadow-sm border-0 mb-4 bg-light">
+                    <div class="card-body p-4 text-center">
+                        <p class="mb-0 text-muted fst-italic">Hai già recensito questo appunto.</p>
+                    </div>
                 </div>
-            <?php else: ?>
+            <?php elseif (!isUserLoggedIn()): ?>
                 <div class="alert alert-warning mb-4" role="alert">
                     Effettua il <a href="login.php" class="alert-link">login</a> per lasciare una recensione.
                 </div>
@@ -143,11 +148,15 @@ if (!empty($appunto)) {
             if (data.success) {
                 // Nascondi il form e mostra il messaggio
                 const formCard = document.getElementById('review-form-card');
-                formCard.innerHTML = `
-                    <div class="alert alert-info mb-4" role="alert">
-                        Hai già recensito questo appunto.
-                    </div>
-                `;
+                if (formCard) {
+                    formCard.outerHTML = `
+                        <div id="already-reviewed-card" class="card shadow-sm border-0 mb-4 bg-light">
+                            <div class="card-body p-4 text-center">
+                                <p class="mb-0 text-muted fst-italic">Hai già recensito questo appunto.</p>
+                            </div>
+                        </div>
+                    `;
+                }
 
                 // Aggiorna la media delle recensioni
                 const avgBadge = document.getElementById('avg-rating-badge');
@@ -237,37 +246,31 @@ if (!empty($appunto)) {
                         avgBadge.textContent = '★ ' + data.new_avg + ' Media voti';
 
                         // Mostra il form per lasciare una nuova recensione
-                        const formCard = document.getElementById('review-form-card');
-                        if (formCard) {
-                            formCard.style.display = 'block';
-                        } else {
-                            // Se il form non esiste, dobbiamo crearlo
-                            const alreadyReviewedAlert = document.getElementById('already-reviewed-alert');
-                            if (alreadyReviewedAlert) {
-                                alreadyReviewedAlert.outerHTML = `
-                                    <div id="review-form-card" class="card shadow-sm border-0 mb-4 form-card">
-                                        <div class="card-body p-4">
-                                            <h5 class="card-title mb-3">Lascia una recensione</h5>
-                                            <form id="review-form" data-idappunto="<?php echo htmlspecialchars($appunto['idappunto']); ?>">
-                                                <div class="mb-3">
-                                                    <label for="valutazione" class="form-label">Valutazione</label>
-                                                    <select name="valutazione" id="valutazione" class="form-select" required>
-                                                        <option value="" selected disabled>Seleziona un voto</option>
-                                                        <option value="5">5 - Eccellente</option>
-                                                        <option value="4">4 - Molto buono</option>
-                                                        <option value="3">3 - Buono</option>
-                                                        <option value="2">2 - Sufficiente</option>
-                                                        <option value="1">1 - Scarso</option>
-                                                    </select>
-                                                </div>
-                                                <button type="submit" class="btn btn-primary">Invia Recensione</button>
-                                            </form>
-                                        </div>
+                        const alreadyReviewedCard = document.getElementById('already-reviewed-card');
+                        if (alreadyReviewedCard) {
+                            alreadyReviewedCard.outerHTML = `
+                                <div id="review-form-card" class="card shadow-sm border-0 mb-4 form-card">
+                                    <div class="card-body p-4">
+                                        <h5 class="card-title mb-3">Lascia una recensione</h5>
+                                        <form id="review-form" data-idappunto="<?php echo htmlspecialchars($appunto['idappunto']); ?>">
+                                            <div class="mb-3">
+                                                <label for="valutazione" class="form-label">Valutazione</label>
+                                                <select name="valutazione" id="valutazione" class="form-select" required>
+                                                    <option value="" selected disabled>Seleziona un voto</option>
+                                                    <option value="5">5 - Eccellente</option>
+                                                    <option value="4">4 - Molto buono</option>
+                                                    <option value="3">3 - Buono</option>
+                                                    <option value="2">2 - Sufficiente</option>
+                                                    <option value="1">1 - Scarso</option>
+                                                </select>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Invia Recensione</button>
+                                        </form>
                                     </div>
-                                `;
-                                // Riaggiungi l'event listener al nuovo form
-                                document.getElementById('review-form')?.addEventListener('submit', handleReviewFormSubmit);
-                            }
+                                </div>
+                            `;
+                            // Riaggiungi l'event listener al nuovo form
+                            document.getElementById('review-form')?.addEventListener('submit', handleReviewFormSubmit);
                         }
                     }, 300);
                 } else {
