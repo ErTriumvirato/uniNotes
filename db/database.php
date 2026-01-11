@@ -264,14 +264,29 @@ class DatabaseHelper
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getArticlesToApprove()
+    public function getArticlesToApprove($sort = 'data_pubblicazione', $order = 'DESC')
     {
+        $allowedSort = ['titolo', 'data_pubblicazione', 'autore'];
+        $allowedOrder = ['ASC', 'DESC'];
+
+        if (!in_array($sort, $allowedSort)) {
+            $sort = 'data_pubblicazione';
+        }
+        if (!in_array($order, $allowedOrder)) {
+            $order = 'DESC';
+        }
+
+        $orderBy = $sort;
+        if ($sort === 'autore') {
+            $orderBy = 'utenti.username';
+        }
+
         $query = "SELECT appunti.*, utenti.username AS autore, corsi.nome AS nome_corso
             FROM appunti
             JOIN utenti ON appunti.idutente = utenti.idutente
             JOIN corsi ON appunti.idcorso = corsi.idcorso
             WHERE appunti.approvato = FALSE AND appunti.motivo_rifiuto IS NULL
-            ORDER BY data_pubblicazione DESC
+            ORDER BY $orderBy $order
         ";
         $stmt = $this->db->prepare($query);
         $stmt->execute();

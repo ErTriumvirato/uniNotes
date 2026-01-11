@@ -2,7 +2,7 @@
 	--primary-color: #00663c;
 	--primary-hover: #005a35;
 	--bg-color: #f0fff0;
-	--nav-bg: fuchsia;
+	--nav-bg: #83ffde;
 
 	/* Sovrascrizione di Bootstrap */
 	--bs-body-bg: var(--bg-color);
@@ -111,8 +111,59 @@ body {
 	border: 1px solid var(--primary-color);
 }
 
-.offcanvas, .offcanvas-end{
+.offcanvas, .offcanvas-start {
     background-color: var(--bg-color);
+}
+
+/* Menu utente dropdown */
+.user-menu {
+	position: relative;
+}
+
+.user-menu-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	background: none;
+	border: none;
+	cursor: pointer;
+}
+
+.user-menu-btn:hover {
+	color: var(--primary-color);
+}
+
+.user-dropdown {
+	display: none;
+	position: absolute;
+	right: 0;
+	top: 100%;
+	margin-top: 8px;
+	background-color: white;
+	border-radius: 8px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	list-style: none;
+	padding: 8px 0;
+	min-width: 160px;
+	z-index: 1050;
+}
+
+.user-dropdown.open {
+	display: block;
+}
+
+.user-dropdown-item {
+	display: block;
+	padding: 10px 16px;
+	color: var(--bs-body-color);
+	text-decoration: none;
+	transition: background-color 0.2s ease;
+}
+
+.user-dropdown-item:hover,
+.user-dropdown-item:focus {
+	background-color: var(--bg-color);
+	color: var(--primary-color);
 }
 
 /* Applicato a telefoni e tablet */

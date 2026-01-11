@@ -10,7 +10,7 @@
                     </div>
                 <?php endif; ?>
 
-                <form action="login.php" method="POST">
+                <form action="login.php<?php echo isset($_GET['redirect']) ? '?redirect=' . urlencode($_GET['redirect']) : ''; ?>" method="POST">
                     <div class="mb-3">
                         <label for="username" class="form-label">Username</label>
                         <input type="text" class="form-control" id="username" name="username" required />

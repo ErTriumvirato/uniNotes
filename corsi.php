@@ -20,9 +20,14 @@ if (isset($_GET['action']) && $_GET['action'] == 'filter') {
     exit;
 }
 
-if (isUserLoggedIn() && isset($_POST["toggleFollow"])) {
+if (isset($_POST["toggleFollow"])) {
     header('Content-Type: application/json');
-    
+
+    if (!isUserLoggedIn()) {
+        echo json_encode(['error' => 'login_required']);
+        exit;
+    }
+
     $idcorso = $_POST["toggleFollow"];
     $idutente = $_SESSION["idutente"];
     

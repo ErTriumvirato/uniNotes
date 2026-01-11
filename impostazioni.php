@@ -1,10 +1,7 @@
 <?php
 require_once 'config.php';
 
-if(!isUserLoggedIn()) {
-    header("Location: index.php");
-    exit();
-}
+requireLogin();
 
 $currentUser = $dbh->getUserById($_SESSION['idutente']);
 
@@ -14,14 +11,14 @@ if(isset($_POST['submit'])) {
     $confirmPassword = $_POST['confirm_password'];
 
     if (!empty($newPassword) && $newPassword !== $confirmPassword) {
-        $templateParams["messaggio"] = "Errore: Le password non coincidono!";
+        $templateParams["messaggio"] = "Le password non coincidono!";
     }
     
     // Controllo se username è cambiato e se è già in uso
     if(!isset($templateParams["messaggio"]) && $newUsername !== $currentUser['username']) {
         $existingUser = $dbh->getUserByUsername($newUsername);
         if($existingUser) {
-            $templateParams["messaggio"] = "Errore: Username già in uso!";
+            $templateParams["messaggio"] = "Username già in uso!";
         }
     }
     
@@ -48,7 +45,7 @@ if(isset($_POST['delete_account'])) {
     if ($currentUser['isAdmin']) {
         if ($dbh->getAdminCount() <= 1) {
             $canDelete = false;
-            $templateParams["messaggio"] = "Errore: Sei l'ultimo amministratore!";
+            $templateParams["messaggio"] = "Sei l'ultimo amministratore!";
         }
     }
 

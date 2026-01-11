@@ -79,9 +79,11 @@ if (!empty($appunto)) {
                 </div>
             <?php elseif (!isUserLoggedIn()): ?>
                 <div class="alert alert-warning mb-4" role="alert">
-                    Effettua il <a href="login.php" class="alert-link">login</a> per lasciare una recensione.
+                    Effettua il <a href="login.php?redirect=<?= getCurrentURI(); ?>" class="alert-link">login</a> per lasciare una recensione.
                 </div>
             <?php endif; ?>
+
+            <div id="reviews-list">
 
             <div id="reviews-list">
                 <?php if (!empty($reviews)): ?>

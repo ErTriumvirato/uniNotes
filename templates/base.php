@@ -2,6 +2,7 @@
 <html lang="it">
 
 <?php
+// Impedisce la memorizzazione nella cache delle pagine (per non dover aggiornare manualmente dopo aver cliccato il tasto "indietro")
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
@@ -21,14 +22,16 @@ header("Pragma: no-cache");
     <header>
         <nav class="navbar navbar-expand-lg navbar-light shadow-sm fixed-top">
             <div class="container-fluid">
-                <a class="navbar-brand" href="index.php">
-                    <img src="uploads/img/logo.png" alt="Logo uniNotes" class="logo-img">
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                <div class="d-flex align-items-center gap-3">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.php">
+                        <img src="uploads/img/logo.png" alt="Logo uniNotes" class="logo-img">
+                    </a>
+                </div>
 
-                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas offcanvas-start flex-grow-1" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                     <div class="offcanvas-header">
                         <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -43,9 +46,6 @@ header("Pragma: no-cache");
                             </li>
                             <?php if (isUserLoggedIn()) { ?>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="profilo.php">Il tuo profilo</a>
-                                </li>
-                                <li class="nav-item">
                                     <a class="nav-link" href="creazione-appunti.php">Carica appunti</a>
                                 </li>
                             <?php } ?>
@@ -55,15 +55,24 @@ header("Pragma: no-cache");
                                 </li>
                             <?php } ?>
                         </ul>
-                        <div class="d-flex justify-content-center justify-content-lg-end gap-2">
-                            <?php if ((!isUserLoggedIn())) { ?>
-                                <a href="login.php" class="btn btn-primary btn-sm px-4">Accedi</a>
-                            <?php } else { ?>
-                                <a href="impostazioni.php" class="btn btn-primary btn-sm">Impostazioni</a>
-                                <a href="logout.php" class="btn btn-primary btn-sm">Esci</a>
-                            <?php } ?>
-                        </div>
                     </div>
+                </div>
+
+                <div class="d-flex justify-content-end align-items-center gap-2">
+                    <?php if (!isUserLoggedIn()) { ?>
+                        <a href="login.php" class="btn btn-primary btn-sm px-4">Accedi</a>
+                    <?php } else { ?>
+                        <nav class="user-menu" aria-label="Menu utente">
+                            <button type="button" class="nav-link user-menu-btn" onclick="toggleUserMenu()" aria-expanded="false" aria-haspopup="true" aria-controls="user-dropdown">
+                                <?php echo htmlspecialchars($_SESSION['username']); ?> ▾
+                            </button>
+                            <ul id="user-dropdown" class="user-dropdown" role="menu" aria-label="Opzioni utente">
+                                <li role="none"><a href="profilo.php" class="user-dropdown-item" role="menuitem">Profilo</a></li>
+                                <li role="none"><a href="impostazioni.php" class="user-dropdown-item" role="menuitem">Impostazioni</a></li>
+                                <li role="none"><a href="logout.php" class="user-dropdown-item" role="menuitem">Esci</a></li>
+                            </ul>
+                        </nav>
+                    <?php } ?>
                 </div>
             </div>
         </nav>
@@ -150,6 +159,33 @@ header("Pragma: no-cache");
                 window.location.href = '/';
             }
         }
+
+        function toggleUserMenu() {
+            const dropdown = document.getElementById('user-dropdown');
+            const btn = document.querySelector('.user-menu-btn');
+            const isOpen = dropdown.classList.toggle('open');
+            btn.setAttribute('aria-expanded', isOpen);
+        }
+
+        document.addEventListener('click', function(e) {
+            const userMenu = document.querySelector('.user-menu');
+            const dropdown = document.getElementById('user-dropdown');
+            if (userMenu && dropdown && !userMenu.contains(e.target)) {
+                dropdown.classList.remove('open');
+                document.querySelector('.user-menu-btn')?.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const dropdown = document.getElementById('user-dropdown');
+                if (dropdown?.classList.contains('open')) {
+                    dropdown.classList.remove('open');
+                    document.querySelector('.user-menu-btn')?.setAttribute('aria-expanded', 'false');
+                    document.querySelector('.user-menu-btn')?.focus();
+                }
+            }
+        });
     </script>
 </body>
 

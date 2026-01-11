@@ -44,12 +44,12 @@ $selectedCourseId = isset($_GET['idcorso']) ? (int)$_GET['idcorso'] : null;
 <?php if (!empty($templateParams["unapprovedArticles"])): ?>
 <div class="row justify-content-center mt-5">
     <div class="col-12 col-md-8 col-lg-6">
-        <div class="card shadow-sm border-0 rounded-3">
-            <div class="card-body p-4">
-                <h3 class="text-center mb-4">In attesa di approvazione</h3>
-                <ul class="list-group list-group-flush">
-                    <?php foreach ($templateParams["unapprovedArticles"] as $article): ?>
-                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-3">
+        <h3 class="text-center mb-4">In attesa di approvazione</h3>
+        <div class="d-flex flex-column gap-3">
+            <?php foreach ($templateParams["unapprovedArticles"] as $article): ?>
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-body p-3">
+                        <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <div class="fw-bold"><?php echo htmlspecialchars($article['titolo']); ?></div>
                                 <div class="small text-muted"><?php echo htmlspecialchars($article['nome_corso']); ?></div>
@@ -59,18 +59,18 @@ $selectedCourseId = isset($_GET['idcorso']) ? (int)$_GET['idcorso'] : null;
                                     </div>
                                 <?php endif; ?>
                             </div>
-                            <div class="d-flex align-items-center gap-3">
+                            <div class="d-flex flex-column align-items-end gap-2">
                                 <span class="text-muted small"><?php echo date('d/m/Y', strtotime($article['data_pubblicazione'])); ?></span>
                                 <?php if (!empty($article['motivo_rifiuto'])): ?>
-                                    <a href="modifica-appunti.php?id=<?php echo $article['idappunto']; ?>" class="btn btn-sm btn-outline-primary">Modifica</a>
+                                    <a href="modifica-appunti.php?id=<?php echo $article['idappunto']; ?>" class="btn btn-sm btn-outline-danger">Modifica</a>
                                 <?php else: ?>
                                     <span class="badge bg-warning text-dark">In attesa</span>
                                 <?php endif; ?>
                             </div>
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
         </div>
     </div>
 </div>

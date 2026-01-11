@@ -1,7 +1,9 @@
 <?php
 require_once 'config.php';
 
-if(!isUserAdmin()){
+requireLogin();
+
+if(!isUserAdmin()) {
     header("Location: index.php");
     exit();
 }

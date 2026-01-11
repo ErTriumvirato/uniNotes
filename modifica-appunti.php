@@ -1,10 +1,7 @@
 <?php
 require_once 'config.php';
 
-if(!isUserLoggedIn()) {
-    header("Location: login.php");
-    exit();
-}
+requireLogin();
 
 $idappunto = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 if ($idappunto === 0 && isset($_POST['idappunto'])) {

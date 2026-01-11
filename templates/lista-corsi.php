@@ -75,6 +75,10 @@ $ssds = $templateParams["ssds"];
             })
             .then(res => res.json())
             .then(data => {
+                if (data.error === 'login_required') {
+                    window.location.href = 'login.php?redirect=' + encodeURIComponent('corsi.php');
+                    return;
+                }
                 if (data.following) {
                     button.innerHTML = 'Smetti di seguire';
                     button.className = 'btn btn-sm w-100 position-relative z-2 btn-outline-danger';

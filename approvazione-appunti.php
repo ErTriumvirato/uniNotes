@@ -1,6 +1,8 @@
 <?php
 require_once 'config.php';
 
+requireLogin();
+
 if(!isUserAdmin()){
     header("Location: index.php");
     exit();
@@ -23,6 +25,15 @@ if (isset($_POST['action'], $_POST['idappunto'])) {
 
     header('Content-Type: application/json');
     echo json_encode(['success' => $success]);
+    exit;
+}
+
+if (isset($_GET['action']) && $_GET['action'] === 'filter') {
+    $sort = $_GET['sort'] ?? 'data_pubblicazione';
+    $order = $_GET['order'] ?? 'DESC';
+    $articles = $dbh->getArticlesToApprove($sort, $order);
+    header('Content-Type: application/json');
+    echo json_encode(['success' => true, 'articles' => $articles]);
     exit;
 }
 

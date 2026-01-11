@@ -1,10 +1,7 @@
 <?php
 require_once 'config.php';
 
-if(!isUserLoggedIn()) {
-    header("Location: login.php");
-    exit();
-}
+requireLogin();
 
 if(isset($_POST["invia"]) && isset($_POST["course"]) &&isset($_POST["title"]) && isset($_POST["text"])) {
     $dbh->createArticle($_POST["course"], $_POST["title"], $_POST["text"], $_SESSION["idutente"]);
