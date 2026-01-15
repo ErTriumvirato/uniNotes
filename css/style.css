@@ -1,45 +1,22 @@
 :root {
-	--primary-color: #00663c;
-	--primary-hover: #005a35;
-	--bg-color: #f0fff0;
-	--nav-bg: #83ffde;
-
-	/* Sovrascrizione di Bootstrap */
-	--bs-body-bg: var(--bg-color);
-	--bs-primary: var(--primary-color);
-	--bs-primary-rgb: 0, 105, 62;
-	--bs-link-hover-color: var(--primary-color);
-	--focus-ring-color: rgba(0, 105, 62, 0.25);
+	--nav-bg: rgb(146, 0, 146);
+	--bg-color: /*rgb(240, 251, 240)*/ rgb(234, 247, 253);
+	--text-color: black;
 }
 
 body {
-	font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-.btn {
-	background-color: var(--primary-color);
-	border-color: var(--primary-color);
-	color: white;
-}
-
-.btn:hover {
-	background-color: var(--primary-hover);
-	border-color: var(--primary-hover);
-}
-
-.btn:focus {
-	background-color: var(--primary-hover);
-	border-color: var(--primary-hover);
-}
-
-.btn:active {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
+body {
+	background-color: var(--bg-color);
+	color: var(--text-color);
 }
 
 .navbar {
 	padding-block: 12px;
 	background-color: var(--nav-bg);
+	background: linear-gradient(to right, rgb(219, 255, 221), rgba(181, 91, 255, 30));
 }
 
 .navbar-brand .logo-img {
@@ -111,8 +88,9 @@ body {
 	border: 1px solid var(--primary-color);
 }
 
-.offcanvas, .offcanvas-start {
-    background-color: var(--bg-color);
+.offcanvas,
+.offcanvas-start {
+	background-color: var(--bg-color);
 }
 
 /* Menu utente dropdown */

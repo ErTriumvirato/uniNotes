@@ -22,7 +22,7 @@
                     </div>
 
                     <div class="d-grid gap-2 mt-4">
-                        <input type="submit" name="login" class="btn btn-primary btn-lg" value="Accedi" />
+                        <input type="submit" name="login" class="btn btn-outline-primary btn-lg" value="Accedi" />
                     </div>
                 </form>
                 

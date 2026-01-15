@@ -23,7 +23,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'filter') {
     $response = array_map(function ($art) {
         $art['views'] = (int)$art['numero_visualizzazioni'];
         $art['data_formattata'] = date('d/m/y', strtotime($art['data_pubblicazione']));
-        $art['media_recensioni'] = $art['media_recensioni'] ?: '0.0';
+        $art['media_recensioni'] = $art['media_recensioni'] ?: 'N/A';
         return $art;
     }, $appunti);
 

@@ -18,7 +18,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'filter') {
     $response = array_map(function ($art) {
         $art['views'] = (int)$art['numero_visualizzazioni'];
         $art['data_formattata'] = date('d/m/y', strtotime($art['data_pubblicazione']));
-        $art['media_recensioni'] = $art['media_recensioni'] ?: '0.0';
+        $art['media_recensioni'] = $art['media_recensioni'] ?: 'N/A';
         return $art;
     }, $appunti);
 
@@ -27,18 +27,27 @@ if (isset($_GET['action']) && $_GET['action'] === 'filter') {
     exit();
 }
 
-if (isset($_POST['toggleFollow']) && $idutente) {
-    $idcorso_post = (int)$_POST['toggleFollow'];
-    if ($dbh->isFollowingCourse($idutente, $idcorso_post)) {
-        $dbh->unfollowCourse($idutente, $idcorso_post);
-        $following = false;
-    } else {
-        $dbh->followCourse($idutente, $idcorso_post);
-        $following = true;
-    }
+if (isset($_POST["toggleFollow"])) {
     header('Content-Type: application/json');
-    echo json_encode(['following' => $following]);
-    exit();
+
+    if (!isUserLoggedIn()) {
+        echo json_encode(['error' => 'login_required']);
+        exit;
+    }
+
+    $idcorso = $_POST["toggleFollow"];
+    $idutente = $_SESSION["idutente"];
+    
+    $isFollowing = $dbh->isFollowingCourse($idutente, $idcorso);
+    
+    if ($isFollowing) {
+        $dbh->unfollowCourse($idutente, $idcorso);
+        echo json_encode(['following' => false]);
+    } else {
+        $dbh->followCourse($idutente, $idcorso);
+        echo json_encode(['following' => true]);
+    }
+    exit;
 }
 
 $corso = $dbh->getCourseById($idCorso);

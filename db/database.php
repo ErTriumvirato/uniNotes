@@ -559,4 +559,45 @@ class DatabaseHelper
         $stmt->execute();
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
+
+    public function getApprovedArticlesWithFilters($nomeutente = null, $nomecorso = null, $sort = 'data_pubblicazione', $order = 'DESC')
+    {
+        $allowedSort = ['data_pubblicazione', 'media_recensioni', 'numero_visualizzazioni'];
+        $allowedOrder = ['ASC', 'DESC'];
+
+        $sort = in_array($sort, $allowedSort) ? $sort : 'data_pubblicazione';
+        $order = in_array($order, $allowedOrder) ? $order : 'DESC';
+
+        $query = "SELECT appunti.*, utenti.username AS autore, corsi.nome AS nome_corso,
+              ROUND(AVG(recensioni.valutazione), 1) AS media_recensioni
+              FROM appunti
+              JOIN utenti ON appunti.idutente = utenti.idutente
+              JOIN corsi ON appunti.idcorso = corsi.idcorso
+              LEFT JOIN recensioni ON appunti.idappunto = recensioni.idappunto
+              WHERE appunti.approvato = true";
+
+        $params = [];
+        $types = "";
+
+        if ($nomeutente !== null) {
+            $query .= " AND utenti.username = ?";
+            $params[] = $nomeutente;
+            $types .= "s";
+        }
+
+        if ($nomecorso !== null) {
+            $query .= " AND corsi.nome = ?";
+            $params[] = $nomecorso;
+            $types .= "s";
+        }
+
+        $query .= " GROUP BY appunti.idappunto ORDER BY $sort $order";
+
+        $stmt = $this->db->prepare($query);
+        if (!empty($params)) {
+            $stmt->bind_param($types, ...$params);
+        }
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
 }

@@ -15,7 +15,7 @@ $appunti = $dbh->getApprovedArticlesByCourseWithFilters($idCorso, 'data_pubblica
                     <span class="badge bg-secondary mb-3"><?php echo htmlspecialchars($corso['nomeSSD']); ?></span>
                 </div>
                 <div class="d-flex gap-2 flex-wrap">
-                    <button type="button" id="followBtn" class="btn" data-idcorso="<?php echo htmlspecialchars($idCorso); ?>" onclick="handleFollowClick(this)">
+                    <button type="button" id="followBtn" class="btn <?php echo $isFollowing ? 'btn-outline-danger' : 'btn-outline-primary'; ?>" data-idcorso="<?php echo htmlspecialchars($idCorso); ?>" onclick="handleFollowClick(this)">
                         <?php echo htmlspecialchars($isFollowing ? 'Smetti di seguire' : 'Segui corso'); ?>
                     </button>
                     <a href="creazione-appunti.php?idcorso=<?php echo htmlspecialchars($idCorso); ?>" class="btn btn-outline-secondary">Carica appunti</a>
@@ -24,148 +24,21 @@ $appunti = $dbh->getApprovedArticlesByCourseWithFilters($idCorso, 'data_pubblica
             </div>
         </section>
 
-        <section aria-label="Filtri appunti" class="row g-3 mb-4 align-items-end">
-            <div class="col-12 col-md-6">
-                <h3 class="mb-0">Appunti disponibili</h3>
-            </div>
-            <div class="col-6 col-md-3">
-                <label for="ajax-sort" class="form-label small text-muted">Ordina per</label>
-                <select id="ajax-sort" class="form-select form-select-sm" onchange="updateArticles()">
-                    <option value="data_pubblicazione">Data di caricamento</option>
-                    <option value="media_recensioni">Valutazione media</option>
-                    <option value="numero_visualizzazioni">Numero di visualizzazioni</option>
-                </select>
-            </div>
-            <div class="col-6 col-md-3">
-                <label for="ajax-order" class="form-label small text-muted">Ordine</label>
-                <select id="ajax-order" class="form-select form-select-sm" onchange="updateArticles()">
-                    <option value="DESC">Decrescente</option>
-                    <option value="ASC">Crescente</option>
-                </select>
-            </div>
-        </section>
-
-        <!-- Articles List -->
-        <section aria-label="Lista appunti" id="articles-container" class="d-flex flex-column gap-3">
-            <?php if (!empty($appunti)): foreach ($appunti as $appunto): ?>
-                    <article class="card shadow-sm border-0 article-card">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-12 col-md-8">
-                                    <h5 class="card-title mb-1">
-                                        <a href="appunto.php?id=<?php echo htmlspecialchars($appunto['idappunto']); ?>" class="text-decoration-none text-dark stretched-link">
-                                            <?php echo htmlspecialchars($appunto['titolo']); ?>
-                                        </a>
-                                    </h5>
-                                    <p class="card-text text-muted small mb-2">
-                                        di <?php echo htmlspecialchars($appunto['autore']); ?>
-                                    </p>
-                                </div>
-                                <div class="col-12 col-md-4 text-md-end mt-2 mt-md-0">
-                                    <div class="d-flex gap-2 justify-content-md-end flex-wrap">
-                                        <span class="badge bg-light text-dark border" title="Media recensioni">
-                                            ★ <?php echo htmlspecialchars($appunto['media_recensioni'] ?: '0.0'); ?>
-                                        </span>
-                                        <span class="badge bg-light text-dark border" title="Visualizzazioni">
-                                            <?php echo htmlspecialchars((int)$appunto['numero_visualizzazioni']); ?> Visualizzazioni
-                                        </span>
-                                        <span class="badge bg-light text-dark border" title="Data pubblicazione">
-                                            📅 <?php echo htmlspecialchars(date('d/m/y', strtotime($appunto['data_pubblicazione']))); ?>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-                <?php endforeach;
-            else: ?>
-                <div class="alert alert-info text-center" role="alert">
-                    Nessun appunto disponibile per questo corso.
-                </div>
-            <?php endif; ?>
-        </section>
+        <?php
+            $titoloFiltri = "Appunti disponibili";
+            $ajaxUrl = "corso.php?id=" . $idCorso;
+            $nomecorso = $corso['nome'];
+            $messaggioVuoto = "Nessun appunto disponibile per questo corso.";
+            include 'lista-appunti.php';
+        ?>
     </div>
 </div>
 
 <script>
-    function handleFollowClick(btn) {
-        <?php if (!$idutente): ?>
-            window.location.href = 'login.php';
-            return;
-        <?php endif; ?>
-
-        const idcorso = btn.dataset.idcorso;
-        btn.disabled = true;
-
-        fetch('corso.php?id=' + idcorso, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: 'toggleFollow=' + encodeURIComponent(idcorso)
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.following) {
-                    btn.textContent = 'Smetti di seguire';
-                    btn.classList.remove('btn-primary');
-                    btn.classList.add('btn-outline-danger');
-                } else {
-                    btn.textContent = 'Segui corso';
-                    btn.classList.remove('btn-outline-danger');
-                    btn.classList.add('btn-primary');
-                }
-                btn.disabled = false;
-            });
-    }
-
-    const sortSelect = document.getElementById('ajax-sort');
-    const orderSelect = document.getElementById('ajax-order');
-    const container = document.getElementById('articles-container');
-
-    function updateArticles() {
-        const url = `corso.php?id=<?php echo $idCorso; ?>&action=filter&sort=${sortSelect.value}&order=${orderSelect.value}`;
-
-        fetch(url)
-            .then(res => res.json())
-            .then(data => {
-                container.innerHTML = '';
-                if (data.length === 0) {
-                    container.innerHTML = '<div class="alert alert-info text-center" role="alert">Nessun appunto disponibile per questo corso.</div>';
-                } else {
-                    data.forEach(art => {
-                        container.insertAdjacentHTML('beforeend', `
-                            <div class="card shadow-sm border-0 article-card">
-                                <div class="card-body">
-                                    <div class="row align-items-center">
-                                        <div class="col-12 col-md-8">
-                                            <h5 class="card-title mb-1">
-                                                <a href="appunto.php?id=${art.idappunto}" class="text-decoration-none text-dark stretched-link">
-                                                    ${art.titolo}
-                                                </a>
-                                            </h5>
-                                            <p class="card-text text-muted small mb-2">
-                                                di ${art.autore}
-                                            </p>
-                                        </div>
-                                        <div class="col-12 col-md-4 text-md-end mt-2 mt-md-0">
-                                            <div class="d-flex gap-2 justify-content-md-end flex-wrap">
-                                                <span class="badge bg-light text-dark border" title="Media recensioni">
-                                                    ★ ${art.media_recensioni || '0.0'}
-                                                </span>
-                                                <span class="badge bg-light text-dark border" title="Visualizzazioni">
-                                                    ${art.views} Visualizzazioni
-                                                </span>
-                                                <span class="badge bg-light text-dark border" title="Data pubblicazione">
-                                                    📅 ${art.data_formattata}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>`);
-                    });
-                }
-            });
+    function handleFollowClick(button) {
+        handleButtonAction(button, "corso.php?id=" + encodeURIComponent(button.dataset.idcorso), "toggleFollow=" + encodeURIComponent(button.dataset.idcorso), (data, el) => {
+            el.innerHTML = data.following ? "Smetti di seguire" : "Segui corso";
+            el.classList.replace(data.following ? "btn-outline-primary" : "btn-outline-danger", data.following ? "btn-outline-danger" : "btn-outline-primary");
+        });
     }
 </script>

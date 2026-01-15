@@ -53,8 +53,8 @@ $articles = $dbh->getArticlesToApprove();
                                 Leggi Contenuto
                             </button>
                             <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-outline-primary" onclick="handleArticle(<?= $article['idappunto'] ?>, 'approve')">Approva</button>
                                 <button type="button" class="btn btn-outline-danger" onclick="handleArticle(<?= $article['idappunto'] ?>, 'reject')">Rifiuta</button>
-                                <button type="button" class="btn btn-primary" onclick="handleArticle(<?= $article['idappunto'] ?>, 'approve')">Approva</button>
                             </div>
                         </div>
                     </div>

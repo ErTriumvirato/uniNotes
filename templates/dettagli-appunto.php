@@ -38,7 +38,7 @@ if (!empty($appunto)) {
                         <?php echo (int)$appunto['numero_visualizzazioni']; ?> Visualizzazioni
                     </span>
                     <span id="avg-rating-badge" class="badge bg-light text-dark border p-2">
-                        ★ <?php echo $appunto['media_recensioni'] ?: 'N/A'; ?> Media voti
+                        ★ <?php echo $appunto['media_recensioni'] ?: 'N/A'; ?>
                     </span>
                 </footer>
             </div>
@@ -67,7 +67,7 @@ if (!empty($appunto)) {
                                     <option value="1">1 - Scarso</option>
                                 </select>
                             </div>
-                            <button type="submit" class="btn btn-primary">Invia Recensione</button>
+                            <button type="submit" class="btn btn-outline-primary">Invia Recensione</button>
                         </form>
                     </div>
                 </section>
@@ -98,8 +98,8 @@ if (!empty($appunto)) {
                                                 <?php for($i=0; $i<$review['valutazione']; $i++) echo "★"; for($i=$review['valutazione']; $i<5; $i++) echo "☆";?>
                                             </div>
                                             <?php if (isUserLoggedIn() && $_SESSION['idutente'] == $review['idutente']): ?>
-                                                <button class="btn btn-sm btn-outline-danger delete-review-btn" data-review-id="<?php echo $review['idrecensione']; ?>" aria-label="Elimina recensione" onclick="handleDeleteReview(this)">
-                                                    Elimina
+                                                <button class="btn btn-sm btn-outline-danger delete-review-btn" data-review-id="<?php echo $review['idrecensione']; ?>" aria-label="Elimina recensione" onclick="handleDeleteReview(this)" title="Elimina">
+                                                    <i class="bi bi-trash" aria-hidden="true"></i>
                                                 </button>
                                             <?php endif; ?>
                                         </div>
@@ -162,7 +162,7 @@ if (!empty($appunto)) {
 
                 // Aggiorna la media delle recensioni
                 const avgBadge = document.getElementById('avg-rating-badge');
-                avgBadge.textContent = '★ ' + data.new_avg + ' Media voti';
+                avgBadge.textContent = '★ ' + data.new_avg;
 
                 // Aggiungi la nuova recensione alla lista
                 const reviewsList = document.getElementById('reviews-list');
@@ -185,8 +185,8 @@ if (!empty($appunto)) {
                                     <div class="text-warning">
                                         ${stars}
                                     </div>
-                                    <button class="btn btn-sm btn-outline-danger delete-review-btn" data-review-id="${data.review.idrecensione}" aria-label="Elimina recensione" onclick="handleDeleteReview(this)">
-                                        Elimina
+                                    <button class="btn btn-sm btn-outline-danger delete-review-btn" data-review-id="${data.review.idrecensione}" aria-label="Elimina recensione" onclick="handleDeleteReview(this)" title="Elimina">
+                                        <i class="bi bi-trash" aria-hidden="true"></i>
                                     </button>
                                 </div>
                             </div>
@@ -215,7 +215,7 @@ if (!empty($appunto)) {
             setTimeout(() => {
                 if (btn.dataset.confirm) {
                     delete btn.dataset.confirm;
-                    btn.textContent = 'Elimina';
+                    btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i>';
                     btn.classList.remove('btn-danger');
                     btn.classList.add('btn-outline-danger');
                 }
@@ -251,7 +251,7 @@ if (!empty($appunto)) {
 
                     // Aggiorna la media delle recensioni
                     const avgBadge = document.getElementById('avg-rating-badge');
-                    avgBadge.textContent = '★ ' + data.new_avg + ' Media voti';
+                    avgBadge.textContent = '★ ' + data.new_avg;
 
                     // Mostra il form per lasciare una nuova recensione
                     const alreadyReviewedCard = document.getElementById('already-reviewed-card');
@@ -272,7 +272,7 @@ if (!empty($appunto)) {
                                                 <option value="1">1 - Scarso</option>
                                             </select>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Invia Recensione</button>
+                                        <button type="submit" class="btn btn-outline-primary">Invia Recensione</button>
                                     </form>
                                 </div>
                             </div>
@@ -282,12 +282,12 @@ if (!empty($appunto)) {
             } else {
                 showError(data.message || 'Errore durante l\'eliminazione della recensione.');
                 btn.disabled = false;
-                btn.textContent = 'Elimina';
+                btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i>';
             }
         })
         .catch(() => {
             btn.disabled = false;
-            btn.textContent = 'Elimina';
+            btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i>';
             showError('Si è verificato un errore. Riprova.');
         });
     }

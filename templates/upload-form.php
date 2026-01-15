@@ -33,7 +33,7 @@ $selectedCourseId = isset($_GET['idcorso']) ? (int)$_GET['idcorso'] : null;
                     </div>
 
                     <div class="d-grid gap-2 mt-4">
-                        <input type="submit" name="invia" class="btn btn-primary btn-lg" value="Richiedi approvazione">
+                        <input type="submit" name="invia" class="btn btn-outline-primary btn-lg" value="Richiedi approvazione">
                     </div>
                 </form>
             </div>
@@ -62,7 +62,10 @@ $selectedCourseId = isset($_GET['idcorso']) ? (int)$_GET['idcorso'] : null;
                             <div class="d-flex flex-column align-items-end gap-2">
                                 <span class="text-muted small"><?php echo date('d/m/Y', strtotime($article['data_pubblicazione'])); ?></span>
                                 <?php if (!empty($article['motivo_rifiuto'])): ?>
-                                    <a href="modifica-appunti.php?id=<?php echo $article['idappunto']; ?>" class="btn btn-sm btn-outline-danger">Modifica</a>
+                                    <a href="modifica-appunti.php?id=<?php echo $article['idappunto']; ?>" class="btn btn-sm btn-outline-danger" title="Modifica">
+                                        <i class="bi bi-pencil" aria-hidden="true"></i>
+                                        <span class="visually-hidden">Modifica</span>
+                                    </a>
                                 <?php else: ?>
                                     <span class="badge bg-warning text-dark">In attesa</span>
                                 <?php endif; ?>

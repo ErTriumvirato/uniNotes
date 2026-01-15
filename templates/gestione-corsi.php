@@ -170,9 +170,15 @@
                             <td><span class="badge bg-light text-dark border">${course.nomeSSD}</span></td>
                             <td><small class="text-muted">${course.descrizioneCorso.substring(0, 50)}...</small></td>
                             <td class="text-end">
-                                <div class="btn-group btn-group-sm">
-                                    <button type="button" class="btn btn-outline-secondary" onclick="editCourse(${course.idcorso})">Modifica</button>
-                                    <button type="button" class="btn btn-outline-danger" onclick="deleteCourse(${course.idcorso}, this)">Elimina</button>
+                                <div class="d-flex gap-2 justify-content-end">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="editCourse(${course.idcorso})" title="Modifica">
+                                        <i class="bi bi-pencil" aria-hidden="true"></i>
+                                        <span class="visually-hidden">Modifica</span>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteCourse(${course.idcorso}, this)" title="Elimina">
+                                        <i class="bi bi-trash" aria-hidden="true"></i>
+                                        <span class="visually-hidden">Elimina</span>
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -203,17 +209,23 @@
                         data.data.forEach(ssd => {
                             // Table
                             tbody.innerHTML += `
-                        <tr>
-                            <td><strong>${ssd.nome}</strong></td>
-                            <td>${ssd.descrizione}</td>
-                            <td class="text-end">
-                                <div class="btn-group btn-group-sm">
-                                    <button type="button" class="btn btn-outline-secondary" onclick="editSSD(${ssd.idssd})">Modifica</button>
-                                    <button type="button" class="btn btn-outline-danger" onclick="deleteSSD(${ssd.idssd}, this)">Elimina</button>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
+                                <tr>
+                                    <td><strong>${ssd.nome}</strong></td>
+                                    <td>${ssd.descrizione}</td>
+                                    <td class="text-end">
+                                        <div class="d-flex gap-2 justify-content-end">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="editSSD(${ssd.idssd})" title="Modifica">
+                                                <i class="bi bi-pencil" aria-hidden="true"></i>
+                                                <span class="visually-hidden">Modifica</span>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteSSD(${ssd.idssd}, this)" title="Elimina">
+                                                <i class="bi bi-trash" aria-hidden="true"></i>
+                                                <span class="visually-hidden">Elimina</span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `;
 
                             // Filter
                             filterSelect.innerHTML += `<option value="${ssd.nome}">${ssd.nome}</option>`;
@@ -280,7 +292,7 @@
                 setTimeout(() => {
                     if (btn.dataset.confirm) {
                         delete btn.dataset.confirm;
-                        btn.textContent = 'Elimina';
+                        btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i><span class="visually-hidden">Elimina</span>';
                         btn.classList.remove('btn-danger');
                         btn.classList.add('btn-outline-danger');
                     }
@@ -360,7 +372,7 @@
                 setTimeout(() => {
                     if (btn.dataset.confirm) {
                         delete btn.dataset.confirm;
-                        btn.textContent = 'Elimina';
+                        btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i><span class="visually-hidden">Elimina</span>';
                         btn.classList.remove('btn-danger');
                         btn.classList.add('btn-outline-danger');
                     }

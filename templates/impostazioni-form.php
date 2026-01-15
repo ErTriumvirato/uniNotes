@@ -33,7 +33,7 @@
                     </div>
 
                     <div class="d-grid gap-2 mt-4">
-                        <input type="submit" name="submit" class="btn btn-primary btn-lg" value="Salva Modifiche" />
+                        <input type="submit" name="submit" class="btn btn-outline-primary" value="Salva Modifiche" />
                     </div>
                 </form>
 
@@ -41,7 +41,9 @@
 
                 <form action="impostazioni.php" method="POST" id="deleteAccountForm">
                     <div class="d-grid gap-2">
-                        <button type="button" onclick="handleDeleteAccount(this)" class="btn btn-outline-danger">Elimina Account</button>
+                        <button type="button" onclick="handleDeleteAccount(this)" class="btn btn-outline-danger">
+                            <i class="bi bi-trash" aria-hidden="true"></i> Elimina Account
+                        </button>
                     </div>
                 </form>
             </div>
@@ -59,7 +61,7 @@
             setTimeout(() => {
                 if (btn.dataset.confirm) {
                     delete btn.dataset.confirm;
-                    btn.textContent = 'Elimina Account';
+                    btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i> Elimina Account';
                     btn.classList.remove('btn-danger');
                     btn.classList.add('btn-outline-danger');
                 }

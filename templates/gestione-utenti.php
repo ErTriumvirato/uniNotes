@@ -108,9 +108,15 @@
                             <td><strong>${user.username}</strong></td>
                             <td>${roleBadge}</td>
                             <td class="text-end">
-                                <div class="btn-group btn-group-sm">
-                                    <button type="button" class="btn btn-outline-secondary" onclick="editUser(${user.idutente})">Modifica</button>
-                                    <button type="button" class="btn btn-outline-danger" onclick="deleteUser(${user.idutente}, this)">Elimina</button>
+                                <div class="d-flex gap-2 justify-content-end">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="editUser(${user.idutente})" title="Modifica">
+                                        <i class="bi bi-pencil" aria-hidden="true"></i>
+                                        <span class="visually-hidden">Modifica</span>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteUser(${user.idutente}, this)" title="Elimina">
+                                        <i class="bi bi-trash" aria-hidden="true"></i>
+                                        <span class="visually-hidden">Elimina</span>
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -172,7 +178,7 @@
                 setTimeout(() => {
                     if (btn.dataset.confirm) {
                         delete btn.dataset.confirm;
-                        btn.textContent = 'Elimina';
+                        btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i><span class="visually-hidden">Elimina</span>';
                         btn.classList.remove('btn-danger');
                         btn.classList.add('btn-outline-danger');
                     }

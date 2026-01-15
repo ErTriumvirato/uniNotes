@@ -48,16 +48,17 @@
                             <div class="col-12 col-md-6 text-md-end mt-2 mt-md-0">
                                 <div class="d-flex gap-2 justify-content-md-end align-items-center flex-wrap">
                                     <span class="badge bg-light text-dark border">
-                                        ★ <?php echo $appunto['media_recensioni'] ?: '0.0'; ?>
+                                        ★ <?php echo $appunto['media_recensioni'] ?: 'N/A'; ?>
                                     </span>
                                     <span class="badge bg-light text-dark border">
                                         <?php echo (int)$appunto['numero_visualizzazioni']; ?> Vis.
                                     </span>
                                     <span class="badge bg-light text-dark border">
-                                        📅 <?php echo date('d/m/y', strtotime($appunto['data_pubblicazione'])); ?>
+                                        <?php echo date('d/m/y', strtotime($appunto['data_pubblicazione'])); ?>
                                     </span>
                                     <button class="btn btn-sm btn-outline-danger ms-2" onclick="handleDelete(this)" data-id="<?php echo $appunto['idappunto']; ?>" title="Elimina appunto">
-                                         Elimina
+                                        <i class="bi bi-trash" aria-hidden="true"></i>
+                                        <span class="visually-hidden">Elimina</span>
                                     </button>
                                 </div>
                             </div>
@@ -107,16 +108,17 @@
                             <div class="col-12 col-md-6 text-md-end mt-2 mt-md-0">
                                 <div class="d-flex gap-2 justify-content-md-end align-items-center flex-wrap">
                                     <span class="badge bg-light text-dark border">
-                                        ★ ${art.media_recensioni || '0.0'}
+                                        ★ ${art.media_recensioni || 'N/A'}
                                     </span>
                                     <span class="badge bg-light text-dark border">
                                         ${art.numero_visualizzazioni} Vis.
                                     </span>
                                     <span class="badge bg-light text-dark border">
-                                        📅 ${art.data_formattata}
+                                        ${art.data_formattata}
                                     </span>
                                     <button class="btn btn-sm btn-outline-danger ms-2" onclick="handleDelete(this)" data-id="${art.idappunto}" title="Elimina appunto">
-                                         Elimina
+                                        <i class="bi bi-trash" aria-hidden="true"></i>
+                                        <span class="visually-hidden">Elimina</span>
                                     </button>
                                 </div>
                             </div>
@@ -154,7 +156,7 @@
             setTimeout(() => {
                 if (btn.dataset.confirm) {
                     delete btn.dataset.confirm;
-                    btn.textContent = 'Elimina';
+                    btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i><span class="visually-hidden">Elimina</span>';
                     btn.classList.remove('btn-danger');
                     btn.classList.add('btn-outline-danger');
                 }
@@ -187,7 +189,7 @@
             } else {
                 showError('Errore durante l\'eliminazione');
                 btn.disabled = false;
-                btn.textContent = 'Elimina';
+                btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i><span class="visually-hidden">Elimina</span>';
                 delete btn.dataset.confirm;
                 btn.classList.remove('btn-danger');
                 btn.classList.add('btn-outline-danger');
@@ -196,7 +198,7 @@
         .catch(() => {
             showError('Errore di connessione');
             btn.disabled = false;
-            btn.textContent = 'Elimina';
+            btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i><span class="visually-hidden">Elimina</span>';
             delete btn.dataset.confirm;
             btn.classList.remove('btn-danger');
             btn.classList.add('btn-outline-danger');
