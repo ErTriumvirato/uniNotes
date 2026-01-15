@@ -5,7 +5,7 @@ $idutente = $_SESSION["idutente"] ?? null;
 $ssds = $templateParams["ssds"];
 ?>
 
-<div class="row g-3 mb-4">
+<section aria-label="Filtri ricerca" class="row g-3 mb-4">
     <div class="col-12 col-md-4">
         <input type="text" id="search" class="form-control" placeholder="Cerca corso..." oninput="filterCourses()">
     </div>
@@ -28,12 +28,12 @@ $ssds = $templateParams["ssds"];
     </div>
 </div>
 
-<div id="courses-container" class="row g-4">
+<section id="courses-container" class="row g-4" aria-label="Lista corsi">
     <?php foreach ($corsi as $corso):
         $isFollowing = $idutente ? $dbh->isFollowingCourse($idutente, $corso['idcorso']) : false;
     ?>
         <div class="col-12 col-md-6 col-lg-4">
-            <div class="card h-100 shadow-sm border-0 course-card">
+            <article class="card h-100 shadow-sm border-0 course-card">
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title">
                         <a href="corso.php?id=<?php echo htmlspecialchars((int)$corso['idcorso']); ?>" class="text-decoration-none text-dark stretched-link">

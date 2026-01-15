@@ -1,6 +1,6 @@
 <div class="row justify-content-center">
     <div class="col-12 col-md-8 col-lg-6">
-        <div class="card shadow-sm border-0 rounded-3 form-card">
+        <section aria-label="Impostazioni profilo" class="card shadow-sm border-0 rounded-3 form-card">
             <div class="card-body p-4">
                 <h2 class="text-center mb-4">Impostazioni Profilo</h2>
                 
@@ -45,7 +45,7 @@
                     </div>
                 </form>
             </div>
-        </div>
+        </section>
     </div>
 </div>
 

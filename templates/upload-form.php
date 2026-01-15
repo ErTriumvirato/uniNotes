@@ -5,7 +5,7 @@ $selectedCourseId = isset($_GET['idcorso']) ? (int)$_GET['idcorso'] : null;
 
 <div class="row justify-content-center">
     <div class="col-12 col-md-8 col-lg-6">
-        <div class="card shadow-sm border-0 rounded-3 form-card">
+        <section aria-label="Carica appunti" class="card shadow-sm border-0 rounded-3 form-card">
             <div class="card-body p-4">
                 <h2 class="text-center mb-4">Carica appunti</h2>
 
@@ -37,17 +37,17 @@ $selectedCourseId = isset($_GET['idcorso']) ? (int)$_GET['idcorso'] : null;
                     </div>
                 </form>
             </div>
-        </div>
+        </section>
     </div>
 </div>
 
 <?php if (!empty($templateParams["unapprovedArticles"])): ?>
-<div class="row justify-content-center mt-5">
+<section aria-labelledby="in-attesa" class="row justify-content-center mt-5">
     <div class="col-12 col-md-8 col-lg-6">
-        <h3 class="text-center mb-4">In attesa di approvazione</h3>
+        <h3 id="in-attesa" class="text-center mb-4">In attesa di approvazione</h3>
         <div class="d-flex flex-column gap-3">
             <?php foreach ($templateParams["unapprovedArticles"] as $article): ?>
-                <div class="card shadow-sm border-0 rounded-3">
+                <article class="card shadow-sm border-0 rounded-3">
                     <div class="card-body p-3">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
@@ -69,9 +69,9 @@ $selectedCourseId = isset($_GET['idcorso']) ? (int)$_GET['idcorso'] : null;
                             </div>
                         </div>
                     </div>
-                </div>
+                </article>
             <?php endforeach; ?>
         </div>
     </div>
-</div>
+</section>
 <?php endif; ?>

@@ -9,7 +9,7 @@ $appunti = $dbh->getApprovedArticlesByUserIdWithFilters($templateParams['userPro
 
 <h2 class="mb-4"><?php echo htmlspecialchars($templateParams['userProfile']['username']); ?></h2>
 
-<div class="row g-4 mb-5">
+<section aria-label="Statistiche utente" class="row g-4 mb-5">
     <div class="col-12 col-md-4">
         <div class="card h-100 border-0 shadow-sm text-center p-3">
             <div class="card-body">
@@ -34,9 +34,9 @@ $appunti = $dbh->getApprovedArticlesByUserIdWithFilters($templateParams['userPro
             </div>
         </div>
     </div>
-</div>
+</section>
 
-<div class="row g-3 mb-4 align-items-end">
+<section aria-label="Filtri appunti" class="row g-3 mb-4 align-items-end">
     <div class="col-12 col-md-6">
         <h3 class="mb-0">Appunti scritti da <?= $templateParams['userProfile']['username'] ?></h3>
     </div>
@@ -55,12 +55,12 @@ $appunti = $dbh->getApprovedArticlesByUserIdWithFilters($templateParams['userPro
             <option value="ASC">Crescente</option>
         </select>
     </div>
-</div>
+</section>
 
 <!-- Articles List -->
-<div id="articles-container" class="d-flex flex-column gap-3">
+<section aria-label="Lista appunti scritti" id="articles-container" class="d-flex flex-column gap-3">
     <?php if (!empty($appunti)): foreach ($appunti as $appunto): ?>
-            <div class="card shadow-sm border-0 article-card">
+            <article class="card shadow-sm border-0 article-card">
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-12 col-md-8">
@@ -88,14 +88,14 @@ $appunti = $dbh->getApprovedArticlesByUserIdWithFilters($templateParams['userPro
                         </div>
                     </div>
                 </div>
-            </div>
+            </article>
         <?php endforeach;
     else: ?>
         <div class="alert alert-info text-center" role="alert">
             Nessun appunto disponibile per questo corso.
         </div>
     <?php endif; ?>
-</div>
+</section>
 <script>
     const sortSelect = document.getElementById('ajax-sort');
     const orderSelect = document.getElementById('ajax-order');
@@ -113,7 +113,7 @@ $appunti = $dbh->getApprovedArticlesByUserIdWithFilters($templateParams['userPro
                 } else {
                     data.forEach(art => {
                         container.insertAdjacentHTML('beforeend', `
-                            <div class="card shadow-sm border-0 article-card">
+                            <article class="card shadow-sm border-0 article-card">
                                 <div class="card-body">
                                     <div class="row align-items-center">
                                         <div class="col-12 col-md-8">
@@ -141,7 +141,7 @@ $appunti = $dbh->getApprovedArticlesByUserIdWithFilters($templateParams['userPro
                                         </div>
                                     </div>
                                 </div>
-                            </div>`);
+                            </article>`);
                     });
                 }
             });

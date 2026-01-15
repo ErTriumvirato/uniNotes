@@ -1,16 +1,16 @@
     <div class="container">
-        <div class="row mb-4">
+        <header class="row mb-4">
             <div class="col-12">
-                <h2 class="display-5 fw-bold">Gestione Corsi e SSD</h2>
+                <h2 class="display-5 fw-bold">Gestione corsi e SSD</h2>
                 <p class="text-muted">Amministra i corsi di studio e i Settori Scientifico Disciplinari</p>
             </div>
-        </div>
+        </header>
 
         <!-- Sezione Corsi -->
-        <div class="card shadow-sm border-0 mb-5">
+        <section aria-labelledby="corsi-title" class="card shadow-sm border-0 mb-5">
             <div class="card-body p-4">
                 <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-                    <h3 class="card-title mb-0">Corsi</h3>
+                    <h3 id="corsi-title" class="card-title mb-0">Corsi</h3>
                     <button type="button" class="btn btn-primary" onclick="openCourseModal()">
                         Nuovo Corso
                     </button>
@@ -42,13 +42,13 @@
                     </table>
                 </div>
             </div>
-        </div>
+        </section>
 
         <!-- Sezione SSD -->
-        <div class="card shadow-sm border-0 mb-5">
+        <section aria-labelledby="ssd-title" class="card shadow-sm border-0 mb-5">
             <div class="card-body p-4">
                 <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-                    <h3 class="card-title mb-0">SSD (Settori Scientifico Disciplinari)</h3>
+                    <h3 id="ssd-title" class="card-title mb-0">SSD (Settori Scientifico Disciplinari)</h3>
                     <button type="button" class="btn btn-secondary" onclick="openSSDModal()">
                         Nuovo SSD
                     </button>
@@ -68,7 +68,7 @@
                     </table>
                 </div>
             </div>
-        </div>
+        </section>
     </div>
 
     <!-- Modal Corso -->

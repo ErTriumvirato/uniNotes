@@ -1,6 +1,6 @@
 <div class="row justify-content-center">
     <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-        <div class="card shadow-sm border-0 rounded-3 form-card">
+        <section aria-label="Modulo di accesso" class="card shadow-sm border-0 rounded-3 form-card">
             <div class="card-body p-4">
                 <h2 class="text-center mb-4">Accedi</h2>
                 
@@ -30,6 +30,6 @@
                     <p class="text-muted">Non hai un account? <a href="registrazione-utente.php" class="text-decoration-none">Registrati</a></p>
                 </div>
             </div>
-        </div>
+        </section>
     </div>
 </div>

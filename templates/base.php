@@ -51,7 +51,7 @@ header("Pragma: no-cache");
                             <?php } ?>
                             <?php if (isUserAdmin()) { ?>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="area-admin.php">Area Amministrazione</a>
+                                    <a class="nav-link" href="area-admin.php">Area amministrazione</a>
                                 </li>
                             <?php } ?>
                         </ul>

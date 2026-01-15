@@ -1,15 +1,15 @@
     <div class="container">
-        <div class="row mb-4">
+        <header class="row mb-4">
             <div class="col-12">
                 <h2 class="display-5 fw-bold">Gestione Utenti</h2>
                 <p class="text-muted">Amministra gli utenti e i loro permessi</p>
             </div>
-        </div>
+        </header>
 
-        <div class="card shadow-sm border-0 mb-5">
+        <section aria-labelledby="utenti-title" class="card shadow-sm border-0 mb-5">
             <div class="card-body p-4">
                 <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-                    <h3 class="card-title mb-0">Utenti</h3>
+                    <h3 id="utenti-title" class="card-title mb-0">Utenti</h3>
                     <button type="button" class="btn btn-primary" onclick="openUserModal()">
                         Nuovo Utente
                     </button>
@@ -35,7 +35,7 @@
                     </table>
                 </div>
             </div>
-        </div>
+        </section>
     </div>
 
     <!-- Modal Utente -->

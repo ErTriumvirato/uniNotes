@@ -3,15 +3,15 @@ $articles = $dbh->getArticlesToApprove();
 ?>
 
 <div class="container">
-    <div class="row mb-4">
+    <header class="row mb-4">
         <div class="col-12">
             <h2 class="display-5 fw-bold">Approvazione appunti</h2>
             <p class="text-muted">Revisiona e approva gli articoli inviati dagli utenti</p>
         </div>
-    </div>
+    </header>
 
     <!-- Filtri di ordinamento -->
-    <div class="d-flex justify-content-end mb-4">
+    <section aria-label="Filtri" class="d-flex justify-content-end mb-4">
         <div class="col-12 col-md-4 col-lg-3">
             <label for="sortOrder" class="visually-hidden">Ordina per</label>
             <select class="form-select" id="sortOrder" aria-label="Ordina appunti">
@@ -23,16 +23,16 @@ $articles = $dbh->getArticlesToApprove();
                 <option value="autore-DESC">Autore: Z-A</option>
             </select>
         </div>
-    </div>
+    </section>
 
-    <div id="approvazione-container" class="d-flex flex-column gap-4 mb-5">
+    <section aria-label="Lista appunti da approvare" id="approvazione-container" class="d-flex flex-column gap-4 mb-5">
         <?php if (empty($articles)): ?>
             <div class="alert alert-info" role="alert">
                 Nessun articolo da approvare al momento.
             </div>
         <?php else: ?>
             <?php foreach ($articles as $article): ?>
-                <div class="card shadow-sm border-0" id="article-<?= $article['idappunto'] ?>">
+                <article class="card shadow-sm border-0" id="article-<?= $article['idappunto'] ?>">
                     <div class="card-body p-4">
                         <div class="mb-3">
                             <h3 class="card-title h4 mb-1"><?= htmlspecialchars($article['titolo']) ?></h3>
@@ -58,10 +58,10 @@ $articles = $dbh->getArticlesToApprove();
                             </div>
                         </div>
                     </div>
-                </div>
+                </article>
             <?php endforeach; ?>
         <?php endif; ?>
-    </div>
+    </section>
 </div>
 
 <script>
@@ -109,7 +109,7 @@ $articles = $dbh->getArticlesToApprove();
 
         articles.forEach(article => {
             const articleHtml = `
-            <div class="card shadow-sm border-0" id="article-${article.idappunto}">
+            <article class="card shadow-sm border-0" id="article-${article.idappunto}">
                 <div class="card-body p-4">
                     <div class="mb-3">
                         <h3 class="card-title h4 mb-1">${escapeHtml(article.titolo)}</h3>
@@ -135,7 +135,7 @@ $articles = $dbh->getArticlesToApprove();
                         </div>
                     </div>
                 </div>
-            </div>`;
+            </article>`;
             container.insertAdjacentHTML('beforeend', articleHtml);
         });
     }

@@ -45,14 +45,14 @@ if (!empty($appunto)) {
         </article>
 
         <!-- Reviews Section -->
-        <section>
-            <h3 class="mb-4">Recensioni</h3>
+        <section aria-labelledby="reviews-title">
+            <h3 id="reviews-title" class="mb-4">Recensioni</h3>
             
             <?php 
             $isAuthor = isUserLoggedIn() && $_SESSION['idutente'] == $appunto['idutente'];
             if (isUserLoggedIn() && !$isAuthor && !$dbh->hasUserReviewed($appunto['idappunto'], $_SESSION['idutente'])): 
             ?>
-                <div id="review-form-card" class="card shadow-sm border-0 mb-4 form-card">
+                <section aria-label="Scrivi una recensione" id="review-form-card" class="card shadow-sm border-0 mb-4 form-card">
                     <div class="card-body p-4">
                         <h5 class="card-title mb-3">Lascia una recensione</h5>
                         <form id="review-form" data-idappunto="<?php echo htmlspecialchars($appunto['idappunto']); ?>" onsubmit="handleReviewFormSubmit(event)">
@@ -70,7 +70,7 @@ if (!empty($appunto)) {
                             <button type="submit" class="btn btn-primary">Invia Recensione</button>
                         </form>
                     </div>
-                </div>
+                </section>
             <?php elseif (isUserLoggedIn() && !$isAuthor): ?>
                 <div id="already-reviewed-card" class="card shadow-sm border-0 mb-4 bg-light">
                     <div class="card-body p-4 text-center">

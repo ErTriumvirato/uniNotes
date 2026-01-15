@@ -1,10 +1,10 @@
 <div class="row justify-content-center">
     <div class="col-12 col-lg-10">
-        <div class="d-flex justify-content-between align-items-center mb-4">
+        <header class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="display-5 fw-bold mb-0">Revisione appunti</h1>
-        </div>
+        </header>
 
-        <div class="card shadow-sm border-0 mb-4 form-card">
+        <section aria-label="Filtri ricerca" class="card shadow-sm border-0 mb-4 form-card">
             <div class="card-body p-4">
                 <form class="row g-3">
                     <div class="col-12 col-md-6">
@@ -28,11 +28,11 @@
                     </div>
                 </form>
             </div>
-        </div>
+        </section>
 
-        <div id="articles-container" class="d-flex flex-column gap-3">
+        <section aria-label="Lista appunti" id="articles-container" class="d-flex flex-column gap-3">
             <?php if (!empty($templateParams["appunti"])): foreach ($templateParams["appunti"] as $appunto): ?>
-                <div class="card shadow-sm border-0 article-card" id="article-<?php echo $appunto['idappunto']; ?>">
+                <article class="card shadow-sm border-0 article-card" id="article-<?php echo $appunto['idappunto']; ?>">
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-12 col-md-6">
@@ -63,11 +63,11 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </article>
             <?php endforeach; else: ?>
                 <div class="alert alert-info text-center">Nessun appunto trovato.</div>
             <?php endif; ?>
-        </div>
+        </section>
     </div>
 </div>
 

@@ -8,10 +8,10 @@ $appunti = $dbh->getApprovedArticlesByCourseWithFilters($idCorso, 'data_pubblica
 
 <div class="row justify-content-center">
     <div class="col-12 col-lg-10">
-        <div class="card shadow-sm border-0 mb-5">
+        <section aria-labelledby="course-title" class="card shadow-sm border-0 mb-5">
             <div class="card-body p-4 p-md-5">
                 <div>
-                    <h1 class="display-5 fw-bold mb-2"><?php echo htmlspecialchars($corso['nome']); ?></h1>
+                    <h1 id="course-title" class="display-5 fw-bold mb-2"><?php echo htmlspecialchars($corso['nome']); ?></h1>
                     <span class="badge bg-secondary mb-3"><?php echo htmlspecialchars($corso['nomeSSD']); ?></span>
                 </div>
                 <div class="d-flex gap-2 flex-wrap">
@@ -22,9 +22,9 @@ $appunti = $dbh->getApprovedArticlesByCourseWithFilters($idCorso, 'data_pubblica
                 </div>
                 <p class="lead mt-3"><?php echo nl2br(htmlspecialchars($corso['descrizione'])); ?></p>
             </div>
-        </div>
+        </section>
 
-        <div class="row g-3 mb-4 align-items-end">
+        <section aria-label="Filtri appunti" class="row g-3 mb-4 align-items-end">
             <div class="col-12 col-md-6">
                 <h3 class="mb-0">Appunti disponibili</h3>
             </div>
@@ -43,12 +43,12 @@ $appunti = $dbh->getApprovedArticlesByCourseWithFilters($idCorso, 'data_pubblica
                     <option value="ASC">Crescente</option>
                 </select>
             </div>
-        </div>
+        </section>
 
         <!-- Articles List -->
-        <div id="articles-container" class="d-flex flex-column gap-3">
+        <section aria-label="Lista appunti" id="articles-container" class="d-flex flex-column gap-3">
             <?php if (!empty($appunti)): foreach ($appunti as $appunto): ?>
-                    <div class="card shadow-sm border-0 article-card">
+                    <article class="card shadow-sm border-0 article-card">
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-12 col-md-8">
@@ -76,14 +76,14 @@ $appunti = $dbh->getApprovedArticlesByCourseWithFilters($idCorso, 'data_pubblica
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </article>
                 <?php endforeach;
             else: ?>
                 <div class="alert alert-info text-center" role="alert">
                     Nessun appunto disponibile per questo corso.
                 </div>
             <?php endif; ?>
-        </div>
+        </section>
     </div>
 </div>
 
