@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="css/style.css" />
     <link rel="icon" href="uploads/img/favicon.png" type="image/x-icon" />
     <script src="utils/functions.js"></script>
+    <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
