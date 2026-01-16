@@ -13,6 +13,19 @@ if (!empty($appunto)) {
             <div class="card-body p-4 p-md-5">
                 <header class="mb-4 border-bottom pb-3">
                     <h1 class="display-5 fw-bold mb-3"><?php echo htmlspecialchars($appunto['titolo']); ?></h1>
+                    <?php if (isUserAdmin()): ?>
+                        <?php
+                        $statusMap = [
+                            'in_revisione' => ['label' => 'Da approvare', 'class' => 'bg-warning text-dark'],
+                            'approvato' => ['label' => 'Approvato', 'class' => 'bg-success'],
+                            'rifiutato' => ['label' => 'Rifiutato', 'class' => 'bg-danger']
+                        ];
+                        $statusInfo = $statusMap[$appunto['stato']] ?? ['label' => $appunto['stato'], 'class' => 'bg-secondary'];
+                        ?>
+                        <div class="mb-3">
+                            <span class="badge <?php echo $statusInfo['class']; ?>"><?php echo $statusInfo['label']; ?></span>
+                        </div>
+                    <?php endif; ?>
                     <div class="d-flex flex-wrap gap-3 text-muted align-items-center">
                         <div class="d-flex align-items-center gap-2">
                             <span>Autore: <a href="profilo.php?id=<?php echo $appunto['idutente']; ?>" class="text-decoration-none fw-bold"><?php echo htmlspecialchars($appunto['autore']); ?></a></span>
@@ -33,13 +46,30 @@ if (!empty($appunto)) {
                     <?php echo nl2br(htmlspecialchars($appunto['contenuto'])); ?>
                 </div>
 
-                <footer class="d-flex gap-3 pt-3 border-top">
-                    <span class="badge bg-light text-dark border p-2">
-                        <?php echo (int)$appunto['numero_visualizzazioni']; ?> Visualizzazioni
-                    </span>
-                    <span id="avg-rating-badge" class="badge bg-light text-dark border p-2">
-                        ★ <?php echo $appunto['media_recensioni'] ?: 'N/A'; ?>
-                    </span>
+                <footer class="d-flex flex-wrap gap-3 pt-3 border-top align-items-center justify-content-between">
+                    <div class="d-flex gap-3">
+                        <span class="badge bg-light text-dark border p-2">
+                            <?php echo (int)$appunto['numero_visualizzazioni']; ?> Visualizzazioni
+                        </span>
+                        <span id="avg-rating-badge" class="badge bg-light text-dark border p-2">
+                            ★ <?php echo $appunto['media_recensioni'] ?: 'N/A'; ?>
+                        </span>
+                    </div>
+                    <?php if (isUserAdmin()): ?>
+                    <div class="d-flex gap-2" id="admin-actions">
+                        <?php if ($appunto['stato'] === 'in_revisione'): ?>
+                        <button type="button" class="btn btn-sm btn-outline-success" onclick="handleApprove(<?= $appunto['idappunto'] ?>)" title="Approva">
+                            <i class="bi bi-check-lg" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-warning" onclick="handleReject(<?= $appunto['idappunto'] ?>)" title="Rifiuta">
+                            <i class="bi bi-x-lg" aria-hidden="true"></i>
+                        </button>
+                        <?php endif; ?>
+                        <button type="button" class="btn btn-sm btn-outline-danger" data-id="<?= $appunto['idappunto'] ?>" onclick="handleDeleteArticle(this)" title="Elimina">
+                            <i class="bi bi-trash" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <?php endif; ?>
                 </footer>
             </div>
         </article>
@@ -50,7 +80,7 @@ if (!empty($appunto)) {
             
             <?php 
             $isAuthor = isUserLoggedIn() && $_SESSION['idutente'] == $appunto['idutente'];
-            if (isUserLoggedIn() && !$isAuthor && !$dbh->hasUserReviewed($appunto['idappunto'], $_SESSION['idutente'])): 
+            if (isUserLoggedIn() && !$isAuthor && !$dbh->hasUserReviewed($appunto['idappunto'], $_SESSION['idutente']) && $appunto['stato'] === 'approvato'): 
             ?>
                 <section aria-label="Scrivi una recensione" id="review-form-card" class="card shadow-sm border-0 mb-4 form-card">
                     <div class="card-body p-4">
@@ -136,7 +166,6 @@ if (!empty($appunto)) {
         }
 
         submitBtn.disabled = true;
-        submitBtn.textContent = 'Invio in corso...';
 
         fetch('appunto.php?id=' + idappunto, {
             method: 'POST',
@@ -224,7 +253,6 @@ if (!empty($appunto)) {
         }
 
         btn.disabled = true;
-        btn.textContent = 'Eliminando...';
 
         fetch('appunto.php?id=<?php echo htmlspecialchars($appunto['idappunto']); ?>', {
             method: 'POST',
@@ -288,4 +316,98 @@ if (!empty($appunto)) {
             showError('Si è verificato un errore. Riprova.');
         });
     }
+
+    <?php if (isUserAdmin()): ?>
+    // Handler per approvazione articolo
+    function handleApprove(id) {
+        const formData = new FormData();
+        formData.append('action', 'approve');
+        formData.append('idappunto', id);
+
+        fetch('appunti.php', { method: 'POST', body: formData })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    // Rimuovi i pulsanti approva/rifiuta
+                    const adminActions = document.getElementById('admin-actions');
+                    const approveBtn = adminActions.querySelector('.btn-outline-success');
+                    const rejectBtn = adminActions.querySelector('.btn-outline-warning');
+                    if (approveBtn) approveBtn.remove();
+                    if (rejectBtn) rejectBtn.remove();
+                    showSuccess('Appunto approvato con successo');
+                } else {
+                    showError('Errore durante l\'approvazione');
+                }
+            })
+            .catch(() => showError('Errore di connessione'));
+    }
+
+    // Handler per rifiuto articolo
+    function handleReject(id) {
+        const formData = new FormData();
+        formData.append('action', 'reject');
+        formData.append('idappunto', id);
+
+        fetch('appunti.php', { method: 'POST', body: formData })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = 'gestione-appunti.php';
+                } else {
+                    showError('Errore durante il rifiuto');
+                }
+            })
+            .catch(() => showError('Errore di connessione'));
+    }
+
+    // Handler per eliminazione articolo
+    function handleDeleteArticle(btn) {
+        const id = btn.dataset.id;
+
+        if (!btn.dataset.confirm) {
+            btn.dataset.confirm = 'true';
+            btn.innerHTML = '<i class="bi bi-check-lg"></i>';
+            btn.classList.remove('btn-outline-danger');
+            btn.classList.add('btn-danger');
+            setTimeout(() => {
+                if (btn.dataset.confirm) {
+                    delete btn.dataset.confirm;
+                    btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i>';
+                    btn.classList.remove('btn-danger');
+                    btn.classList.add('btn-outline-danger');
+                }
+            }, 3000);
+            return;
+        }
+
+        btn.disabled = true;
+
+        const formData = new FormData();
+        formData.append('action', 'delete');
+        formData.append('idappunto', id);
+
+        fetch('appunti.php', { method: 'POST', body: formData })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = 'gestione-appunti.php';
+                } else {
+                    showError('Errore durante l\'eliminazione');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i>';
+                    delete btn.dataset.confirm;
+                    btn.classList.remove('btn-danger');
+                    btn.classList.add('btn-outline-danger');
+                }
+            })
+            .catch(() => {
+                showError('Errore di connessione');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i>';
+                delete btn.dataset.confirm;
+                btn.classList.remove('btn-danger');
+                btn.classList.add('btn-outline-danger');
+            });
+    }
+    <?php endif; ?>
 </script>

@@ -67,6 +67,16 @@ if (isset($_POST['valutazione'])) {
         $idutente = $_SESSION['idutente'];
         $valutazione = intval($_POST['valutazione']);
 
+        if ($appunto['stato'] !== 'approvato') {
+            if (isset($_POST['ajax'])) {
+               header('Content-Type: application/json');
+               echo json_encode(['success' => false, 'message' => 'Non puoi recensire un appunto non approvato.']);
+               exit();
+           }
+           header("Location: appunto.php?id=" . $idappunto);
+           exit();
+       }
+
         if ($appunto['idutente'] == $idutente) {
             if (isset($_POST['ajax'])) {
                 header('Content-Type: application/json');

@@ -4,22 +4,18 @@
 // $nomeutente - (opzionale) username dell'autore per filtrare
 // $nomecorso - (opzionale) nome del corso per filtrare
 // $search - (opzionale) testo di ricerca iniziale
-// $approvalFilter - (opzionale) filtro approvazione: 'approved', 'pending', 'all', 'refused' (default: 'approved')
-// $showApprovalFilter - (opzionale) mostra/nasconde il filtro di approvazione (default: false)
-// $showActions - (opzionale) mostra i pulsanti azione: approva, rifiuta, elimina (default: false)
+// $approvalFilter - (opzionale) filtro approvazione: 'approved', 'pending', 'all', 'refused' (default: 'approved', 'all' per admin)
 // $messaggioVuoto - (opzionale) messaggio quando non ci sono appunti
+// Nota: filtro approvazione e azioni sono visibili solo agli admin
 global $dbh;
 
-
+$isAdmin = isUserAdmin();
 $nomeutente = $nomeutente ?? null;
 $nomecorso = $nomecorso ?? null;
 $search = $search ?? '';
-$approvalFilter = $approvalFilter ?? 'approved';
-$showApprovalFilter = $showApprovalFilter ?? false;
-$showActions = $showActions ?? false;
-if ($showApprovalFilter) {
-    $approvalFilter = 'all';
-}
+$approvalFilter = $isAdmin ? ($approvalFilter ?? 'all') : 'approved';
+$showApprovalFilter = $isAdmin;
+$showActions = $isAdmin;
 $messaggioVuoto = $messaggioVuoto ?? "Nessun appunto disponibile.";
 
 $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicazione', 'DESC', $search, $approvalFilter);
@@ -76,6 +72,17 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
                         </div>
                         <div class="col-12 col-md-4 text-md-end mt-2 mt-md-0">
                             <div class="d-flex gap-2 justify-content-md-end flex-wrap">
+                                <?php if ($isAdmin): ?>
+                                    <?php
+                                    $statusMap = [
+                                        'in_revisione' => ['label' => 'Da approvare', 'class' => 'bg-warning text-dark'],
+                                        'approvato' => ['label' => 'Approvato', 'class' => 'bg-success'],
+                                        'rifiutato' => ['label' => 'Rifiutato', 'class' => 'bg-danger']
+                                    ];
+                                    $statusInfo = $statusMap[$appunto['stato']] ?? ['label' => $appunto['stato'], 'class' => 'bg-secondary'];
+                                    ?>
+                                    <span class="badge <?php echo $statusInfo['class']; ?>" title="Stato"><?php echo $statusInfo['label']; ?></span>
+                                <?php endif; ?>
                                 <span class="badge bg-light text-dark border" title="Media recensioni">★ <?= htmlspecialchars($appunto['media_recensioni'] ?: 'N/A') ?></span>
                                 <span class="badge bg-light text-dark border" title="Visualizzazioni"><?= (int)$appunto['numero_visualizzazioni'] ?> Visualizzazioni</span>
                                 <span class="badge bg-light text-dark border" title="Data pubblicazione"><?= date('d/m/y', strtotime($appunto['data_pubblicazione'])) ?></span>
@@ -248,7 +255,6 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
         }
 
         btn.disabled = true;
-        btn.textContent = '...';
 
         const formData = new FormData();
         formData.append('action', 'delete');

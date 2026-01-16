@@ -6,8 +6,6 @@
 
         <?php
         $titoloFiltri = "";
-        $showApprovalFilter = true;
-        $showActions = true;
         $messaggioVuoto = "Nessun appunto disponibile.";
         include 'lista-appunti.php';
         ?>
