@@ -11,7 +11,7 @@ $appunto = $dbh->getArticleById($_GET['id']);
 if (!$appunto) {
     // Appunto non trovato, lasciamo gestire al template o redirect
 } else {
-    $isApproved = $appunto['approvato'];
+    $isApproved = ($appunto['stato'] === 'approvato');
     $isAuthor = isUserLoggedIn() && ($_SESSION['idutente'] == $appunto['idutente']);
     $isAdmin = isUserAdmin();
 

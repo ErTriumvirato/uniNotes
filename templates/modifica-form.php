@@ -9,9 +9,9 @@ $article = $templateParams["article"];
             <div class="card-body p-4">
                 <h2 class="text-center mb-4">Modifica appunti</h2>
                 
-                <?php if (!empty($article['motivo_rifiuto'])): ?>
+                <?php if ($article['stato'] === 'rifiutato'): ?>
                     <div class="alert alert-danger" role="alert">
-                        <strong>Motivo del rifiuto:</strong> <?php echo htmlspecialchars($article['motivo_rifiuto']); ?>
+                        <strong>Stato:</strong> Rifiutato
                     </div>
                 <?php endif; ?>
 

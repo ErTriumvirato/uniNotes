@@ -130,7 +130,7 @@ class DatabaseHelper
             $types .= "i";
         }
 
-        $query .= " WHERE appunti.approvato = TRUE";
+        $query .= " WHERE appunti.stato = 'approvato'";
 
         $query .= " GROUP BY appunti.idappunto";
 
@@ -163,7 +163,7 @@ class DatabaseHelper
         JOIN utenti ON appunti.idutente = utenti.idutente
         JOIN corsi ON appunti.idcorso = corsi.idcorso
         LEFT JOIN recensioni ON appunti.idappunto = recensioni.idappunto
-        WHERE appunti.approvato = TRUE";
+        WHERE appunti.stato = 'approvato'";
 
         $params = [];
         $types = "";
@@ -253,14 +253,14 @@ class DatabaseHelper
 
     public function createArticle($idcorso, $titolo, $contenuto, $idutente)
     {
-        $stmt = $this->db->prepare("INSERT INTO appunti (idcorso, titolo, contenuto, idutente, data_pubblicazione, approvato, numero_visualizzazioni) VALUES (?, ?, ?, ?, NOW(), false, 0)");
+        $stmt = $this->db->prepare("INSERT INTO appunti (idcorso, titolo, contenuto, idutente, data_pubblicazione, numero_visualizzazioni, stato) VALUES (?, ?, ?, ?, NOW(), 0, 'in_revisione')");
         $stmt->bind_param("issi", $idcorso, $titolo, $contenuto, $idutente);
-        $stmt->execute();
+        return $stmt->execute();
     }
 
     public function updateArticle($idappunto, $idcorso, $titolo, $contenuto)
     {
-        $stmt = $this->db->prepare("UPDATE appunti SET idcorso = ?, titolo = ?, contenuto = ?, motivo_rifiuto = NULL, approvato = FALSE, data_pubblicazione = NOW() WHERE idappunto = ?");
+        $stmt = $this->db->prepare("UPDATE appunti SET idcorso = ?, titolo = ?, contenuto = ?, stato = 'in_revisione', data_pubblicazione = NOW() WHERE idappunto = ?");
         $stmt->bind_param("issi", $idcorso, $titolo, $contenuto, $idappunto);
         return $stmt->execute();
     }
@@ -296,7 +296,7 @@ class DatabaseHelper
             FROM appunti
             JOIN utenti ON appunti.idutente = utenti.idutente
             JOIN corsi ON appunti.idcorso = corsi.idcorso
-            WHERE appunti.approvato = FALSE AND appunti.motivo_rifiuto IS NULL
+            WHERE appunti.stato = 'in_revisione'
             ORDER BY $orderBy $order
         ";
         $stmt = $this->db->prepare($query);
@@ -308,15 +308,15 @@ class DatabaseHelper
 
     public function approveArticle($idappunto)
     {
-        $stmt = $this->db->prepare("UPDATE appunti SET approvato = true WHERE idappunto = ?");
+        $stmt = $this->db->prepare("UPDATE appunti SET stato = 'approvato' WHERE idappunto = ?");
         $stmt->bind_param("i", $idappunto);
         return $stmt->execute();
     }
 
-    public function rejectArticle($idappunto, $motivo)
+    public function rejectArticle($idappunto)
     {
-        $stmt = $this->db->prepare("UPDATE appunti SET motivo_rifiuto = ? WHERE idappunto = ?");
-        $stmt->bind_param("si", $motivo, $idappunto);
+        $stmt = $this->db->prepare("UPDATE appunti SET stato = 'rifiutato' WHERE idappunto = ?");
+        $stmt->bind_param("i", $idappunto);
         return $stmt->execute();
     }
 
@@ -377,7 +377,7 @@ class DatabaseHelper
               FROM appunti
               JOIN utenti ON appunti.idutente = utenti.idutente
               LEFT JOIN recensioni ON appunti.idappunto = recensioni.idappunto
-              WHERE appunti.idcorso = ? AND appunti.approvato = true
+              WHERE appunti.idcorso = ? AND appunti.stato = 'approvato'
               GROUP BY appunti.idappunto
               ORDER BY $sort $order";
 
@@ -512,7 +512,7 @@ class DatabaseHelper
     public function getArticlesCountByAuthor($idutente, $onlyApproved = false) {
         $query = "SELECT COUNT(*) as count FROM appunti WHERE idutente = ?";
         if ($onlyApproved) {
-            $query .= " AND approvato = TRUE";
+            $query .= " AND stato = 'approvato'";
         }
         $stmt = $this->db->prepare($query);
         $stmt->bind_param("i", $idutente);
@@ -539,7 +539,7 @@ class DatabaseHelper
         $query = "SELECT appunti.*, corsi.nome AS nome_corso
                   FROM appunti
                   JOIN corsi ON appunti.idcorso = corsi.idcorso
-                  WHERE appunti.idutente = ? AND appunti.approvato = FALSE
+                  WHERE appunti.idutente = ? AND appunti.stato != 'approvato'
                   ORDER BY appunti.data_pubblicazione DESC";
         
         $stmt = $this->db->prepare($query);
@@ -561,7 +561,7 @@ class DatabaseHelper
               FROM appunti
               JOIN corsi ON appunti.idcorso = corsi.idcorso
               LEFT JOIN recensioni ON appunti.idappunto = recensioni.idappunto
-              WHERE appunti.idutente = ? AND appunti.approvato = true
+              WHERE appunti.idutente = ? AND appunti.stato = 'approvato'
               GROUP BY appunti.idappunto
               ORDER BY $sort $order";
 
@@ -596,11 +596,11 @@ class DatabaseHelper
 
         // Filtro per stato approvazione
         if ($approvalFilter === 'approved') {
-            $query .= " AND appunti.approvato = TRUE";
+            $query .= " AND appunti.stato = 'approvato'";
         } elseif ($approvalFilter === 'pending') {
-            $query .= " AND appunti.approvato = FALSE AND appunti.motivo_rifiuto IS NULL";
+            $query .= " AND appunti.stato = 'in_revisione'";
         } elseif ($approvalFilter === 'refused') {
-            $query .= " AND appunti.motivo_rifiuto IS NOT NULL";
+            $query .= " AND appunti.stato = 'rifiutato'";
         }
         // 'all' non aggiunge filtri
 

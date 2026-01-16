@@ -53,15 +53,15 @@ $selectedCourseId = isset($_GET['idcorso']) ? (int)$_GET['idcorso'] : null;
                             <div>
                                 <div class="fw-bold"><?php echo htmlspecialchars($article['titolo']); ?></div>
                                 <div class="small text-muted"><?php echo htmlspecialchars($article['nome_corso']); ?></div>
-                                <?php if (!empty($article['motivo_rifiuto'])): ?>
+                                <?php if ($article['stato'] === 'rifiutato'): ?>
                                     <div class="text-danger small mt-1">
-                                        <strong>Rifiutato:</strong> <?php echo htmlspecialchars($article['motivo_rifiuto']); ?>
+                                        <strong>Stato:</strong> Rifiutato
                                     </div>
                                 <?php endif; ?>
                             </div>
                             <div class="d-flex flex-column align-items-end gap-2">
                                 <span class="text-muted small"><?php echo date('d/m/Y', strtotime($article['data_pubblicazione'])); ?></span>
-                                <?php if (!empty($article['motivo_rifiuto'])): ?>
+                                <?php if ($article['stato'] === 'rifiutato'): ?>
                                     <a href="modifica-appunti.php?id=<?php echo $article['idappunto']; ?>" class="btn btn-sm btn-outline-danger" title="Modifica">
                                         <i class="bi bi-pencil" aria-hidden="true"></i>
                                         <span class="visually-hidden">Modifica</span>

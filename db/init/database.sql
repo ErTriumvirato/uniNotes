@@ -30,8 +30,7 @@ CREATE TABLE appunti (
     contenuto TEXT NOT NULL,
     data_pubblicazione DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
     numero_visualizzazioni INTEGER DEFAULT 0 NOT NULL,
-    approvato BOOLEAN DEFAULT FALSE NOT NULL,
-    motivo_rifiuto TEXT DEFAULT NULL,
+    stato ENUM('in_revisione', 'approvato', 'rifiutato') DEFAULT 'in_revisione' NOT NULL,
     idutente INTEGER NOT NULL,
     idcorso INTEGER NOT NULL,
     FOREIGN KEY (idutente) REFERENCES utenti(idutente) ON DELETE CASCADE,
@@ -56,4 +55,4 @@ CREATE TABLE recensioni (
     FOREIGN KEY (idutente) REFERENCES utenti(idutente) ON DELETE CASCADE
 );
 
-GRANT ALL PRIVILEGES ON uniNotes.* TO 'user'@'localhost' IDENTIFIED BY 'user_password'; /*gestisce sicurezza*/
+GRANT ALL PRIVILEGES ON uniNotes.* TO 'user'@'localhost' IDENTIFIED BY 'user_password';

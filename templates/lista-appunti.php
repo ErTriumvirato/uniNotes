@@ -10,13 +10,14 @@
 // $messaggioVuoto - (opzionale) messaggio quando non ci sono appunti
 global $dbh;
 
+
 $nomeutente = $nomeutente ?? null;
 $nomecorso = $nomecorso ?? null;
 $search = $search ?? '';
 $approvalFilter = $approvalFilter ?? 'approved';
 $showApprovalFilter = $showApprovalFilter ?? false;
 $showActions = $showActions ?? false;
-if($showApprovalFilter) {
+if ($showApprovalFilter) {
     $approvalFilter = 'all';
 }
 $messaggioVuoto = $messaggioVuoto ?? "Nessun appunto disponibile.";
@@ -82,19 +83,19 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
                         </div>
                     </div>
                     <?php if ($showActions): ?>
-                    <div class="d-flex gap-2 mt-3 justify-content-end">
-                        <?php if (!$appunto['approvato']): ?>
-                        <button type="button" class="btn btn-sm btn-outline-success" onclick="handleApprove(<?= $appunto['idappunto'] ?>)" title="Approva">
-                            <i class="bi bi-check-lg" aria-hidden="true"></i>
-                        </button>
-                        <button type="button" class="btn btn-sm btn-outline-warning" onclick="handleReject(<?= $appunto['idappunto'] ?>)" title="Rifiuta">
-                            <i class="bi bi-x-lg" aria-hidden="true"></i>
-                        </button>
-                        <?php endif; ?>
-                        <button type="button" class="btn btn-sm btn-outline-danger" data-id="<?= $appunto['idappunto'] ?>" onclick="handleDelete(this)" title="Elimina">
-                            <i class="bi bi-trash" aria-hidden="true"></i>
-                        </button>
-                    </div>
+                        <div class="d-flex gap-2 mt-3 justify-content-end">
+                            <?php if ($appunto['stato'] === 'in_revisione'): ?>
+                                <button type="button" class="btn btn-sm btn-outline-success" onclick="handleApprove(<?= $appunto['idappunto'] ?>)" title="Approva">
+                                    <i class="bi bi-check-lg" aria-hidden="true"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-warning" onclick="handleReject(<?= $appunto['idappunto'] ?>)" title="Rifiuta">
+                                    <i class="bi bi-x-lg" aria-hidden="true"></i>
+                                </button>
+                            <?php endif; ?>
+                            <button type="button" class="btn btn-sm btn-outline-danger" data-id="<?= $appunto['idappunto'] ?>" onclick="handleDelete(this)" title="Elimina">
+                                <i class="bi bi-trash" aria-hidden="true"></i>
+                            </button>
+                        </div>
                     <?php endif; ?>
                 </div>
             </article>
@@ -125,7 +126,7 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
     function renderActionButtons(art) {
         if (!showActions) return '';
         let buttons = '';
-        if (!art.approvato) {
+        if (art.stato === 'in_revisione') {
             buttons += `
                 <button type="button" class="btn btn-sm btn-outline-success" onclick="handleApprove(${art.idappunto})" title="Approva">
                     <i class="bi bi-check-lg" aria-hidden="true"></i>
@@ -189,7 +190,10 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
         formData.append('action', 'approve');
         formData.append('idappunto', id);
 
-        fetch('appunti.php', { method: 'POST', body: formData })
+        fetch('appunti.php', {
+                method: 'POST',
+                body: formData
+            })
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
@@ -203,19 +207,14 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
 
     // Handler per rifiuto
     function handleReject(id) {
-        const reason = prompt("Inserisci il motivo del rifiuto:");
-        if (reason === null) return;
-        if (reason.trim() === "") {
-            showError("È necessario specificare un motivo per il rifiuto.");
-            return;
-        }
-
         const formData = new FormData();
         formData.append('action', 'reject');
         formData.append('idappunto', id);
-        formData.append('reason', reason);
 
-        fetch('appunti.php', { method: 'POST', body: formData })
+        fetch('appunti.php', {
+                method: 'POST',
+                body: formData
+            })
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
@@ -234,7 +233,7 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
 
         if (!btn.dataset.confirm) {
             btn.dataset.confirm = 'true';
-            btn.innerHTML = '<i class="bi bi-check-lg"></i> Conferma';
+            btn.innerHTML = '<i class="bi bi-check-lg"></i>';
             btn.classList.remove('btn-outline-danger');
             btn.classList.add('btn-danger');
             setTimeout(() => {
@@ -255,7 +254,10 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
         formData.append('action', 'delete');
         formData.append('idappunto', id);
 
-        fetch('appunti.php', { method: 'POST', body: formData })
+        fetch('appunti.php', {
+                method: 'POST',
+                body: formData
+            })
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
