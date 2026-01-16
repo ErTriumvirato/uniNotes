@@ -29,11 +29,12 @@ if (!empty($action)) {
             case 'save_user':
                 $id = $_POST['id'] ?? 0;
                 $username = $_POST['username'] ?? '';
+                $email = $_POST['email'] ?? '';
                 $isAdmin = $_POST['ruolo'] ?? 0; // Default user role (0)
                 $password = $_POST['password'] ?? '';
 
-                if (empty($username)) {
-                    throw new Exception("Username obbligatorio");
+                if (empty($username) || empty($email)) {
+                    throw new Exception("Username ed Email obbligatori");
                 }
 
                 if ($id > 0) {
@@ -42,19 +43,19 @@ if (!empty($action)) {
                     if ($id == $_SESSION['idutente'] && $isAdmin != $_SESSION['isAdmin']) {
                         throw new Exception("Non puoi modificare il tuo stesso ruolo");
                     }
-                    $result = $dbh->updateUser($id, $username, $isAdmin, !empty($password) ? $password : null);
+                    $result = $dbh->updateUser($id, $username, $email, $isAdmin, !empty($password) ? $password : null);
                 } else {
                     // Create
                     if (empty($password)) {
                         throw new Exception("Password obbligatoria per nuovi utenti");
                     }
-                    $result = $dbh->createUser($username, $password, $isAdmin);
+                    $result = $dbh->createUser($username, $email, $password, $isAdmin);
                 }
 
                 if ($result) {
                     echo json_encode(['success' => true, 'message' => 'Utente salvato con successo']);
                 } else {
-                    throw new Exception("Errore durante il salvataggio (username potrebbe essere già in uso)");
+                    throw new Exception("Errore durante il salvataggio (username o email potrebbero essere già in uso)");
                 }
                 break;
 

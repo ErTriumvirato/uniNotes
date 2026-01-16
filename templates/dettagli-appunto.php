@@ -209,7 +209,7 @@ if (!empty($appunto)) {
 
         if (!btn.dataset.confirm) {
             btn.dataset.confirm = 'true';
-            btn.textContent = 'Conferma?';
+            btn.innerHTML = '<i class="bi bi-check-lg"></i>';
             btn.classList.remove('btn-outline-danger');
             btn.classList.add('btn-danger');
             setTimeout(() => {

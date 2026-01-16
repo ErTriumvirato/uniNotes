@@ -30,7 +30,6 @@ INSERT INTO utenti (idutente, isAdmin, username, email, password) VALUES
 (29, false, 'claudia_argon', 'claudia_argon@example.com', '$2y$10$gYT.l6keERbhJzw/LOuVXOk4BdrLkL15fbFGMr8AiUpBIfD8lT7si'),
 (30, false, 'paolo_kripton', 'paolo_kripton@example.com', '$2y$10$gYT.l6keERbhJzw/LOuVXOk4BdrLkL15fbFGMr8AiUpBIfD8lT7si');
 
--- 2. SSD (10 settori)
 INSERT INTO ssd (idssd, nome, descrizione) VALUES
 (1, 'MAT/05', 'Analisi Matematica'),
 (2, 'INF/01', 'Informatica Generale'),
@@ -43,7 +42,6 @@ INSERT INTO ssd (idssd, nome, descrizione) VALUES
 (9, 'L-LIN/12', 'Lingua Inglese'),
 (10, 'M-GGR/01', 'Geografia');
 
--- 3. CORSI (20 corsi)
 INSERT INTO corsi (idcorso, nome, descrizione, idssd) VALUES
 (1, 'Analisi I', 'Studio di funzioni a una variabile reale, limiti e derivate.', 1),
 (2, 'Analisi II', 'Calcolo differenziale e integrale per funzioni di più variabili.', 1),
@@ -66,7 +64,6 @@ INSERT INTO corsi (idcorso, nome, descrizione, idssd) VALUES
 (19, 'Geografia Economica', 'Analisi spaziale delle attività economiche.', 10),
 (20, 'Sistemi GIS', 'Software GIS per mappe digitali.', 10);
 
--- 4. APPUNTI (6 appunti corposi + 4 extra per evitare errori di FK)
 INSERT INTO appunti (idappunto, titolo, contenuto, idutente, idcorso, numero_visualizzazioni, approvato, data_pubblicazione) VALUES
 (1, 'Limiti Notevoli e Stime Asintotiche', 'Lo studio dei limiti notevoli rappresenta il pilastro del calcolo infinitesimale. 1. Limite trigonometrico fondamentale: lim(x->0) sin(x)/x = 1. La dimostrazione si basa sul teorema del confronto applicato alle aree del settore circolare. 2. Numero di Nepero: lim(x->inf) (1 + 1/x)^x = e. Esaminiamo anche le varianti generalizzate per risolvere forme indeterminate complesse [0/0].', 4, 1, 156, true, '2025-01-10 09:00:00'),
 (2, 'Puntatori e Gestione Memoria in C', 'I puntatori sono l aspetto più potente del C. Definizione: variabile che contiene l indirizzo di un altra variabile. Allocazione Dinamica: malloc() riserva byte nello Heap, free() libera la memoria. Fondamentali per liste concatenate e alberi, dove ogni nodo punta al successivo tramite il selettore ->.', 5, 3, 312, true, '2025-01-12 14:20:00'),
@@ -79,17 +76,14 @@ INSERT INTO appunti (idappunto, titolo, contenuto, idutente, idcorso, numero_vis
 (10, 'Sistemi Informativi', 'Basi teoriche sui sistemi aziendali.', 10, 4, 10, true, '2025-01-26 12:00:00'),
 (11, 'English Grammar for ICT', 'Technical verbs and phrases for programmers.', 13, 17, 30, true, '2025-01-27 11:00:00');
 
--- 5. ISCRIZIONI
 INSERT INTO iscrizioni (idutente, idcorso) VALUES
 (4, 1), (4, 3), (4, 7), (5, 3), (6, 7), (7, 9), (8, 11), (9, 5), (15, 1), (19, 3), (21, 3);
 
--- 6. RECENSIONI (Sincronizzate con gli ID appunti inseriti sopra)
 INSERT INTO recensioni (valutazione, idappunto, idutente) VALUES
 (5, 1, 15), (4, 1, 16), (5, 1, 17),
 (5, 2, 19), (5, 2, 20), (4, 2, 10),
 (5, 3, 4), (5, 3, 10), (3, 3, 21), 
 (4, 5, 14), (5, 5, 22),
-(5, 7, 5), (4, 7, 6),
 (5, 8, 12),
 (2, 10, 5), (3, 10, 6),
 (4, 11, 14);

@@ -2,7 +2,6 @@
         <header class="row mb-4">
             <div class="col-12">
                 <h2 class="display-5 fw-bold">Gestione corsi e SSD</h2>
-                <p class="text-muted">Amministra i corsi di studio e i Settori Scientifico Disciplinari</p>
             </div>
         </header>
 
@@ -11,7 +10,7 @@
             <div class="card-body p-4">
                 <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
                     <h3 id="corsi-title" class="card-title mb-0">Corsi</h3>
-                    <button type="button" class="btn btn-primary" onclick="openCourseModal()">
+                    <button type="button" class="btn btn-outline-primary" onclick="openCourseModal()">
                         Nuovo Corso
                     </button>
                 </div>
@@ -33,7 +32,7 @@
                             <tr>
                                 <th>Nome</th>
                                 <th>SSD</th>
-                                <th>Descrizione</th>
+                                <!--<th>Descrizione</th>-->
                                 <th class="text-end">Azioni</th>
                             </tr>
                         </thead>
@@ -49,7 +48,7 @@
             <div class="card-body p-4">
                 <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
                     <h3 id="ssd-title" class="card-title mb-0">SSD (Settori Scientifico Disciplinari)</h3>
-                    <button type="button" class="btn btn-secondary" onclick="openSSDModal()">
+                    <button type="button" class="btn btn-outline-primary" onclick="openSSDModal()">
                         Nuovo SSD
                     </button>
                 </div>
@@ -76,14 +75,14 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="courseModalTitle">Nuovo Corso</h5>
+                    <h5 class="modal-title" id="courseModalTitle">Nuovo corso</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="courseForm">
                         <input type="hidden" id="courseId" name="id">
                         <div class="mb-3">
-                            <label for="courseName" class="form-label">Nome Corso</label>
+                            <label for="courseName" class="form-label">Nome corso</label>
                             <input type="text" class="form-control" id="courseName" name="nome" required>
                         </div>
                         <div class="mb-3">
@@ -92,10 +91,10 @@
                                 <!-- Populated by JS -->
                             </select>
                         </div>
-                        <div class="mb-3">
+                        <!--<div class="mb-3">
                             <label for="courseDesc" class="form-label">Descrizione</label>
                             <textarea class="form-control" id="courseDesc" name="descrizione" rows="3" required></textarea>
-                        </div>
+                        </div>-->
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -121,10 +120,10 @@
                             <label for="ssdName" class="form-label">Codice (es. INF/01)</label>
                             <input type="text" class="form-control" id="ssdName" name="nome" required>
                         </div>
-                        <div class="mb-3">
+                        <!--<div class="mb-3">
                             <label for="ssdDesc" class="form-label">Descrizione</label>
                             <textarea class="form-control" id="ssdDesc" name="descrizione" rows="3" required></textarea>
-                        </div>
+                        </div>-->
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -166,9 +165,8 @@
                         data.data.forEach(course => {
                             tbody.innerHTML += `
                         <tr>
-                            <td><strong>${course.nomeCorso}</strong></td>
-                            <td><span class="badge bg-light text-dark border">${course.nomeSSD}</span></td>
-                            <td><small class="text-muted">${course.descrizioneCorso.substring(0, 50)}...</small></td>
+                            <td>${course.nomeCorso}</td>
+                            <td>${course.nomeSSD}</td>
                             <td class="text-end">
                                 <div class="d-flex gap-2 justify-content-end">
                                     <button type="button" class="btn btn-sm btn-outline-secondary" onclick="editCourse(${course.idcorso})" title="Modifica">
@@ -210,7 +208,7 @@
                             // Table
                             tbody.innerHTML += `
                                 <tr>
-                                    <td><strong>${ssd.nome}</strong></td>
+                                    <td>${ssd.nome}</td>
                                     <td>${ssd.descrizione}</td>
                                     <td class="text-end">
                                         <div class="d-flex gap-2 justify-content-end">
@@ -255,7 +253,7 @@
                         const course = data.data;
                         document.getElementById('courseId').value = course.idcorso;
                         document.getElementById('courseName').value = course.nome;
-                        document.getElementById('courseDesc').value = course.descrizione;
+                        /*document.getElementById('courseDesc').value = course.descrizione;*/
                         document.getElementById('courseSSD').value = course.idssd;
                         document.getElementById('courseModalTitle').innerText = 'Modifica Corso';
                         courseModalBS.show();
@@ -286,7 +284,7 @@
         function deleteCourse(id, btn) {
             if (!btn.dataset.confirm) {
                 btn.dataset.confirm = 'true';
-                btn.textContent = 'Conferma?';
+                btn.innerHTML = '<i class="bi bi-check-lg"></i>';
                 btn.classList.remove('btn-outline-danger');
                 btn.classList.add('btn-danger');
                 setTimeout(() => {
@@ -366,7 +364,7 @@
         function deleteSSD(id, btn) {
             if (!btn.dataset.confirm) {
                 btn.dataset.confirm = 'true';
-                btn.textContent = 'Conferma?';
+                btn.innerHTML = '<i class="bi bi-check-lg"></i>';
                 btn.classList.remove('btn-outline-danger');
                 btn.classList.add('btn-danger');
                 setTimeout(() => {

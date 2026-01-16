@@ -1,8 +1,7 @@
     <div class="container">
         <header class="row mb-4">
             <div class="col-12">
-                <h2 class="display-5 fw-bold">Gestione Utenti</h2>
-                <p class="text-muted">Amministra gli utenti e i loro permessi</p>
+                <h2 class="display-5 fw-bold">Gestione utenti</h2>
             </div>
         </header>
 
@@ -10,8 +9,8 @@
             <div class="card-body p-4">
                 <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
                     <h3 id="utenti-title" class="card-title mb-0">Utenti</h3>
-                    <button type="button" class="btn btn-primary" onclick="openUserModal()">
-                        Nuovo Utente
+                    <button type="button" class="btn btn-outline-primary" onclick="openUserModal()">
+                        Nuovo utente
                     </button>
                 </div>
 
@@ -43,7 +42,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="userModalTitle">Nuovo Utente</h5>
+                    <h5 class="modal-title" id="userModalTitle">Nuovo utente</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -54,9 +53,13 @@
                             <input type="text" class="form-control" id="username" name="username" required>
                         </div>
                         <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
                             <label for="ruolo" class="form-label">Ruolo</label>
                             <select class="form-select" id="ruolo" name="ruolo">
-                                <option value="0">Utente Standard</option>
+                                <option value="0">Utente standard</option>
                                 <option value="1">Amministratore</option>
                             </select>
                         </div>
@@ -100,12 +103,12 @@
                         tbody.innerHTML = '';
                         data.data.forEach(user => {
                             const roleBadge = user.isAdmin == 1 ?
-                                '<span class="badge bg-primary">Admin</span>' :
-                                '<span class="badge bg-secondary">User</span>';
+                                'Admin' :
+                                'User';
 
                             tbody.innerHTML += `
                         <tr>
-                            <td><strong>${user.username}</strong></td>
+                            <td>${user.username}</td>
                             <td>${roleBadge}</td>
                             <td class="text-end">
                                 <div class="d-flex gap-2 justify-content-end">
@@ -141,6 +144,7 @@
                         const user = data.data;
                         document.getElementById('userId').value = user.idutente;
                         document.getElementById('username').value = user.username;
+                        document.getElementById('email').value = user.email;
                         document.getElementById('ruolo').value = user.isAdmin;
                         document.getElementById('password').value = '';
                         document.getElementById('userModalTitle').innerText = 'Modifica Utente';
@@ -172,7 +176,7 @@
         function deleteUser(id, btn) {
             if (!btn.dataset.confirm) {
                 btn.dataset.confirm = 'true';
-                btn.textContent = 'Conferma?';
+                btn.innerHTML = '<i class="bi bi-check-lg"></i>';
                 btn.classList.remove('btn-outline-danger');
                 btn.classList.add('btn-danger');
                 setTimeout(() => {

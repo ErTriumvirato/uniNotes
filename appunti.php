@@ -6,14 +6,17 @@ if (isset($_GET['action']) && $_GET['action'] === 'filter') {
     $order = $_GET['order'] ?? 'DESC';
     $nomeutente = isset($_GET['nomeutente']) ? $_GET['nomeutente'] : null;
     $nomecorso = isset($_GET['nomecorso']) ? $_GET['nomecorso'] : null;
+    $search = isset($_GET['search']) ? $_GET['search'] : '';
+    $approvalFilter = isset($_GET['approval']) ? $_GET['approval'] : 'approved';
 
-    $appunti = $dbh->getApprovedArticlesWithFilters($nomeutente, $nomecorso, $sort, $order);
+    $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, $sort, $order, $search, $approvalFilter);
 
-    $response = array_map(function ($art) {
-        $art['numero_visualizzazioni'] = (int)$art['numero_visualizzazioni'];
-        $art['data_formattata'] = date('d/m/y', strtotime($art['data_pubblicazione']));
-        $art['media_recensioni'] = $art['media_recensioni'] ?: 'N/A';
-        return $art;
+    $response = array_map(function ($res) {
+        $res['numero_visualizzazioni'] = (int)$res['numero_visualizzazioni'];
+        $res['data_formattata'] = date('d/m/y', strtotime($res['data_pubblicazione']));
+        $res['media_recensioni'] = $res['media_recensioni'] ?: 'N/A';
+        $res['numero_recensioni'] = (int)$res['numero_recensioni'];
+        return $res;
     }, $appunti);
 
     header('Content-Type: application/json');

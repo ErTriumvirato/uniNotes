@@ -43,7 +43,7 @@
                             </li>
                             <?php if (isUserLoggedIn()) { ?>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="creazione-appunti.php">Carica appunti</a>
+                                    <a class="nav-link" href="creazione-appunti.php">Carica</a>
                                 </li>
                             <?php } ?>
                             <?php if (isUserAdmin()) { ?>
@@ -66,7 +66,7 @@
                             <ul id="user-dropdown" class="user-dropdown" role="menu" aria-label="Opzioni utente">
                                 <li role="none"><a href="profilo.php" class="user-dropdown-item" role="menuitem">Profilo</a></li>
                                 <li role="none"><a href="impostazioni.php" class="user-dropdown-item" role="menuitem">Impostazioni</a></li>
-                                <li role="none"><a href="logout.php" class="user-dropdown-item" role="menuitem">Esci</a></li>
+                                <li role="none"><a href="logout.php" class="user-dropdown-item text-danger" role="menuitem">Esci</a></li>
                             </ul>
                         </nav>
                     <?php } ?>
@@ -91,8 +91,9 @@
             || ($templateParams["nome"] === "templates/appunti-da-gestire.php")
             || ($templateParams["nome"] === "templates/menu-appunti.php")
             || ($templateParams["nome"] === "templates/dettagli-appunto.php")
+            || ($templateParams["nome"] === "templates/upload-form.php")
         ) { ?>
-            <button class="btn btn-secondary mb-3" onclick="goBack()">← Indietro</button>
+            <button class="btn btn-outline-secondary mb-3" onclick="goBack()">← Indietro</button>
         <?php
         } ?>
         <div class="py-4">
@@ -170,17 +171,6 @@
             if (userMenu && dropdown && !userMenu.contains(e.target)) {
                 dropdown.classList.remove('open');
                 document.querySelector('.user-menu-btn')?.setAttribute('aria-expanded', 'false');
-            }
-        });
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                const dropdown = document.getElementById('user-dropdown');
-                if (dropdown?.classList.contains('open')) {
-                    dropdown.classList.remove('open');
-                    document.querySelector('.user-menu-btn')?.setAttribute('aria-expanded', 'false');
-                    document.querySelector('.user-menu-btn')?.focus();
-                }
             }
         });
     </script>

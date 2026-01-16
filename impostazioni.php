@@ -7,6 +7,7 @@ $currentUser = $dbh->getUserById($_SESSION['idutente']);
 
 if(isset($_POST['submit'])) {
     $newUsername = trim($_POST['username']);
+    $newEmail = trim($_POST['email']);
     $newPassword = $_POST['password'];
     $confirmPassword = $_POST['confirm_password'];
 
@@ -27,13 +28,14 @@ if(isset($_POST['submit'])) {
         $passwordToUpdate = !empty($newPassword) ? $newPassword : null;
         
         // Mantengo il ruolo attuale
-        $result = $dbh->updateUser($currentUser['idutente'], $newUsername, $currentUser['isAdmin'], $passwordToUpdate);
+        $result = $dbh->updateUser($currentUser['idutente'], $newUsername, $newEmail, $currentUser['isAdmin'], $passwordToUpdate);
         
         if($result) {
             $templateParams["messaggio"] = "Profilo aggiornato con successo!";
             // Aggiorno sessione e dati utente corrente
             $_SESSION['username'] = $newUsername;
             $currentUser['username'] = $newUsername;
+            $currentUser['email'] = $newEmail;
         } else {
             $templateParams["messaggio"] = "Errore durante l'aggiornamento del profilo.";
         }

@@ -8,16 +8,20 @@ if (isUserLoggedIn()) {
 
 if (isset($_POST['registrazione'])) {
     $username = $_POST['username'];
+    $email = $_POST['email'];
     $password = $_POST['password'];
     
     // Verifica se l'utente esiste già
     $existingUser = $dbh->getUserByUsername($username);
+    $existingEmail = $dbh->getUserByEmail($email);
     
     if ($existingUser) {
         $templateParams["error"] = "Username già in uso";
+    } elseif ($existingEmail) {
+        $templateParams["error"] = "Email già in uso";
     } else {
         // Crea nuovo utente (ruolo 0 = utente standard)
-        $dbh->createUser($username, $password, 0);
+        $dbh->createUser($username, $email, $password, 0);
         
         // Login automatico dopo registrazione
         $user = $dbh->getUserByUsername($username);

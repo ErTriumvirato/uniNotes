@@ -22,6 +22,17 @@ class DatabaseHelper
         return $result->fetch_assoc();
     }
 
+    public function getUserByEmail($email)
+    {
+        $query = "SELECT * FROM utenti WHERE email = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('s', $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_assoc();
+    }
+
     public function getAllSSD()
     {
         $query = "SELECT * FROM ssd";
@@ -451,7 +462,7 @@ class DatabaseHelper
     }
 
     public function getUserById($idutente) {
-        $stmt = $this->db->prepare("SELECT idutente, username, isAdmin FROM utenti WHERE idutente = ?");
+        $stmt = $this->db->prepare("SELECT idutente, username, email, isAdmin FROM utenti WHERE idutente = ?");
         $stmt->bind_param("i", $idutente);
         $stmt->execute();
         return $stmt->get_result()->fetch_assoc();
@@ -560,24 +571,36 @@ class DatabaseHelper
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getApprovedArticlesWithFilters($nomeutente = null, $nomecorso = null, $sort = 'data_pubblicazione', $order = 'DESC')
+    public function getArticlesWithFilters($nomeutente = null, $nomecorso = null, $sort = 'data_pubblicazione', $order = 'DESC', $search = '', $approvalFilter = 'approved')
     {
         $allowedSort = ['data_pubblicazione', 'media_recensioni', 'numero_visualizzazioni'];
         $allowedOrder = ['ASC', 'DESC'];
+        $allowedApprovalFilters = ['approved', 'pending', 'all'];
 
         $sort = in_array($sort, $allowedSort) ? $sort : 'data_pubblicazione';
         $order = in_array($order, $allowedOrder) ? $order : 'DESC';
+        $approvalFilter = in_array($approvalFilter, $allowedApprovalFilters) ? $approvalFilter : 'approved';
+        $search = $search ?? '';
 
         $query = "SELECT appunti.*, utenti.username AS autore, corsi.nome AS nome_corso,
-              ROUND(AVG(recensioni.valutazione), 1) AS media_recensioni
+              ROUND(AVG(recensioni.valutazione), 1) AS media_recensioni,
+              COUNT(recensioni.idrecensione) AS numero_recensioni
               FROM appunti
               JOIN utenti ON appunti.idutente = utenti.idutente
               JOIN corsi ON appunti.idcorso = corsi.idcorso
               LEFT JOIN recensioni ON appunti.idappunto = recensioni.idappunto
-              WHERE appunti.approvato = true";
+              WHERE 1=1";
 
         $params = [];
         $types = "";
+
+        // Filtro per stato approvazione
+        if ($approvalFilter === 'approved') {
+            $query .= " AND appunti.approvato = TRUE";
+        } elseif ($approvalFilter === 'pending') {
+            $query .= " AND appunti.approvato = FALSE";
+        }
+        // 'all' non aggiunge filtri
 
         if ($nomeutente !== null) {
             $query .= " AND utenti.username = ?";
@@ -589,6 +612,15 @@ class DatabaseHelper
             $query .= " AND corsi.nome = ?";
             $params[] = $nomecorso;
             $types .= "s";
+        }
+
+        if (!empty($search) && $search !== '') {
+            $query .= " AND (appunti.titolo LIKE ? OR utenti.username LIKE ? OR corsi.nome LIKE ?)";
+            $searchTerm = "%" . $search . "%";
+            $params[] = $searchTerm;
+            $params[] = $searchTerm;
+            $params[] = $searchTerm;
+            $types .= "sss";
         }
 
         $query .= " GROUP BY appunti.idappunto ORDER BY $sort $order";

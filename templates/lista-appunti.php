@@ -3,20 +3,43 @@
 // $titoloFiltri - titolo della sezione (es. "Appunti disponibili", "Appunti di Mario")
 // $nomeutente - (opzionale) username dell'autore per filtrare
 // $nomecorso - (opzionale) nome del corso per filtrare
+// $search - (opzionale) testo di ricerca iniziale
+// $approvalFilter - (opzionale) filtro approvazione: 'approved', 'pending', 'all' (default: 'approved')
+// $showApprovalFilter - (opzionale) mostra/nasconde il filtro di approvazione (default: false)
 // $messaggioVuoto - (opzionale) messaggio quando non ci sono appunti
 global $dbh;
 
 $nomeutente = $nomeutente ?? null;
 $nomecorso = $nomecorso ?? null;
+$search = $search ?? '';
+$approvalFilter = $approvalFilter ?? 'approved';
+$showApprovalFilter = $showApprovalFilter ?? false;
+if($showApprovalFilter) {
+    $approvalFilter = 'all';
+}
 $messaggioVuoto = $messaggioVuoto ?? "Nessun appunto disponibile.";
 
-$appunti = $dbh->getApprovedArticlesWithFilters($nomeutente, $nomecorso);
+$appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicazione', 'DESC', $search, $approvalFilter);
 ?>
 
 <section aria-label="Filtri appunti" class="row g-3 mb-4 align-items-end">
-    <div class="col-12 col-md-6">
+    <div class="col-12">
         <h3 class="mb-0"><?= $titoloFiltri ?></h3>
     </div>
+    <div class="col-12 col-md-4">
+        <label for="ajax-search" class="form-label small text-muted">Cerca</label>
+        <input type="text" id="ajax-search" class="form-control form-control-sm" placeholder="Cerca appunti..." value="<?= htmlspecialchars($search) ?>">
+    </div>
+    <?php if ($showApprovalFilter): ?>
+        <div class="col-6 col-md-2">
+            <label for="ajax-approval" class="form-label small text-muted">Stato</label>
+            <select id="ajax-approval" class="form-select form-select-sm" onchange="updateArticles()">
+                <option value="all" <?= $approvalFilter === 'all' ? 'selected' : '' ?>>Tutti</option>
+                <option value="approved" <?= $approvalFilter === 'approved' ? 'selected' : '' ?>>Approvati</option>
+                <option value="pending" <?= $approvalFilter === 'pending' ? 'selected' : '' ?>>Non approvati</option>
+            </select>
+        </div>
+    <?php endif; ?>
     <div class="col-6 col-md-3">
         <label for="ajax-sort" class="form-label small text-muted">Ordina per</label>
         <select id="ajax-sort" class="form-select form-select-sm" onchange="updateArticles()">
@@ -66,15 +89,29 @@ $appunti = $dbh->getApprovedArticlesWithFilters($nomeutente, $nomecorso);
 <script>
     const sortSelect = document.getElementById('ajax-sort');
     const orderSelect = document.getElementById('ajax-order');
+    const searchInput = document.getElementById('ajax-search');
+    const approvalSelect = document.getElementById('ajax-approval');
     const container = document.getElementById('articles-container');
     const nomeutente = <?= json_encode($nomeutente) ?>;
     const nomecorso = <?= json_encode($nomecorso) ?>;
+    const defaultApprovalFilter = <?= json_encode($approvalFilter) ?>;
     const messaggioVuoto = <?= json_encode($messaggioVuoto) ?>;
 
+    let searchTimeout;
+    searchInput.addEventListener('input', () => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(updateArticles, 300);
+    });
+
     function updateArticles() {
+        const searchValue = searchInput.value.trim();
+        const approvalValue = approvalSelect ? approvalSelect.value : defaultApprovalFilter;
+
         let url = `appunti.php?action=filter&sort=${encodeURIComponent(sortSelect.value)}&order=${encodeURIComponent(orderSelect.value)}`;
         if (nomeutente) url += `&nomeutente=${encodeURIComponent(nomeutente)}`;
         if (nomecorso) url += `&nomecorso=${encodeURIComponent(nomecorso)}`;
+        if (searchValue) url += `&search=${encodeURIComponent(searchValue)}`;
+        url += `&approval=${encodeURIComponent(approvalValue)}`;
 
         handleButtonAction(null, url, null, (data) => {
             container.innerHTML = '';
@@ -106,4 +143,15 @@ $appunti = $dbh->getApprovedArticlesWithFilters($nomeutente, $nomecorso);
             });
         });
     }
+
+    // Reset dei selettori quando si torna indietro con il browser (bfcache)
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted) {
+            // Resetta i selettori ai valori di default per sincronizzarli con il contenuto PHP
+            if (approvalSelect) approvalSelect.value = defaultApprovalFilter;
+            sortSelect.value = 'data_pubblicazione';
+            orderSelect.value = 'DESC';
+            searchInput.value = <?= json_encode($search) ?>;
+        }
+    });
 </script>
