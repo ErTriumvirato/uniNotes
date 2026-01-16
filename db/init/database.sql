@@ -6,6 +6,7 @@ CREATE TABLE utenti (
     idutente INTEGER PRIMARY KEY AUTO_INCREMENT,
     isAdmin BOOLEAN NOT NULL DEFAULT FALSE,
     username VARCHAR(30) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL
 );
 
@@ -55,4 +56,4 @@ CREATE TABLE recensioni (
     FOREIGN KEY (idutente) REFERENCES utenti(idutente) ON DELETE CASCADE
 );
 
-GRANT ALL PRIVILEGES ON uniNotes.* TO 'user'@'localhost' IDENTIFIED BY 'user_password';
+GRANT ALL PRIVILEGES ON uniNotes.* TO 'user'@'localhost' IDENTIFIED BY 'user_password'; /*gestisce sicurezza*/

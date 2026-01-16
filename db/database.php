@@ -457,21 +457,21 @@ class DatabaseHelper
         return $stmt->get_result()->fetch_assoc();
     }
 
-    public function createUser($username, $password, $ruolo) {
+    public function createUser($username, $email, $password, $ruolo) {
         $hash = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $this->db->prepare("INSERT INTO utenti (username, password, isAdmin) VALUES (?, ?, ?)");
-        $stmt->bind_param("ssi", $username, $hash, $ruolo);
+        $stmt = $this->db->prepare("INSERT INTO utenti (username, email, password, isAdmin) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("sssi", $username, $email, $hash, $ruolo);
         return $stmt->execute();
     }
 
-    public function updateUser($idutente, $username, $ruolo, $password = null) {
+    public function updateUser($idutente, $username, $email, $ruolo, $password = null) {
         if ($password) {
             $hash = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $this->db->prepare("UPDATE utenti SET username = ?, isAdmin = ?, password = ? WHERE idutente = ?");
-            $stmt->bind_param("sisi", $username, $ruolo, $hash, $idutente);
+            $stmt = $this->db->prepare("UPDATE utenti SET username = ?, email = ?, isAdmin = ?, password = ? WHERE idutente = ?");
+            $stmt->bind_param("ssisi", $username, $email, $ruolo, $hash, $idutente);
         } else {
-            $stmt = $this->db->prepare("UPDATE utenti SET username = ?, isAdmin = ? WHERE idutente = ?");
-            $stmt->bind_param("sii", $username, $ruolo, $idutente);
+            $stmt = $this->db->prepare("UPDATE utenti SET username = ?, email = ?, isAdmin = ? WHERE idutente = ?");
+            $stmt->bind_param("ssii", $username, $email, $ruolo, $idutente);
         }
         return $stmt->execute();
     }

@@ -21,6 +21,11 @@
                         <label for="username" class="form-label">Username</label>
                         <input type="text" class="form-control" id="username" name="username" value="<?php echo htmlspecialchars($templateParams["currentUser"]["username"]); ?>" required />
                     </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($templateParams["currentUser"]["email"]); ?>" required />
+                    </div>
                     
                     <div class="mb-3">
                         <label for="password" class="form-label">Nuova Password <small class="text-muted">(lascia vuoto per non cambiare)</small></label>
