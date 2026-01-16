@@ -236,9 +236,6 @@ if (!empty($appunto)) {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                // Rimuovi la card della recensione con animazione
-                reviewCard.style.transition = 'opacity 0.3s';
-                reviewCard.style.opacity = '0';
                 setTimeout(() => {
                     reviewCard.remove();
 

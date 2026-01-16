@@ -11,7 +11,7 @@
     <link rel="icon" href="uploads/img/favicon.png" type="image/x-icon" />
     <script src="utils/functions.js"></script>
     <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
-</script>
+    </script>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -115,13 +115,13 @@
             const banner = document.getElementById('error-banner');
             const msgSpan = document.getElementById('error-message');
             msgSpan.textContent = message;
-            
+
             banner.classList.remove('alert-danger', 'alert-success');
             banner.classList.add('alert-' + type);
-            
+
             banner.style.display = 'block';
             setTimeout(() => banner.classList.add('show'), 10);
-            
+
             if (bannerTimeout) clearTimeout(bannerTimeout);
             bannerTimeout = setTimeout(hideError, 5000);
         }
@@ -137,7 +137,9 @@
         function hideError() {
             const banner = document.getElementById('error-banner');
             banner.classList.remove('show');
-            setTimeout(() => { banner.style.display = 'none'; }, 150);
+            setTimeout(() => {
+                banner.style.display = 'none';
+            }, 150);
         }
 
         function goBack() {

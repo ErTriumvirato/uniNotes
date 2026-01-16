@@ -4,8 +4,9 @@
 // $nomeutente - (opzionale) username dell'autore per filtrare
 // $nomecorso - (opzionale) nome del corso per filtrare
 // $search - (opzionale) testo di ricerca iniziale
-// $approvalFilter - (opzionale) filtro approvazione: 'approved', 'pending', 'all' (default: 'approved')
+// $approvalFilter - (opzionale) filtro approvazione: 'approved', 'pending', 'all', 'refused' (default: 'approved')
 // $showApprovalFilter - (opzionale) mostra/nasconde il filtro di approvazione (default: false)
+// $showActions - (opzionale) mostra i pulsanti azione: approva, rifiuta, elimina (default: false)
 // $messaggioVuoto - (opzionale) messaggio quando non ci sono appunti
 global $dbh;
 
@@ -14,6 +15,7 @@ $nomecorso = $nomecorso ?? null;
 $search = $search ?? '';
 $approvalFilter = $approvalFilter ?? 'approved';
 $showApprovalFilter = $showApprovalFilter ?? false;
+$showActions = $showActions ?? false;
 if($showApprovalFilter) {
     $approvalFilter = 'all';
 }
@@ -33,16 +35,17 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
     <?php if ($showApprovalFilter): ?>
         <div class="col-6 col-md-2">
             <label for="ajax-approval" class="form-label small text-muted">Stato</label>
-            <select id="ajax-approval" class="form-select form-select-sm" onchange="updateArticles()">
+            <select id="ajax-approval" class="form-select form-select-sm" onchange="updateArticles()" autocomplete="off">
                 <option value="all" <?= $approvalFilter === 'all' ? 'selected' : '' ?>>Tutti</option>
                 <option value="approved" <?= $approvalFilter === 'approved' ? 'selected' : '' ?>>Approvati</option>
-                <option value="pending" <?= $approvalFilter === 'pending' ? 'selected' : '' ?>>Non approvati</option>
+                <option value="pending" <?= $approvalFilter === 'pending' ? 'selected' : '' ?>>In attesa</option>
+                <option value="refused" <?= $approvalFilter === 'refused' ? 'selected' : '' ?>>Rifiutati</option>
             </select>
         </div>
     <?php endif; ?>
     <div class="col-6 col-md-3">
         <label for="ajax-sort" class="form-label small text-muted">Ordina per</label>
-        <select id="ajax-sort" class="form-select form-select-sm" onchange="updateArticles()">
+        <select id="ajax-sort" class="form-select form-select-sm" onchange="updateArticles()" autocomplete="off">
             <option value="data_pubblicazione">Data di caricamento</option>
             <option value="media_recensioni">Valutazione media</option>
             <option value="numero_visualizzazioni">Numero di visualizzazioni</option>
@@ -50,7 +53,7 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
     </div>
     <div class="col-6 col-md-3">
         <label for="ajax-order" class="form-label small text-muted">Ordine</label>
-        <select id="ajax-order" class="form-select form-select-sm" onchange="updateArticles()">
+        <select id="ajax-order" class="form-select form-select-sm" onchange="updateArticles()" autocomplete="off">
             <option value="DESC">Decrescente</option>
             <option value="ASC">Crescente</option>
         </select>
@@ -59,12 +62,12 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
 
 <section aria-label="Lista appunti" id="articles-container" class="d-flex flex-column gap-3">
     <?php if (!empty($appunti)): foreach ($appunti as $appunto): ?>
-            <article class="card shadow-sm border-0 article-card">
+            <article class="card shadow-sm border-0 article-card" id="article-<?= $appunto['idappunto'] ?>">
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-12 col-md-8">
                             <h5 class="card-title mb-1">
-                                <a href="appunto.php?id=<?= htmlspecialchars($appunto['idappunto']) ?>" class="text-decoration-none text-dark stretched-link">
+                                <a href="appunto.php?id=<?= htmlspecialchars($appunto['idappunto']) ?>" class="text-decoration-none text-dark <?= $showActions ? '' : 'stretched-link' ?>">
                                     <?= htmlspecialchars($appunto['titolo']) ?>
                                 </a>
                             </h5>
@@ -78,6 +81,21 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
                             </div>
                         </div>
                     </div>
+                    <?php if ($showActions): ?>
+                    <div class="d-flex gap-2 mt-3 justify-content-end">
+                        <?php if (!$appunto['approvato']): ?>
+                        <button type="button" class="btn btn-sm btn-outline-success" onclick="handleApprove(<?= $appunto['idappunto'] ?>)" title="Approva">
+                            <i class="bi bi-check-lg" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-warning" onclick="handleReject(<?= $appunto['idappunto'] ?>)" title="Rifiuta">
+                            <i class="bi bi-x-lg" aria-hidden="true"></i>
+                        </button>
+                        <?php endif; ?>
+                        <button type="button" class="btn btn-sm btn-outline-danger" data-id="<?= $appunto['idappunto'] ?>" onclick="handleDelete(this)" title="Elimina">
+                            <i class="bi bi-trash" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <?php endif; ?>
                 </div>
             </article>
         <?php endforeach;
@@ -96,12 +114,32 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
     const nomecorso = <?= json_encode($nomecorso) ?>;
     const defaultApprovalFilter = <?= json_encode($approvalFilter) ?>;
     const messaggioVuoto = <?= json_encode($messaggioVuoto) ?>;
+    const showActions = <?= json_encode($showActions) ?>;
 
     let searchTimeout;
     searchInput.addEventListener('input', () => {
         clearTimeout(searchTimeout);
         searchTimeout = setTimeout(updateArticles, 300);
     });
+
+    function renderActionButtons(art) {
+        if (!showActions) return '';
+        let buttons = '';
+        if (!art.approvato) {
+            buttons += `
+                <button type="button" class="btn btn-sm btn-outline-success" onclick="handleApprove(${art.idappunto})" title="Approva">
+                    <i class="bi bi-check-lg" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-warning" onclick="handleReject(${art.idappunto})" title="Rifiuta">
+                    <i class="bi bi-x-lg" aria-hidden="true"></i>
+                </button>`;
+        }
+        buttons += `
+            <button type="button" class="btn btn-sm btn-outline-danger" data-id="${art.idappunto}" onclick="handleDelete(this)" title="Elimina">
+                <i class="bi bi-trash" aria-hidden="true"></i>
+            </button>`;
+        return `<div class="d-flex gap-2 mt-3 justify-content-end">${buttons}</div>`;
+    }
 
     function updateArticles() {
         const searchValue = searchInput.value.trim();
@@ -121,12 +159,12 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
             }
             data.forEach(art => {
                 container.insertAdjacentHTML('beforeend', `
-                    <article class="card shadow-sm border-0 article-card">
+                    <article class="card shadow-sm border-0 article-card" id="article-${art.idappunto}">
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-12 col-md-8">
                                     <h5 class="card-title mb-1">
-                                        <a href="appunto.php?id=${art.idappunto}" class="text-decoration-none text-dark stretched-link">${art.titolo}</a>
+                                        <a href="appunto.php?id=${art.idappunto}" class="text-decoration-none text-dark ${showActions ? '' : 'stretched-link'}">${art.titolo}</a>
                                     </h5>
                                     <p class="card-text text-muted small mb-2">di ${art.autore}</p>
                                 </div>
@@ -138,10 +176,107 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
                                     </div>
                                 </div>
                             </div>
+                            ${renderActionButtons(art)}
                         </div>
                     </article>`);
             });
         });
+    }
+
+    // Handler per approvazione
+    function handleApprove(id) {
+        const formData = new FormData();
+        formData.append('action', 'approve');
+        formData.append('idappunto', id);
+
+        fetch('appunti.php', { method: 'POST', body: formData })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    updateArticles();
+                } else {
+                    showError('Errore durante l\'approvazione');
+                }
+            })
+            .catch(() => showError('Errore di connessione'));
+    }
+
+    // Handler per rifiuto
+    function handleReject(id) {
+        const reason = prompt("Inserisci il motivo del rifiuto:");
+        if (reason === null) return;
+        if (reason.trim() === "") {
+            showError("È necessario specificare un motivo per il rifiuto.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('action', 'reject');
+        formData.append('idappunto', id);
+        formData.append('reason', reason);
+
+        fetch('appunti.php', { method: 'POST', body: formData })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    updateArticles();
+                } else {
+                    showError('Errore durante il rifiuto');
+                }
+            })
+            .catch(() => showError('Errore di connessione'));
+    }
+
+    // Handler per eliminazione
+    function handleDelete(btn) {
+        const id = btn.dataset.id;
+        const card = document.getElementById(`article-${id}`);
+
+        if (!btn.dataset.confirm) {
+            btn.dataset.confirm = 'true';
+            btn.innerHTML = '<i class="bi bi-check-lg"></i> Conferma';
+            btn.classList.remove('btn-outline-danger');
+            btn.classList.add('btn-danger');
+            setTimeout(() => {
+                if (btn.dataset.confirm) {
+                    delete btn.dataset.confirm;
+                    btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i> Elimina';
+                    btn.classList.remove('btn-danger');
+                    btn.classList.add('btn-outline-danger');
+                }
+            }, 3000);
+            return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = '...';
+
+        const formData = new FormData();
+        formData.append('action', 'delete');
+        formData.append('idappunto', id);
+
+        fetch('appunti.php', { method: 'POST', body: formData })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    updateArticles();
+                } else {
+                    showError('Errore durante l\'eliminazione');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i> Elimina';
+                    delete btn.dataset.confirm;
+                    btn.classList.remove('btn-danger');
+                    btn.classList.add('btn-outline-danger');
+                }
+            })
+            .catch(() => {
+                showError('Errore di connessione');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i> Elimina';
+                delete btn.dataset.confirm;
+                btn.classList.remove('btn-danger');
+                btn.classList.add('btn-outline-danger');
+            });
     }
 
     // Reset dei selettori quando si torna indietro con il browser (bfcache)

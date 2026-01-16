@@ -575,7 +575,7 @@ class DatabaseHelper
     {
         $allowedSort = ['data_pubblicazione', 'media_recensioni', 'numero_visualizzazioni'];
         $allowedOrder = ['ASC', 'DESC'];
-        $allowedApprovalFilters = ['approved', 'pending', 'all'];
+        $allowedApprovalFilters = ['approved', 'pending', 'refused', 'all'];
 
         $sort = in_array($sort, $allowedSort) ? $sort : 'data_pubblicazione';
         $order = in_array($order, $allowedOrder) ? $order : 'DESC';
@@ -598,7 +598,9 @@ class DatabaseHelper
         if ($approvalFilter === 'approved') {
             $query .= " AND appunti.approvato = TRUE";
         } elseif ($approvalFilter === 'pending') {
-            $query .= " AND appunti.approvato = FALSE";
+            $query .= " AND appunti.approvato = FALSE AND appunti.motivo_rifiuto IS NULL";
+        } elseif ($approvalFilter === 'refused') {
+            $query .= " AND appunti.motivo_rifiuto IS NOT NULL";
         }
         // 'all' non aggiunge filtri
 

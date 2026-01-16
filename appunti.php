@@ -1,6 +1,34 @@
 <?php
 require_once 'config.php';
 
+// Handle POST actions (approve, reject, delete)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'], $_POST['idappunto'])) {
+    requireLogin();
+
+    if (!isUserAdmin()) {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'message' => 'Non autorizzato']);
+        exit;
+    }
+
+    $action = $_POST['action'];
+    $id = intval($_POST['idappunto']);
+    $success = false;
+
+    if ($action === 'approve') {
+        $success = $dbh->approveArticle($id);
+    } elseif ($action === 'reject') {
+        $reason = isset($_POST['reason']) ? trim($_POST['reason']) : 'Nessuna motivazione specificata.';
+        $success = $dbh->rejectArticle($id, $reason);
+    } elseif ($action === 'delete') {
+        $success = $dbh->deleteArticle($id);
+    }
+
+    header('Content-Type: application/json');
+    echo json_encode(['success' => $success]);
+    exit;
+}
+
 if (isset($_GET['action']) && $_GET['action'] === 'filter') {
     $sort = $_GET['sort'] ?? 'data_pubblicazione';
     $order = $_GET['order'] ?? 'DESC';
@@ -16,6 +44,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'filter') {
         $res['data_formattata'] = date('d/m/y', strtotime($res['data_pubblicazione']));
         $res['media_recensioni'] = $res['media_recensioni'] ?: 'N/A';
         $res['numero_recensioni'] = (int)$res['numero_recensioni'];
+        $res['approvato'] = (bool)$res['approvato'];
         return $res;
     }, $appunti);
 
