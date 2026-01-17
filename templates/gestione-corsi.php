@@ -7,7 +7,7 @@
 
         <!-- Sezione Corsi -->
         <section aria-labelledby="corsi-title" class="card shadow-sm border-0 mb-5">
-            <div class="card-body p-4">
+            <div class="card-body p-3 p-md-4">
                 <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
                     <h3 id="corsi-title" class="card-title mb-0">Corsi</h3>
                     <button type="button" class="btn btn-outline-primary" onclick="openCourseModal()">
@@ -26,8 +26,8 @@
                     </div>
                 </div>
 
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle">
+                <div>
+                    <table class="table table-hover align-middle table-sm">
                         <thead class="table-light">
                             <tr>
                                 <th>Nome</th>
@@ -45,7 +45,7 @@
 
         <!-- Sezione SSD -->
         <section aria-labelledby="ssd-title" class="card shadow-sm border-0 mb-5">
-            <div class="card-body p-4">
+            <div class="card-body p-3 p-md-4">
                 <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
                     <h3 id="ssd-title" class="card-title mb-0">SSD (Settori Scientifico Disciplinari)</h3>
                     <button type="button" class="btn btn-outline-primary" onclick="openSSDModal()">
@@ -53,8 +53,8 @@
                     </button>
                 </div>
 
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle">
+                <div>
+                    <table class="table table-hover align-middle table-sm">
                         <thead class="table-light">
                             <tr>
                                 <th>Codice</th>
@@ -165,10 +165,10 @@
                         data.data.forEach(course => {
                             tbody.innerHTML += `
                         <tr>
-                            <td>${course.nomeCorso}</td>
-                            <td>${course.nomeSSD}</td>
-                            <td class="text-end">
-                                <div class="d-flex gap-2 justify-content-end">
+                            <td class="text-break">${course.nomeCorso}</td>
+                            <td class="">${course.nomeSSD}</td>
+                            <td class="text-end" style="width: 1%;">
+                                <div class="d-flex gap-1 flex-column flex-md-row justify-content-end align-items-end">
                                     <button type="button" class="btn btn-sm btn-outline-secondary" onclick="editCourse(${course.idcorso})" title="Modifica">
                                         <i class="bi bi-pencil" aria-hidden="true"></i>
                                         <span class="visually-hidden">Modifica</span>
@@ -208,10 +208,10 @@
                             // Table
                             tbody.innerHTML += `
                                 <tr>
-                                    <td>${ssd.nome}</td>
-                                    <td>${ssd.descrizione}</td>
-                                    <td class="text-end">
-                                        <div class="d-flex gap-2 justify-content-end">
+                                    <td class="text-nowrap">${ssd.nome}</td>
+                                    <td class="text-break">${ssd.descrizione}</td>
+                                    <td class="text-end" style="width: 1%;">
+                                        <div class="d-flex gap-1 flex-column flex-md-row justify-content-end align-items-end">
                                             <button type="button" class="btn btn-sm btn-outline-secondary" onclick="editSSD(${ssd.idssd})" title="Modifica">
                                                 <i class="bi bi-pencil" aria-hidden="true"></i>
                                                 <span class="visually-hidden">Modifica</span>

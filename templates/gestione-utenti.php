@@ -6,7 +6,7 @@
         </header>
 
         <section aria-labelledby="utenti-title" class="card shadow-sm border-0 mb-5">
-            <div class="card-body p-4">
+            <div class="card-body p-3 p-md-4">
                 <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
                     <h3 id="utenti-title" class="card-title mb-0">Utenti</h3>
                     <button type="button" class="btn btn-outline-primary" onclick="openUserModal()">
@@ -20,8 +20,8 @@
                     </div>
                 </div>
 
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle">
+                <div>
+                    <table class="table table-hover align-middle table-sm">
                         <thead class="table-light">
                             <tr>
                                 <th>Username</th>
@@ -108,10 +108,10 @@
 
                             tbody.innerHTML += `
                         <tr>
-                            <td>${user.username}</td>
-                            <td>${roleBadge}</td>
-                            <td class="text-end">
-                                <div class="d-flex gap-2 justify-content-end">
+                            <td class="text-break">${user.username}</td>
+                            <td class="">${roleBadge}</td>
+                            <td class="text-end" style="width: 1%;">
+                                <div class="d-flex gap-1 flex-column flex-md-row justify-content-end align-items-end">
                                     <button type="button" class="btn btn-sm btn-outline-secondary" onclick="editUser(${user.idutente})" title="Modifica">
                                         <i class="bi bi-pencil" aria-hidden="true"></i>
                                         <span class="visually-hidden">Modifica</span>

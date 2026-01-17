@@ -91,7 +91,6 @@
             || ($templateParams["nome"] === "templates/appunti-da-gestire.php")
             || ($templateParams["nome"] === "templates/menu-appunti.php")
             || ($templateParams["nome"] === "templates/dettagli-appunto.php")
-            || ($templateParams["nome"] === "templates/upload-form.php")
         ) { ?>
             <button class="btn btn-outline-secondary mb-3" onclick="goBack()">← Indietro</button>
         <?php
