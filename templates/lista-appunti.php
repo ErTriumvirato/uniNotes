@@ -166,6 +166,17 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
                 return;
             }
             data.forEach(art => {
+                let statusBadge = '';
+                if (showActions) {
+                    const statusMap = {
+                        'in_revisione': { label: 'Da approvare', class: 'bg-warning text-dark' },
+                        'approvato': { label: 'Approvato', class: 'bg-success' },
+                        'rifiutato': { label: 'Rifiutato', class: 'bg-danger' }
+                    };
+                    const statusInfo = statusMap[art.stato] || { label: art.stato, class: 'bg-secondary' };
+                    statusBadge = `<span class="badge ${statusInfo.class}" title="Stato">${statusInfo.label}</span>`;
+                }
+
                 container.insertAdjacentHTML('beforeend', `
                     <article class="card shadow-sm border-0 article-card" id="article-${art.idappunto}">
                         <div class="card-body">
@@ -178,6 +189,7 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
                                 </div>
                                 <div class="col-12 col-md-4 text-md-end mt-2 mt-md-0">
                                     <div class="d-flex gap-2 justify-content-md-end flex-wrap">
+                                        ${statusBadge}
                                         <span class="badge bg-light text-dark border" title="Media recensioni">★ ${art.media_recensioni || 'N/A'}</span>
                                         <span class="badge bg-light text-dark border" title="Visualizzazioni">${art.numero_visualizzazioni} Visualizzazioni</span>
                                         <span class="badge bg-light text-dark border" title="Data pubblicazione">${art.data_formattata}</span>

@@ -23,7 +23,7 @@ if (!empty($appunto)) {
                         $statusInfo = $statusMap[$appunto['stato']] ?? ['label' => $appunto['stato'], 'class' => 'bg-secondary'];
                         ?>
                         <div class="mb-3">
-                            <span class="badge <?php echo $statusInfo['class']; ?>"><?php echo $statusInfo['label']; ?></span>
+                            <span id="status-badge" class="badge <?php echo $statusInfo['class']; ?>"><?php echo $statusInfo['label']; ?></span>
                         </div>
                     <?php endif; ?>
                     <div class="d-flex flex-wrap gap-3 text-muted align-items-center">
@@ -328,12 +328,20 @@ if (!empty($appunto)) {
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
+                    // Aggiorna il badge
+                    const badge = document.getElementById('status-badge');
+                    if (badge) {
+                        badge.className = 'badge bg-success';
+                        badge.textContent = 'Approvato';
+                    }
                     // Rimuovi i pulsanti approva/rifiuta
                     const adminActions = document.getElementById('admin-actions');
-                    const approveBtn = adminActions.querySelector('.btn-outline-success');
-                    const rejectBtn = adminActions.querySelector('.btn-outline-warning');
-                    if (approveBtn) approveBtn.remove();
-                    if (rejectBtn) rejectBtn.remove();
+                    if (adminActions) {
+                        const approveBtn = adminActions.querySelector('button[onclick^="handleApprove"]');
+                        const rejectBtn = adminActions.querySelector('button[onclick^="handleReject"]');
+                        if (approveBtn) approveBtn.remove();
+                        if (rejectBtn) rejectBtn.remove();
+                    }
                     showSuccess('Appunto approvato con successo');
                 } else {
                     showError('Errore durante l\'approvazione');
@@ -352,7 +360,21 @@ if (!empty($appunto)) {
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    window.location.href = 'gestione-appunti.php';
+                    // Aggiorna il badge
+                    const badge = document.getElementById('status-badge');
+                    if (badge) {
+                        badge.className = 'badge bg-danger';
+                        badge.textContent = 'Rifiutato';
+                    }
+                    // Rimuovi i pulsanti approva/rifiuta
+                    const adminActions = document.getElementById('admin-actions');
+                    if (adminActions) {
+                        const approveBtn = adminActions.querySelector('button[onclick^="handleApprove"]');
+                        const rejectBtn = adminActions.querySelector('button[onclick^="handleReject"]');
+                        if (approveBtn) approveBtn.remove();
+                        if (rejectBtn) rejectBtn.remove();
+                    }
+                    showSuccess('Appunto rifiutato con successo');
                 } else {
                     showError('Errore durante il rifiuto');
                 }
