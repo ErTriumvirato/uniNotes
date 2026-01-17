@@ -164,23 +164,23 @@
                         tbody.innerHTML = '';
                         data.data.forEach(course => {
                             tbody.innerHTML += `
-                        <tr>
-                            <td class="text-break">${course.nomeCorso}</td>
-                            <td class="">${course.nomeSSD}</td>
-                            <td class="text-end" style="width: 1%;">
-                                <div class="d-flex gap-1 flex-column flex-md-row justify-content-end align-items-end">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="editCourse(${course.idcorso})" title="Modifica">
-                                        <i class="bi bi-pencil" aria-hidden="true"></i>
-                                        <span class="visually-hidden">Modifica</span>
-                                    </button>
-                                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteCourse(${course.idcorso}, this)" title="Elimina">
-                                        <i class="bi bi-trash" aria-hidden="true"></i>
-                                        <span class="visually-hidden">Elimina</span>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
+                                <tr>
+                                    <td class="text-break">${course.nomeCorso}</td>
+                                    <td class="">${course.nomeSSD}</td>
+                                    <td class="text-end" style="width: 1%;">
+                                        <div class="d-flex gap-1 flex-column flex-md-row justify-content-end align-items-end">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="editCourse(${course.idcorso})" title="Modifica">
+                                                <i class="bi bi-pencil" aria-hidden="true"></i>
+                                                <span class="visually-hidden">Modifica</span>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteCourse(${course.idcorso}, this)" title="Elimina">
+                                                <i class="bi bi-trash" aria-hidden="true"></i>
+                                                <span class="visually-hidden">Elimina</span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `;
                         });
                     }
                 });
