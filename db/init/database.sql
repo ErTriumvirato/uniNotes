@@ -54,5 +54,3 @@ CREATE TABLE recensioni (
     FOREIGN KEY (idappunto) REFERENCES appunti(idappunto) ON DELETE CASCADE,
     FOREIGN KEY (idutente) REFERENCES utenti(idutente) ON DELETE CASCADE
 );
-
-GRANT ALL PRIVILEGES ON uniNotes.* TO 'user'@'localhost' IDENTIFIED BY 'user_password';

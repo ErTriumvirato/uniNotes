@@ -70,11 +70,11 @@ INSERT INTO appunti (idappunto, titolo, contenuto, idutente, idcorso, numero_vis
 (3, 'SQL Avanzato: Normalizzazione e Joins', '1. Normalizzazione: Dalla 1NF alla BCNF per eliminare ridondanza. 2. Joins: LEFT, RIGHT e FULL OUTER JOIN. 3. Window Functions: RANK() e ROW_NUMBER() per analisi statistiche. 4. Transazioni (ACID): Atomicità, Consistenza, Isolamento e Durabilità.', 6, 7, 189, 'approvato', '2025-01-15 11:10:00'),
 (4, 'Scheduling della CPU nei Sistemi Operativi', 'Lo scheduler decide quale processo occupa la CPU. Algoritmi: FCFS (semplice ma lento), SJF (ottimale per attesa), Round Robin (usa un quantum temporale). L obiettivo è massimizzare il Throughput e minimizzare Turnaround e latenza.', 4, 8, 142, 'approvato', '2025-01-18 20:15:00'),
 (5, 'Biochimica: Ciclo di Krebs', 'Il ciclo dell acido citrico genera energia per gli aerobi. L Acetil-CoA si unisce all ossalacetato per formare citrato. Per ogni giro si producono 3 NADH, 1 FADH2 e 1 GTP. Questi alimentano la catena di trasporto degli elettroni per generare ATP.', 11, 13, 95, 'approvato', '2025-01-05 08:30:00'),
-(6, 'Diritto: Disciplina del Contratto', 'Art. 1321 CC: l accordo di due o più parti. Elementi essenziali: Accordo, Causa, Oggetto e Forma. Analizziamo i vizi del consenso (errore, violenza e dolo) che rendono il contratto annullabile invece che nullo.', 8, 11, 64, true, '2025-01-20 16:45:00'),
-(7, 'Fisica: Elettromagnetismo', 'Le equazioni di Maxwell descrivono i campi elettrici e magnetici. Fondamentali per capire il funzionamento di motori, antenne e circuiti moderni.', 9, 6, 45, false, '2025-01-22 10:00:00'),
-(8, 'Geografia e GIS', 'Uso dei software per mappe digitali e analisi dei layer spaziali.', 14, 20, 20, true, '2025-01-25 15:30:00'),
-(10, 'Sistemi Informativi', 'Basi teoriche sui sistemi aziendali.', 10, 4, 10, true, '2025-01-26 12:00:00'),
-(11, 'English Grammar for ICT', 'Technical verbs and phrases for programmers.', 13, 17, 30, true, '2025-01-27 11:00:00');
+(6, 'Diritto: Disciplina del Contratto', 'Art. 1321 CC: l accordo di due o più parti. Elementi essenziali: Accordo, Causa, Oggetto e Forma. Analizziamo i vizi del consenso (errore, violenza e dolo) che rendono il contratto annullabile invece che nullo.', 8, 11, 64, 'approvato', '2025-01-20 16:45:00'),
+(7, 'Fisica: Elettromagnetismo', 'Le equazioni di Maxwell descrivono i campi elettrici e magnetici. Fondamentali per capire il funzionamento di motori, antenne e circuiti moderni.', 9, 6, 45, 'approvato', '2025-01-22 10:00:00'),
+(8, 'Geografia e GIS', 'Uso dei software per mappe digitali e analisi dei layer spaziali.', 14, 20, 20, 'approvato', '2025-01-25 15:30:00'),
+(10, 'Sistemi Informativi', 'Basi teoriche sui sistemi aziendali.', 10, 4, 10, 'approvato', '2025-01-26 12:00:00'),
+(11, 'English Grammar for ICT', 'Technical verbs and phrases for programmers.', 13, 17, 30, 'approvato', '2025-01-27 11:00:00');
 
 INSERT INTO iscrizioni (idutente, idcorso) VALUES
 (4, 1), (4, 3), (4, 7), (5, 3), (6, 7), (7, 9), (8, 11), (9, 5), (15, 1), (19, 3), (21, 3);
