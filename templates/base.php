@@ -76,7 +76,7 @@
     </header>
 
     <!-- Banner errori -->
-    <div id="error-banner" class="alert alert-danger alert-dismissible fade position-fixed top-0 start-50 translate-middle-x mt-5 pt-4" role="alert" style="display: none; max-width: 90%; margin-top: 80px !important; z-index: 2000;">
+    <div id="error-banner" class="alert alert-danger alert-dismissible fade position-fixed top-0 start-50 translate-middle-x mt-5 pt-4 w-75" role="alert" style="display: none; margin-top: 80px !important; z-index: 2000;">
         <span id="error-message"></span>
         <button type="button" class="btn-close" onclick="hideError()" aria-label="Chiudi"></button>
     </div>

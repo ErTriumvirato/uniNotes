@@ -275,37 +275,6 @@ class DatabaseHelper
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getArticlesToApprove($sort = 'data_pubblicazione', $order = 'DESC')
-    {
-        $allowedSort = ['titolo', 'data_pubblicazione', 'autore'];
-        $allowedOrder = ['ASC', 'DESC'];
-
-        if (!in_array($sort, $allowedSort)) {
-            $sort = 'data_pubblicazione';
-        }
-        if (!in_array($order, $allowedOrder)) {
-            $order = 'DESC';
-        }
-
-        $orderBy = $sort;
-        if ($sort === 'autore') {
-            $orderBy = 'utenti.username';
-        }
-
-        $query = "SELECT appunti.*, utenti.username AS autore, corsi.nome AS nome_corso
-            FROM appunti
-            JOIN utenti ON appunti.idutente = utenti.idutente
-            JOIN corsi ON appunti.idcorso = corsi.idcorso
-            WHERE appunti.stato = 'in_revisione'
-            ORDER BY $orderBy $order
-        ";
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        return $result->fetch_all(MYSQLI_ASSOC);
-    }
-
     public function approveArticle($idappunto)
     {
         $stmt = $this->db->prepare("UPDATE appunti SET stato = 'approvato' WHERE idappunto = ?");
@@ -443,7 +412,7 @@ class DatabaseHelper
     }
 
     public function getAllUsers($search = null) {
-        $query = "SELECT idutente, username, isAdmin FROM utenti";
+        $query = "SELECT idutente, username, isAdmin FROM utenti ORDER BY isAdmin DESC, username ASC";
         $params = [];
         $types = "";
 

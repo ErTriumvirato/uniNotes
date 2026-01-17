@@ -75,12 +75,14 @@ if (!empty($appunto)) {
         </article>
 
         <!-- Reviews Section -->
-        <section aria-labelledby="reviews-title">
+        <?php if ($appunto['stato'] === 'approvato' || isUserAdmin()): ?>
+        <section aria-labelledby="reviews-title" id="reviews-section" <?php echo ($appunto['stato'] !== 'approvato') ? 'style="display:none;"' : ''; ?>>
             <h3 id="reviews-title" class="mb-4">Recensioni</h3>
             
             <?php 
             $isAuthor = isUserLoggedIn() && $_SESSION['idutente'] == $appunto['idutente'];
-            if (isUserLoggedIn() && !$isAuthor && !$dbh->hasUserReviewed($appunto['idappunto'], $_SESSION['idutente']) && $appunto['stato'] === 'approvato'): 
+            $hasReviewed = isUserLoggedIn() && $dbh->hasUserReviewed($appunto['idappunto'], $_SESSION['idutente']);
+            if (isUserLoggedIn() && !$isAuthor && !$hasReviewed && ($appunto['stato'] === 'approvato' || isUserAdmin())): 
             ?>
                 <section aria-label="Scrivi una recensione" id="review-form-card" class="card shadow-sm border-0 mb-4 form-card">
                     <div class="card-body p-4">
@@ -114,8 +116,6 @@ if (!empty($appunto)) {
             <?php endif; ?>
 
             <div id="reviews-list">
-
-            <div id="reviews-list">
                 <?php if (!empty($reviews)): ?>
                     <div class="d-flex flex-column gap-3">
                         <?php foreach ($reviews as $review): ?>
@@ -143,6 +143,7 @@ if (!empty($appunto)) {
                 <?php endif; ?>
             </div>
         </section>
+        <?php endif; ?>
     </div>
 </div>
 <?php
@@ -342,6 +343,13 @@ if (!empty($appunto)) {
                         if (approveBtn) approveBtn.remove();
                         if (rejectBtn) rejectBtn.remove();
                     }
+                    
+                    // Mostra la sezione recensioni
+                    const reviewsSection = document.getElementById('reviews-section');
+                    if (reviewsSection) {
+                        reviewsSection.style.display = 'block';
+                    }
+
                     showSuccess('Appunto approvato con successo');
                 } else {
                     showError('Errore durante l\'approvazione');

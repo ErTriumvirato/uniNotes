@@ -12,10 +12,9 @@ if (!$appunto) {
     // Appunto non trovato, lasciamo gestire al template o redirect
 } else {
     $isApproved = ($appunto['stato'] === 'approvato');
-    $isAuthor = isUserLoggedIn() && ($_SESSION['idutente'] == $appunto['idutente']);
     $isAdmin = isUserAdmin();
 
-    if (!$isApproved && !$isAuthor && !$isAdmin) {
+    if (!$isApproved && !$isAdmin) {
         // Accesso negato
         header("Location: index.php");
         exit();
