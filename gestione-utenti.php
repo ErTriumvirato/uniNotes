@@ -16,7 +16,8 @@ if (!empty($action)) {
         switch ($action) {
             case 'get_users':
                 $search = $_GET['search'] ?? '';
-                $users = $dbh->getAllUsers($search);
+                $role = $_GET['role'] ?? 'all';
+                $users = $dbh->getAllUsers($search, $role);
                 echo json_encode(['success' => true, 'data' => $users]);
                 break;
 

@@ -14,9 +14,24 @@
                     </button>
                 </div>
 
-                <div class="row mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <button class="btn btn-sm btn-outline-secondary d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#userFiltersCollapse" aria-expanded="false" aria-controls="userFiltersCollapse">
+                        <i class="bi bi-filter"></i> Filtri
+                    </button>
+                </div>
+
+                <div class="row g-2 align-items-end collapse d-md-flex mb-4" id="userFiltersCollapse">
                     <div class="col-12 col-md-6">
+                        <label for="searchUser" class="form-label small text-muted">Cerca</label>
                         <input type="text" id="searchUser" class="form-control" placeholder="Cerca utente per username..." oninput="debouncedLoadUsers()">
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label for="filterRole" class="form-label small text-muted">Ruolo</label>
+                        <select id="filterRole" class="form-select" onchange="loadUsers()">
+                            <option value="all">Tutti</option>
+                            <option value="admin">Amministratori</option>
+                            <option value="user">Utenti standard</option>
+                        </select>
                     </div>
                 </div>
 
@@ -94,8 +109,9 @@
 
         function loadUsers() {
             const search = document.getElementById('searchUser').value;
+            const role = document.getElementById('filterRole').value;
 
-            fetch(`gestione-utenti.php?action=get_users&search=${encodeURIComponent(search)}`)
+            fetch(`gestione-utenti.php?action=get_users&search=${encodeURIComponent(search)}&role=${encodeURIComponent(role)}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
@@ -104,7 +120,7 @@
                         data.data.forEach(user => {
                             const roleBadge = user.isAdmin == 1 ?
                                 'Admin' :
-                                'User';
+                                'Utente';
 
                             tbody.innerHTML += `
                         <tr>

@@ -306,7 +306,7 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
     }
 
     // Reset dei selettori quando si torna indietro con il browser (bfcache)
-    window.addEventListener('pageshow', (event) => {
+    /*window.addEventListener('pageshow', (event) => {
         if (event.persisted) {
             // Resetta i selettori ai valori di default per sincronizzarli con il contenuto PHP
             if (approvalSelect) approvalSelect.value = defaultApprovalFilter;
@@ -314,5 +314,5 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
             orderSelect.value = 'DESC';
             searchInput.value = <?= json_encode($search) ?>;
         }
-    });
+    });*/
 </script>

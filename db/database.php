@@ -42,7 +42,7 @@ class DatabaseHelper
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getCoursesWithSSD($search = null, $ssd = null, $idutente = null, $filterType = 'all')
+    public function getCoursesWithSSD($search = null, $ssd = null, $idutente = null, $filterType = 'all')  // TODO: cambiare nome
     {
         $query = "SELECT corsi.idcorso, corsi.nome AS nomeCorso, ssd.nome AS nomeSSD, corsi.descrizione AS descrizioneCorso 
                   FROM corsi 
@@ -420,16 +420,29 @@ class DatabaseHelper
         return $stmt->get_result()->fetch_assoc();
     }
 
-    public function getAllUsers($search = null) {
-        $query = "SELECT idutente, username, isAdmin FROM utenti ORDER BY isAdmin DESC, username ASC";
+    public function getAllUsers($search = null, $role = 'all') {
+        $query = "SELECT idutente, username, isAdmin FROM utenti";
+        $conditions = [];
         $params = [];
         $types = "";
 
         if (!empty($search)) {
-            $query .= " WHERE username LIKE ?";
+            $conditions[] = "username LIKE ?";
             $params[] = "%" . $search . "%";
             $types .= "s";
         }
+
+        if ($role === 'admin') {
+            $conditions[] = "isAdmin = 1";
+        } elseif ($role === 'user') {
+            $conditions[] = "isAdmin = 0";
+        }
+
+        if (!empty($conditions)) {
+            $query .= " WHERE " . implode(" AND ", $conditions);
+        }
+
+        $query .= " ORDER BY isAdmin DESC, username ASC";
 
         $stmt = $this->db->prepare($query);
         if (!empty($params)) {

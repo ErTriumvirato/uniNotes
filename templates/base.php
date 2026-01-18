@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="it">
 
+<?php
+// In templates/base.php, subito dopo session_start() in config.php
+header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
+header("Pragma: no-cache"); // HTTP 1.0
+header("Expires: 0"); // Proxies
+?>
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

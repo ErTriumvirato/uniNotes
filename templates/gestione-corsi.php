@@ -15,16 +15,14 @@
                     </button>
                 </div>
 
-                <div class="row g-3 mb-4">
-                    <div class="col-12 col-md-6">
-                        <input type="text" id="searchCourse" class="form-control" placeholder="Cerca corso..." oninput="debouncedLoadCourses()">
-                    </div>
-                    <div class="col-12 col-md-6">
-                        <select id="filterSSD" class="form-select" onchange="loadCourses()">
-                            <option value="">Tutti gli SSD</option>
-                        </select>
-                    </div>
-                </div>
+                <?php
+                $searchId = 'searchCourse';
+                $ssdId = 'filterSSD';
+                $searchCallback = 'debouncedLoadCourses()';
+                $ssdCallback = 'loadCourses()';
+                $showFollowFilter = false;
+                require 'filtri-corsi.php';
+                ?>
 
                 <div>
                     <table class="table table-hover align-middle table-sm">

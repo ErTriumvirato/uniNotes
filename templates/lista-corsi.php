@@ -5,28 +5,10 @@ $idutente = $_SESSION["idutente"] ?? null;
 $ssds = $templateParams["ssds"];
 ?>
 
-<section aria-label="Filtri ricerca" class="row g-3 mb-4">
-    <div class="col-12 col-md-4">
-        <input type="text" id="search" class="form-control" placeholder="Cerca corso..." oninput="filterCourses()">
-    </div>
-    <div class="col-12 col-md-4">
-        <select id="ssd" class="form-select" onchange="filterCourses()">
-            <option value="">Tutti gli SSD</option>
-            <?php foreach ($ssds as $ssd): ?>
-                <option value="<?= htmlspecialchars($ssd['nome']) ?>"><?= htmlspecialchars($ssd['nome']) ?></option>
-            <?php endforeach; ?>
-        </select>
-    </div>
-    <div class="col-12 col-md-4">
-        <select id="filterType" class="form-select" onchange="filterCourses()">
-            <option value="all">Tutti i corsi</option>
-            <?php if ($idutente): ?>
-                <option value="followed">Corsi seguiti</option>
-                <option value="not_followed">Corsi non seguiti</option>
-            <?php endif; ?>
-        </select>
-    </div>
-</section>
+<?php
+$showFollowFilter = !empty($idutente);
+require 'filtri-corsi.php';
+?>
 
 <section id="courses-container" class="row g-4" aria-label="Lista corsi">
     <?php foreach ($corsi as $corso):
