@@ -10,50 +10,13 @@ $appunto = $dbh->getArticleById($_GET['id']);
 
 if (!$appunto) {
     // Appunto non trovato, lasciamo gestire al template o redirect
-} else {
+} else { // Appunto trovato
+    // Controllo se l'appunto è approvato
     $isApproved = ($appunto['stato'] === 'approvato');
-    $isAdmin = isUserAdmin();
 
-    if (!$isApproved && !$isAdmin) {
+    if (!$isApproved && !$isUserAdmin()) {
         // Accesso negato
         header("Location: index.php");
-        exit();
-    }
-}
-
-$templateParams["appunto"] = $appunto;
-
-// Gestione eliminazione recensione
-if (isset($_POST['deleteReview'])) {
-    if (isUserLoggedIn()) {
-        $idrecensione = intval($_POST['deleteReview']);
-        $idutente = $_SESSION['idutente'];
-        $idappunto = $_GET['id'];
-
-        $deleted = $dbh->deleteReview($idrecensione, $idutente);
-
-        // Se è una richiesta AJAX, restituisci JSON
-        if (isset($_POST['ajax'])) {
-            header('Content-Type: application/json');
-
-            if ($deleted) {
-                // Recupera i dati aggiornati
-                $updatedArticle = $dbh->getArticleById($idappunto);
-
-                echo json_encode([
-                    'success' => true,
-                    'new_avg' => $updatedArticle['media_recensioni'] ?: 'N/A'
-                ]);
-            } else {
-                echo json_encode([
-                    'success' => false,
-                    'message' => 'Impossibile eliminare la recensione.'
-                ]);
-            }
-            exit();
-        }
-
-        header("Location: appunto.php?id=" . $idappunto);
         exit();
     }
 }
@@ -68,13 +31,13 @@ if (isset($_POST['valutazione'])) {
 
         if ($appunto['stato'] !== 'approvato') {
             if (isset($_POST['ajax'])) {
-               header('Content-Type: application/json');
-               echo json_encode(['success' => false, 'message' => 'Non puoi recensire un appunto non approvato.']);
-               exit();
-           }
-           header("Location: appunto.php?id=" . $idappunto);
-           exit();
-       }
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => 'Non puoi recensire un appunto non approvato.']);
+                exit();
+            }
+            header("Location: appunto.php?id=" . $idappunto);
+            exit();
+        }
 
         if ($appunto['idutente'] == $idutente) {
             if (isset($_POST['ajax'])) {
@@ -125,8 +88,44 @@ if (isset($_POST['valutazione'])) {
     }
 }
 
-// templateParams
-$templateParams["titolo"] = "uniNotes - nome aricolo";
+// Gestione eliminazione recensione
+if (isset($_POST['deleteReview'])) {
+    if (isUserLoggedIn()) {
+        $idrecensione = intval($_POST['deleteReview']);
+        $idutente = $_SESSION['idutente'];
+        $idappunto = $_GET['id'];
+
+        $deleted = $dbh->deleteReview($idrecensione, $idutente);
+
+        // Se è una richiesta AJAX, restituisci JSON
+        if (isset($_POST['ajax'])) {
+            header('Content-Type: application/json');
+
+            if ($deleted) {
+                // Recupera i dati aggiornati
+                $updatedArticle = $dbh->getArticleById($idappunto);
+
+                echo json_encode([
+                    'success' => true,
+                    'new_avg' => $updatedArticle['media_recensioni'] ?: 'N/A'
+                ]);
+            } else {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Impossibile eliminare la recensione.'
+                ]);
+            }
+            exit();
+        }
+
+        header("Location: appunto.php?id=" . $idappunto);
+        exit();
+    }
+}
+
+// L'appunto esiste ed è stato approvato (o l'utente è admin)
+$templateParams["appunto"] = $appunto; // Passa i dettagli dell'appunto al template
+$templateParams["titolo"] = $appunto ? $appunto['titolo'] : "Appunto non trovato";
 $templateParams["nome"] = "templates/dettagli-appunto.php";
 
 require_once 'templates/base.php';

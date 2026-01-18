@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Template per i filtri dei corsi
  * 
@@ -39,7 +40,7 @@ $filterTypeCallback = $filterTypeCallback ?? 'filterCourses()';
             <label for="<?php echo $ssdId; ?>" class="form-label small text-muted">SSD</label>
             <select id="<?php echo $ssdId; ?>" class="form-select" onchange="<?php echo $ssdCallback; ?>">
                 <option value="">Tutti gli SSD</option>
-                <?php foreach ($ssds as $ssd): 
+                <?php foreach ($ssds as $ssd):
                     $nome = is_array($ssd) ? ($ssd['nome'] ?? $ssd) : $ssd;
                 ?>
                     <option value="<?= htmlspecialchars($nome) ?>"><?= htmlspecialchars($nome) ?></option>
@@ -47,14 +48,14 @@ $filterTypeCallback = $filterTypeCallback ?? 'filterCourses()';
             </select>
         </div>
         <?php if ($showFollowFilter): ?>
-        <div class="col-12 col-md-4">
-            <label for="<?php echo $filterTypeId; ?>" class="form-label small text-muted">Stato</label>
-            <select id="<?php echo $filterTypeId; ?>" class="form-select" onchange="<?php echo $filterTypeCallback; ?>">
-                <option value="all">Tutti i corsi</option>
-                <option value="followed">Corsi seguiti</option>
-                <option value="not_followed">Corsi non seguiti</option>
-            </select>
-        </div>
+            <div class="col-12 col-md-4">
+                <label for="<?php echo $filterTypeId; ?>" class="form-label small text-muted">Stato</label>
+                <select id="<?php echo $filterTypeId; ?>" class="form-select" onchange="<?php echo $filterTypeCallback; ?>">
+                    <option value="all">Tutti i corsi</option>
+                    <option value="followed">Corsi seguiti</option>
+                    <option value="not_followed">Corsi non seguiti</option>
+                </select>
+            </div>
         <?php endif; ?>
     </div>
 </section>

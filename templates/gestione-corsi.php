@@ -6,10 +6,10 @@
         </header>
 
         <!-- Sezione Corsi -->
-        <section aria-labelledby="corsi-title" class="card shadow-sm border-0 mb-5">
+        <section aria-labelledby="sezione-corsi" class="card shadow-sm border-0 mb-5">
             <div class="card-body p-3 p-md-4">
                 <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-                    <h3 id="corsi-title" class="card-title mb-0">Corsi</h3>
+                    <h3 id="sezione-corsi" class="card-title mb-0">Corsi</h3>
                     <button type="button" class="btn btn-outline-primary" onclick="openCourseModal()">
                         Nuovo Corso
                     </button>
@@ -42,10 +42,10 @@
         </section>
 
         <!-- Sezione SSD -->
-        <section aria-labelledby="ssd-title" class="card shadow-sm border-0 mb-5">
+        <section aria-labelledby="sezione-ssd" class="card shadow-sm border-0 mb-5">
             <div class="card-body p-3 p-md-4">
                 <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-                    <h3 id="ssd-title" class="card-title mb-0">SSD (Settori Scientifico Disciplinari)</h3>
+                    <h3 id="sezione-ssd" class="card-title mb-0">SSD (Settori Scientifico Disciplinari)</h3>
                     <button type="button" class="btn btn-outline-primary" onclick="openSSDModal()">
                         Nuovo SSD
                     </button>
@@ -87,7 +87,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="courseModalTitle">Nuovo corso</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
                 </div>
                 <div class="modal-body">
                     <form id="courseForm">
@@ -122,7 +122,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="ssdModalTitle">Nuovo SSD</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
                 </div>
                 <div class="modal-body">
                     <form id="ssdForm">
@@ -131,10 +131,6 @@
                             <label for="ssdName" class="form-label">Codice (es. INF/01)</label>
                             <input type="text" class="form-control" id="ssdName" name="nome" required>
                         </div>
-                        <!--<div class="mb-3">
-                            <label for="ssdDesc" class="form-label">Descrizione</label>
-                            <textarea class="form-control" id="ssdDesc" name="descrizione" rows="3" required></textarea>
-                        </div>-->
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -222,7 +218,7 @@
                         // Populate Table
                         const tbody = document.getElementById('ssdTableBody');
                         tbody.innerHTML = '';
-                        
+
                         data.data.forEach(ssd => {
                             // Table
                             tbody.innerHTML += `
@@ -322,18 +318,18 @@
             formData.append('id', id);
 
             fetch('gestione-corsi.php', {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            loadCourses();
-                            showSuccess(data.message);
-                        } else {
-                            showError('Errore: ' + data.message);
-                        }
-                    });
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        loadCourses();
+                        showSuccess(data.message);
+                    } else {
+                        showError('Errore: ' + data.message);
+                    }
+                });
         }
 
         // SSD Operations
@@ -402,18 +398,18 @@
             formData.append('id', id);
 
             fetch('gestione-corsi.php', {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            loadSSDs();
-                            loadCourses();
-                            showSuccess(data.message);
-                        } else {
-                            showError('Errore: ' + data.message);
-                        }
-                    });
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        loadSSDs();
+                        loadCourses();
+                        showSuccess(data.message);
+                    } else {
+                        showError('Errore: ' + data.message);
+                    }
+                });
         }
     </script>

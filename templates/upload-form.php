@@ -42,39 +42,39 @@ $selectedCourseId = isset($_GET['idcorso']) ? (int)$_GET['idcorso'] : null;
 </div>
 
 <?php if (!empty($templateParams["unapprovedArticles"])): ?>
-<section aria-labelledby="in-attesa" class="row justify-content-center mt-5">
-    <div class="col-12 col-md-8 col-lg-6">
-        <h3 id="in-attesa" class="text-center mb-4">In attesa di approvazione</h3>
-        <div class="d-flex flex-column gap-3">
-            <?php foreach ($templateParams["unapprovedArticles"] as $article): ?>
-                <article class="card shadow-sm border-0 rounded-3">
-                    <div class="card-body p-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <div class="fw-bold"><?php echo htmlspecialchars($article['titolo']); ?></div>
-                                <div class="small text-muted"><?php echo htmlspecialchars($article['nome_corso']); ?></div>
-                                <?php if ($article['stato'] === 'rifiutato'): ?>
-                                    <div class="text-danger small mt-1">
-                                        <strong>Stato:</strong> Rifiutato
-                                    </div>
-                                <?php endif; ?>
-                            </div>
-                            <div class="d-flex flex-column align-items-end gap-2">
-                                <span class="text-muted small"><?php echo date('d/m/Y', strtotime($article['data_pubblicazione'])); ?></span>
-                                <?php if ($article['stato'] === 'rifiutato'): ?>
-                                    <a href="modifica-appunti.php?id=<?php echo $article['idappunto']; ?>" class="btn btn-sm btn-outline-danger" title="Modifica">
-                                        <i class="bi bi-pencil" aria-hidden="true"></i>
-                                        <span class="visually-hidden">Modifica</span>
-                                    </a>
-                                <?php else: ?>
-                                    <span class="badge bg-warning text-dark">In attesa</span>
-                                <?php endif; ?>
+    <section aria-labelledby="appunto-in-attesa" class="row justify-content-center mt-5">
+        <div class="col-12 col-md-8 col-lg-6">
+            <h3 id="appunto-in-attesa" class="text-center mb-4">In attesa di approvazione</h3>
+            <div class="d-flex flex-column gap-3">
+                <?php foreach ($templateParams["unapprovedArticles"] as $article): ?>
+                    <article class="card shadow-sm border-0 rounded-3">
+                        <div class="card-body p-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <div class="fw-bold"><?php echo htmlspecialchars($article['titolo']); ?></div>
+                                    <div class="small text-muted"><?php echo htmlspecialchars($article['nome_corso']); ?></div>
+                                    <?php if ($article['stato'] === 'rifiutato'): ?>
+                                        <div class="text-danger small mt-1">
+                                            <strong>Stato:</strong> Rifiutato
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="d-flex flex-column align-items-end gap-2">
+                                    <span class="text-muted small"><?php echo date('d/m/Y', strtotime($article['data_pubblicazione'])); ?></span>
+                                    <?php if ($article['stato'] === 'rifiutato'): ?>
+                                        <a href="modifica-appunti.php?id=<?php echo $article['idappunto']; ?>" class="btn btn-sm btn-outline-danger" title="Modifica">
+                                            <i class="bi bi-pencil" aria-hidden="true"></i>
+                                            <span class="visually-hidden">Modifica</span>
+                                        </a>
+                                    <?php else: ?>
+                                        <span class="badge bg-warning text-dark">In attesa</span>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </article>
-            <?php endforeach; ?>
+                    </article>
+                <?php endforeach; ?>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 <?php endif; ?>

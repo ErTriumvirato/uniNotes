@@ -7,15 +7,15 @@ if (isset($_GET['action']) && $_GET['action'] == 'filter') {
     $ssd = $_GET['ssd'] ?? null;
     $filterType = $_GET['filterType'] ?? 'all';
     $idutente = $_SESSION["idutente"] ?? null;
-    
+
     $courses = $dbh->getCoursesWithSSD($search, $ssd, $idutente, $filterType);
-    
+
     $result = [];
     foreach ($courses as $course) {
         $course['isFollowing'] = $idutente ? $dbh->isFollowingCourse($idutente, $course['idcorso']) : false;
         $result[] = $course;
     }
-    
+
     echo json_encode($result);
     exit;
 }
@@ -30,9 +30,9 @@ if (isset($_POST["toggleFollow"])) {
 
     $idcorso = $_POST["toggleFollow"];
     $idutente = $_SESSION["idutente"];
-    
+
     $isFollowing = $dbh->isFollowingCourse($idutente, $idcorso);
-    
+
     if ($isFollowing) {
         $dbh->unfollowCourse($idutente, $idcorso);
         echo json_encode(['following' => false]);
@@ -44,7 +44,7 @@ if (isset($_POST["toggleFollow"])) {
 }
 
 // templateParams
-$templateParams["titolo"] = "uniNotes - Corsi";
+$templateParams["titolo"] = "Corsi";
 $templateParams["nome"] = "templates/lista-corsi.php";
 $templateParams["ssds"] = $dbh->getAllSSD();
 

@@ -8,10 +8,10 @@ $appunti = $dbh->getApprovedArticlesByCourseWithFilters($idCorso, 'data_pubblica
 
 <div class="row justify-content-center">
     <div class="col-12 col-lg-10">
-        <section aria-labelledby="course-title" class="card shadow-sm border-0 mb-5">
+        <section aria-labelledby="titolo-corso" class="card shadow-sm border-0 mb-5">
             <div class="card-body p-4 p-md-5">
                 <div>
-                    <h1 id="course-title" class="display-5 fw-bold mb-2"><?php echo htmlspecialchars($corso['nome']); ?></h1>
+                    <h1 id="titolo-corso" class="display-5 fw-bold mb-2"><?php echo htmlspecialchars($corso['nome']); ?></h1>
                     <span class="badge bg-secondary mb-3"><?php echo htmlspecialchars($corso['nomeSSD']); ?></span>
                 </div>
                 <div class="d-flex gap-2 flex-wrap">
@@ -25,11 +25,11 @@ $appunti = $dbh->getApprovedArticlesByCourseWithFilters($idCorso, 'data_pubblica
         </section>
 
         <?php
-            $titoloFiltri = "Appunti disponibili";
-            $ajaxUrl = "corso.php?id=" . $idCorso;
-            $nomecorso = $corso['nome'];
-            $messaggioVuoto = "Nessun appunto disponibile per questo corso.";
-            include 'lista-appunti.php';
+        $titoloFiltri = "Appunti disponibili";
+        $ajaxUrl = "corso.php?id=" . $idCorso;
+        $nomecorso = $corso['nome'];
+        $messaggioVuoto = "Nessun appunto disponibile per questo corso.";
+        include 'lista-appunti.php';
         ?>
     </div>
 </div>

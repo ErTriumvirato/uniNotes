@@ -3,7 +3,7 @@ require_once 'config.php';
 
 requireLogin();
 
-if(!isUserAdmin()){
+if (!isUserAdmin()) {
     header("Location: index.php");
     exit();
 }
@@ -12,7 +12,7 @@ if(!isUserAdmin()){
 if (isset($_POST['action']) && $_POST['action'] === 'delete' && isset($_POST['idappunto'])) {
     $idappunto = (int)$_POST['idappunto'];
     $success = $dbh->deleteArticle($idappunto);
-    if(isset($_POST['ajax'])) {
+    if (isset($_POST['ajax'])) {
         header('Content-Type: application/json');
         echo json_encode(['success' => $success]);
         exit();
@@ -30,14 +30,14 @@ if (isset($_GET['action']) && $_GET['action'] === 'filter') {
     $articles = $dbh->getAdminApprovedArticles($search, $orderBy, $order);
 
     header('Content-Type: application/json');
-    foreach($articles as &$article) {
-         $article['data_formattata'] = date('d/m/Y', strtotime($article['data_pubblicazione']));
+    foreach ($articles as &$article) {
+        $article['data_formattata'] = date('d/m/Y', strtotime($article['data_pubblicazione']));
     }
     echo json_encode($articles);
     exit();
 }
 
-$templateParams["titolo"] = "uniNotes - Gestione Appunti";
+$templateParams["titolo"] = "Gestione Appunti";
 $templateParams["nome"] = "templates/appunti-da-gestire.php";
 $templateParams["appunti"] = $dbh->getAdminApprovedArticles();
 

@@ -6,17 +6,17 @@ if (isUserLoggedIn()) {
     exit();
 }
 
-if (isset($_POST['login'])) {
-    $username = $_POST['username'];
+if (isset($_POST['login'])) { // Gestione del login
+    $nomeUtente = $_POST['username'];
     $password = $_POST['password'];
-    $user = $dbh->getUserByUsername($username);
+    $utente = $dbh->getUserByUsername($nomeUtente); // Recupera i dati utente dal database
 
-    if ($user && password_verify($password, $user['password'])) {
-        $_SESSION['idutente'] = $user['idutente'];
-        $_SESSION['username'] = $user['username'];
-        $_SESSION['isAdmin'] = $user['isAdmin'];
-        
-        // Redirect to the requested page, if there is one
+    if ($utente && password_verify($password, $utente['password'])) { // Verifica la password
+        $_SESSION['idutente'] = $utente['idutente'];
+        $_SESSION['username'] = $utente['username'];
+        $_SESSION['isAdmin'] = $utente['isAdmin'];
+
+        // Gestione del redirect dopo il login
         $redirect = $_GET['redirect'] ?? null;
         if (isValidRedirect($redirect)) {
             header('Location: ' . $redirect);
@@ -25,11 +25,11 @@ if (isset($_POST['login'])) {
         header("Location: index.php");
         exit();
     } else {
-        $templateParams["error"] = "Username o password errati";
+        $templateParams["error"] = "Username o password errati"; // Messaggio di errore in caso di credenziali errate
     }
 }
 
-function isValidRedirect($url)
+function isValidRedirect($url) // Funzione per validare l'URL di redirect
 {
     if (!isset($url) || empty($url)) {
         return false;
@@ -37,7 +37,7 @@ function isValidRedirect($url)
     return true;
 }
 
-$templateParams["titolo"] = "uniNotes - Login";
+$templateParams["titolo"] = "Login";
 $templateParams["nome"] = "templates/login-form.php";
 
 require 'templates/base.php';

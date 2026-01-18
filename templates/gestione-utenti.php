@@ -5,10 +5,9 @@
             </div>
         </header>
 
-        <section aria-labelledby="utenti-title" class="card shadow-sm border-0 mb-5">
+        <section aria-labelledby="titolo-gestione-utenti" class="card shadow-sm border-0 mb-5">
             <div class="card-body p-3 p-md-4">
                 <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-                    <h3 id="utenti-title" class="card-title mb-0">Utenti</h3>
                     <button type="button" class="btn btn-outline-primary" onclick="openUserModal()">
                         Nuovo utente
                     </button>
@@ -58,7 +57,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="userModalTitle">Nuovo utente</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
                 </div>
                 <div class="modal-body">
                     <form id="userForm">
@@ -211,17 +210,17 @@
             formData.append('id', id);
 
             fetch('gestione-utenti.php', {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            loadUsers();
-                            showSuccess(data.message);
-                        } else {
-                            showError('Errore: ' + data.message);
-                        }
-                    });
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        loadUsers();
+                        showSuccess(data.message);
+                    } else {
+                        showError('Errore: ' + data.message);
+                    }
+                });
         }
     </script>

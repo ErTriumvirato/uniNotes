@@ -1,44 +1,45 @@
 <?php
-$stats = [
-    "followed_courses" => $dbh->getFollowedCoursesCount($idProfile),
-    "articles_written" => $dbh->getArticlesCountByAuthor($idProfile, true),
-    "avg_rating" => $dbh->getAuthorAverageRating($idProfile)
+// Statistiche utente
+$statistiche = [
+    "corsi_seguiti" => $dbh->getFollowedCoursesCount($idProfilo),
+    "appunti_scritti" => $dbh->getArticlesCountByAuthor($idProfilo, true),
+    "media_recensioni" => $dbh->getAuthorAverageRating($idProfilo)
 ];
-$appunti = $dbh->getApprovedArticlesByUserIdWithFilters($templateParams['userProfile']['idutente'], 'data_pubblicazione', 'DESC');
+$appunti = $dbh->getApprovedArticlesByUserIdWithFilters($templateParams['profiloUtente']['idutente'], 'data_pubblicazione', 'DESC');
 ?>
 
-<h2 class="mb-4">Profilo di <?php echo htmlspecialchars($templateParams['userProfile']['username']); ?></h2>
+<h2 class="mb-4">Profilo di <?php echo htmlspecialchars($templateParams['profiloUtente']['username']); ?></h2>
 
 <section aria-label="Statistiche utente" class="row g-2 g-md-4 mb-5">
     <div class="col-4">
         <div class="card h-100 border-0 shadow-sm text-center p-2 p-md-3">
             <div class="card-body p-1 p-md-3">
-                <h3 class="h2 fw-bold text-primary mb-1 mb-md-2"><?php echo $stats["followed_courses"]; ?></h3>
-                <p class="mb-0 text-muted small">Corsi Seguiti</p>
+                <h3 class="h2 fw-bold text-primary mb-1 mb-md-2"><?php echo $statistiche["corsi_seguiti"]; ?></h3>
+                <p class="mb-0 text-muted small">Corsi seguiti</p>
             </div>
         </div>
     </div>
     <div class="col-4">
         <div class="card h-100 border-0 shadow-sm text-center p-2 p-md-3">
             <div class="card-body p-1 p-md-3">
-                <h3 class="h2 fw-bold text-primary mb-1 mb-md-2"><?php echo $stats["articles_written"]; ?></h3>
-                <p class="mb-0 text-muted small">Articoli Scritti</p>
+                <h3 class="h2 fw-bold text-primary mb-1 mb-md-2"><?php echo $statistiche["appunti_scritti"]; ?></h3>
+                <p class="mb-0 text-muted small">Articoli scritti</p>
             </div>
         </div>
     </div>
     <div class="col-4">
         <div class="card h-100 border-0 shadow-sm text-center p-2 p-md-3">
             <div class="card-body p-1 p-md-3">
-                <h3 class="h2 fw-bold text-primary mb-1 mb-md-2"><?php echo $stats["avg_rating"]; ?></h3>
-                <p class="mb-0 text-muted small">Media Voto</p>
+                <h3 class="h2 fw-bold text-primary mb-1 mb-md-2"><?php echo $statistiche["media_recensioni"]; ?></h3>
+                <p class="mb-0 text-muted small">Media voto</p>
             </div>
         </div>
     </div>
 </section>
 
 <?php
-$titoloFiltri = "Appunti di " . htmlspecialchars($templateParams['userProfile']['username']);
-$ajaxUrl = "profilo.php?id=" . $templateParams['userProfile']['idutente'];
-$nomeutente = $templateParams['userProfile']['username'];
+$titoloFiltri = "Appunti di " . htmlspecialchars($templateParams['profiloUtente']['username']);
+$ajaxUrl = "profilo.php?id=" . $templateParams['profiloUtente']['idutente'];
+$nomeutente = $templateParams['profiloUtente']['username'];
 include 'lista-appunti.php';
 ?>

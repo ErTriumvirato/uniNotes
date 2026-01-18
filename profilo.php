@@ -1,58 +1,33 @@
 <?php
 require_once 'config.php';
 
-$idProfile = null;
+$idProfilo = null;
 
+// Determina l'ID del profilo da visualizzare (da GET o sesssione per utente loggato)
 if (isset($_GET['id'])) {
-    $idProfile = intval($_GET['id']);
+    $idProfilo = intval($_GET['id']);
 } elseif (isUserLoggedIn()) {
-    $idProfile = $_SESSION['idutente'];
+    $idProfilo = $_SESSION['idutente'];
 } else {
     header("Location: login.php");
     exit();
 }
 
-$userProfile = $dbh->getUserById($idProfile);
+$profiloUtente = $dbh->getUserById($idProfilo); // Dati dell'utente
 
-if (isset($_GET['action']) && $_GET['action'] === 'filter') {
-    $sort = $_GET['sort'] ?? 'data_pubblicazione';
-    $order = $_GET['order'] ?? 'DESC';
+$isOwner = isUserLoggedIn() && ($_SESSION['idutente'] == $idProfilo); // Verifica se l'utente loggato sta visualizzando il proprio profilo
 
-    $appunti = $dbh->getApprovedArticlesByUserIdWithFilters($idProfile, $sort, $order);
-    
-    $response = array_map(function ($art) {
-        $art['views'] = (int)$art['numero_visualizzazioni'];
-        $art['data_formattata'] = date('d/m/y', strtotime($art['data_pubblicazione']));
-        $art['media_recensioni'] = $art['media_recensioni'] ?: 'N/A';
-        return $art;
-    }, $appunti);
-
-    header('Content-Type: application/json');
-    echo json_encode($response);
-    exit();
-}
-
-if (!$userProfile) {
-    header("Location: index.php");
-    exit();
-}
-
-$isOwner = isUserLoggedIn() && ($_SESSION['idutente'] == $idProfile);
-// Gli admin e il proprietario vedono tutto, gli altri solo approvati
-$viewAll = $isOwner || isUserAdmin();
-
-$templateParams["userProfile"] = $userProfile;
+$templateParams["profiloUtente"] = $profiloUtente;
 $templateParams["isOwner"] = $isOwner;
 
 $templateParams["stats"] = [
-    "followed_courses" => $dbh->getFollowedCoursesCount($idProfile),
-    "articles_written" => $dbh->getArticlesCountByAuthor($idProfile, true),
-    "avg_rating" => $dbh->getAuthorAverageRating($idProfile)
+    "corsi_seguiti" => $dbh->getFollowedCoursesCount($idProfilo),
+    "appunti_scritti" => $dbh->getArticlesCountByAuthor($idProfilo, true),
+    "media_recensioni" => $dbh->getAuthorAverageRating($idProfilo)
 ];
-$templateParams["articles"] = $dbh->getApprovedArticlesByUserIdWithFilters($idProfile, 'data_pubblicazione', 'DESC');
 
 // templateParams
-$templateParams["titolo"] = "uniNotes - Profilo di " . $userProfile['username'];
+$templateParams["titolo"] = "Profilo di " . $profiloUtente['username'];
 $templateParams["nome"] = "templates/profilo-utente.php";
 
 require_once 'templates/base.php';

@@ -37,9 +37,9 @@ if (isset($_POST["toggleFollow"])) {
 
     $idcorso = $_POST["toggleFollow"];
     $idutente = $_SESSION["idutente"];
-    
+
     $isFollowing = $dbh->isFollowingCourse($idutente, $idcorso);
-    
+
     if ($isFollowing) {
         $dbh->unfollowCourse($idutente, $idcorso);
         echo json_encode(['following' => false]);
@@ -59,7 +59,7 @@ if (!$corso) {
 // Template parameters
 $templateParams["corso"] = $corso;
 $templateParams["isFollowing"] = $idutente ? $dbh->isFollowingCourse($idutente, $idCorso) : false;
-$templateParams["titolo"] = "uniNotes - " . htmlspecialchars($corso['nome']);
+$templateParams["titolo"] = htmlspecialchars($corso['nome']);
 $templateParams["nome"] = "templates/dettagli-corso.php";
 
 require_once 'templates/base.php';

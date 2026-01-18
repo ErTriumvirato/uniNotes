@@ -3,7 +3,7 @@
         <section aria-label="Modulo di registrazione" class="card shadow-sm border-0 rounded-3 form-card">
             <div class="card-body p-4">
                 <h2 class="text-center mb-4">Registrati</h2>
-                
+
                 <?php if (isset($templateParams["error"])): ?>
                     <div class="alert alert-danger" role="alert">
                         <?php echo htmlspecialchars($templateParams["error"]); ?>
@@ -16,11 +16,11 @@
                         <input type="text" class="form-control" id="username" name="username" required />
                     </div>
 
-                     <div class="mb-3">
+                    <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
                         <input type="email" class="form-control" id="email" name="email" required />
                     </div>
-                    
+
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
                         <input type="password" class="form-control" id="password" name="password" required />
@@ -30,7 +30,7 @@
                         <input type="submit" name="registrazione" class="btn btn-outline-primary btn-lg" value="Registrati" />
                     </div>
                 </form>
-                
+
                 <div class="text-center mt-3">
                     <p class="text-muted">Hai già un account? <a href="login.php" class="text-decoration-none">Accedi</a></p>
                 </div>

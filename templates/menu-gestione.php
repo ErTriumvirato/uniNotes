@@ -4,9 +4,8 @@
             <h1 class="display-5 fw-bold">Area amministrazione</h1>
         </div>
     </div>
-    
+
     <div class="row g-4 justify-content-center">
-        <!-- Gestione Corsi -->
         <div class="col-12 col-md-6 col-lg-4">
             <a href="gestione-corsi.php" class="text-decoration-none">
                 <div class="card h-100 shadow-sm border-0 admin-card text-center p-4">
@@ -18,7 +17,6 @@
             </a>
         </div>
 
-        <!-- Gestione Utenti -->
         <div class="col-12 col-md-6 col-lg-4">
             <a href="gestione-utenti.php" class="text-decoration-none">
                 <div class="card h-100 shadow-sm border-0 admin-card text-center p-4">
@@ -30,7 +28,6 @@
             </a>
         </div>
 
-        <!-- Gestione Appunti -->
         <div class="col-12 col-md-6 col-lg-4">
             <a href="gestione-appunti.php" class="text-decoration-none">
                 <div class="card h-100 shadow-sm border-0 admin-card text-center p-4">

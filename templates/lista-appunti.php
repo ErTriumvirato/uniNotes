@@ -1,19 +1,11 @@
 <?php
-// Parametri richiesti:
-// $titoloFiltri - titolo della sezione (es. "Appunti disponibili", "Appunti di Mario")
-// $nomeutente - (opzionale) username dell'autore per filtrare
-// $nomecorso - (opzionale) nome del corso per filtrare
-// $search - (opzionale) testo di ricerca iniziale
-// $approvalFilter - (opzionale) filtro approvazione: 'approved', 'pending', 'all', 'refused' (default: 'approved', 'all' per admin)
-// $messaggioVuoto - (opzionale) messaggio quando non ci sono appunti
-// Nota: filtro approvazione e azioni sono visibili solo agli admin
 global $dbh;
 
 $isAdmin = isUserAdmin();
 $nomeutente = $nomeutente ?? null;
 $nomecorso = $nomecorso ?? null;
-$search = $search ?? '';
-$approvalFilter = $isAdmin ? ($approvalFilter ?? 'all') : 'approved';
+$search = $search ?? ''; // Testo di ricerca iniziale
+$approvalFilter = $isAdmin ? ($approvalFilter ?? 'all') : 'approved'; // Filtro approvazione: 'approved', 'pending', 'all', 'refused' (default: 'approved', 'all' per admin)
 $showApprovalFilter = $isAdmin;
 $showActions = $isAdmin;
 $messaggioVuoto = $messaggioVuoto ?? "Nessun appunto disponibile.";

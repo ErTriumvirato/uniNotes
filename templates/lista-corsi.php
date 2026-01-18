@@ -44,6 +44,7 @@ require 'filtri-corsi.php';
 </section>
 
 <script>
+    // Gestisce aggiornamento pulsante segui/smetti di seguire
     function handleFollowClick(button) {
         handleButtonAction(button, "corsi.php", "toggleFollow=" + encodeURIComponent(button.dataset.idcorso), (data, el) => {
             el.innerHTML = data.following ? "Smetti di seguire" : "Segui corso";
@@ -56,6 +57,7 @@ require 'filtri-corsi.php';
     const filterTypeSelect = document.getElementById('filterType');
     const coursesContainer = document.getElementById('courses-container');
 
+    // Filtri corsi
     function filterCourses() {
         const url = `corsi.php?action=filter&search=${encodeURIComponent(searchInput.value)}&ssd=${encodeURIComponent(ssdSelect.value)}&filterType=${encodeURIComponent(filterTypeSelect?.value || 'all')}`;
 

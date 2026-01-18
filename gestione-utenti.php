@@ -1,12 +1,7 @@
 <?php
 require_once 'config.php';
 
-requireLogin();
-
-if(!isUserAdmin()){
-    header("Location: index.php");
-    exit();
-}
+requireAdmin();
 
 $action = $_POST['action'] ?? $_GET['action'] ?? '';
 
@@ -14,20 +9,20 @@ if (!empty($action)) {
     header('Content-Type: application/json');
     try {
         switch ($action) {
-            case 'get_users':
+            case 'get_users': // Recupera la lista degli utenti con filtri opzionali
                 $search = $_GET['search'] ?? '';
                 $role = $_GET['role'] ?? 'all';
-                $users = $dbh->getAllUsers($search, $role);
+                $users = $dbh->getUsers($search, $role);
                 echo json_encode(['success' => true, 'data' => $users]);
                 break;
 
-            case 'get_user':
+            case 'get_user': // Recupera i dettagli di un singolo utente
                 $id = $_GET['id'] ?? 0;
                 $user = $dbh->getUserById($id);
                 echo json_encode(['success' => true, 'data' => $user]);
                 break;
 
-            case 'save_user':
+            case 'save_user': // Crea o aggiorna un utente
                 $id = $_POST['id'] ?? 0;
                 $username = $_POST['username'] ?? '';
                 $email = $_POST['email'] ?? '';
@@ -35,12 +30,12 @@ if (!empty($action)) {
                 $password = $_POST['password'] ?? '';
 
                 if (empty($username) || empty($email)) {
-                    throw new Exception("Username ed Email obbligatori");
+                    throw new Exception("Username e Email obbligatori");
                 }
 
+                // update or create user
                 if ($id > 0) {
                     // Update
-                    // Prevent modifying own role
                     if ($id == $_SESSION['idutente'] && $isAdmin != $_SESSION['isAdmin']) {
                         throw new Exception("Non puoi modificare il tuo stesso ruolo");
                     }
@@ -60,14 +55,15 @@ if (!empty($action)) {
                 }
                 break;
 
-            case 'delete_user':
+            case 'delete_user': // Elimina un utente
                 $id = $_POST['id'] ?? 0;
-                
-                // Prevent deleting yourself
+
+                // Previene l'eliminazione del proprio account
                 if ($id == $_SESSION['idutente']) {
                     throw new Exception("Non puoi eliminare il tuo stesso account");
                 }
-                
+
+                // Previene l'eliminazione dell'ultimo admin
                 if ($dbh->deleteUser($id)) {
                     echo json_encode(['success' => true, 'message' => 'Utente eliminato']);
                 } else {
@@ -85,6 +81,6 @@ if (!empty($action)) {
     exit();
 }
 
-$templateParams["titolo"] = "uniNotes - Gestione Utenti";
+$templateParams["titolo"] = "Gestione Utenti";
 $templateParams["nome"] = "templates/gestione-utenti.php";
 require_once 'templates/base.php';

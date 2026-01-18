@@ -134,7 +134,7 @@ class DatabaseHelper
                 JOIN utenti ON appunti.idutente = utenti.idutente
                 JOIN corsi ON appunti.idcorso = corsi.idcorso
                 LEFT JOIN recensioni ON appunti.idappunto = recensioni.idappunto";
-        
+
         $params = [];
         $types = "";
 
@@ -160,7 +160,7 @@ class DatabaseHelper
 
         $stmt = $this->db->prepare($query);
         if (!empty($params)) {
-             $stmt->bind_param($types, ...$params);
+            $stmt->bind_param($types, ...$params);
         }
         $stmt->execute();
         $result = $stmt->get_result();
@@ -200,10 +200,10 @@ class DatabaseHelper
 
         $order = strtoupper($order) === 'ASC' ? 'ASC' : 'DESC';
         $query .= " ORDER BY $orderBy $order";
-        
+
         $stmt = $this->db->prepare($query);
         if (!empty($params)) {
-             $stmt->bind_param($types, ...$params);
+            $stmt->bind_param($types, ...$params);
         }
         $stmt->execute();
         $result = $stmt->get_result();
@@ -391,50 +391,58 @@ class DatabaseHelper
         return $stmt->get_result()->fetch_assoc();
     }
 
-    public function createCourse($nome, $descrizione, $idssd) {
+    public function createCourse($nome, $descrizione, $idssd)
+    {
         $stmt = $this->db->prepare("INSERT INTO corsi (nome, descrizione, idssd) VALUES (?, ?, ?)");
         $stmt->bind_param("ssi", $nome, $descrizione, $idssd);
         return $stmt->execute();
     }
 
-    public function updateCourse($idcorso, $nome, $descrizione, $idssd) {
+    public function updateCourse($idcorso, $nome, $descrizione, $idssd)
+    {
         $stmt = $this->db->prepare("UPDATE corsi SET nome = ?, descrizione = ?, idssd = ? WHERE idcorso = ?");
         $stmt->bind_param("ssii", $nome, $descrizione, $idssd, $idcorso);
         return $stmt->execute();
     }
 
-    public function deleteCourse($idcorso) {
+    public function deleteCourse($idcorso)
+    {
         $stmt = $this->db->prepare("DELETE FROM corsi WHERE idcorso = ?");
         $stmt->bind_param("i", $idcorso);
         return $stmt->execute();
     }
 
-    public function createSSD($nome, $descrizione) {
+    public function createSSD($nome, $descrizione)
+    {
         $stmt = $this->db->prepare("INSERT INTO ssd (nome, descrizione) VALUES (?, ?)");
         $stmt->bind_param("ss", $nome, $descrizione);
         return $stmt->execute();
     }
 
-    public function updateSSD($idssd, $nome, $descrizione) {
+    public function updateSSD($idssd, $nome, $descrizione)
+    {
         $stmt = $this->db->prepare("UPDATE ssd SET nome = ?, descrizione = ? WHERE idssd = ?");
         $stmt->bind_param("ssi", $nome, $descrizione, $idssd);
         return $stmt->execute();
     }
 
-    public function deleteSSD($idssd) {
+    public function deleteSSD($idssd)
+    {
         $stmt = $this->db->prepare("DELETE FROM ssd WHERE idssd = ?");
         $stmt->bind_param("i", $idssd);
         return $stmt->execute();
     }
 
-    public function getSSDById($idssd) {
+    public function getSSDById($idssd)
+    {
         $stmt = $this->db->prepare("SELECT * FROM ssd WHERE idssd = ?");
         $stmt->bind_param("i", $idssd);
         $stmt->execute();
         return $stmt->get_result()->fetch_assoc();
     }
 
-    public function getAllUsers($search = null, $role = 'all') {
+    public function getUsers($search = null, $role = 'all')
+    {
         $query = "SELECT idutente, username, isAdmin FROM utenti";
         $conditions = [];
         $params = [];
@@ -466,21 +474,24 @@ class DatabaseHelper
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getUserById($idutente) {
+    public function getUserById($idutente)
+    {
         $stmt = $this->db->prepare("SELECT idutente, username, email, isAdmin FROM utenti WHERE idutente = ?");
         $stmt->bind_param("i", $idutente);
         $stmt->execute();
         return $stmt->get_result()->fetch_assoc();
     }
 
-    public function createUser($username, $email, $password, $ruolo) {
+    public function createUser($username, $email, $password, $ruolo)
+    {
         $hash = password_hash($password, PASSWORD_DEFAULT);
         $stmt = $this->db->prepare("INSERT INTO utenti (username, email, password, isAdmin) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("sssi", $username, $email, $hash, $ruolo);
         return $stmt->execute();
     }
 
-    public function updateUser($idutente, $username, $email, $ruolo, $password = null) {
+    public function updateUser($idutente, $username, $email, $ruolo, $password = null)
+    {
         if ($password) {
             $hash = password_hash($password, PASSWORD_DEFAULT);
             $stmt = $this->db->prepare("UPDATE utenti SET username = ?, email = ?, isAdmin = ?, password = ? WHERE idutente = ?");
@@ -492,7 +503,8 @@ class DatabaseHelper
         return $stmt->execute();
     }
 
-    public function getAdminCount() {
+    public function getAdminCount()
+    {
         $stmt = $this->db->prepare("SELECT COUNT(*) as count FROM utenti WHERE isAdmin = 1");
         $stmt->execute();
         $result = $stmt->get_result();
@@ -500,13 +512,15 @@ class DatabaseHelper
         return $row['count'];
     }
 
-    public function deleteUser($idutente) {
+    public function deleteUser($idutente)
+    {
         $stmt = $this->db->prepare("DELETE FROM utenti WHERE idutente = ?");
         $stmt->bind_param("i", $idutente);
         return $stmt->execute();
     }
 
-    public function getFollowedCoursesCount($idutente) {
+    public function getFollowedCoursesCount($idutente)
+    {
         $stmt = $this->db->prepare("SELECT COUNT(*) as count FROM iscrizioni WHERE idutente = ?");
         $stmt->bind_param("i", $idutente);
         $stmt->execute();
@@ -514,7 +528,8 @@ class DatabaseHelper
         return $result->fetch_assoc()['count'];
     }
 
-    public function getArticlesCountByAuthor($idutente, $onlyApproved = false) {
+    public function getArticlesCountByAuthor($idutente, $onlyApproved = false)
+    {
         $query = "SELECT COUNT(*) as count FROM appunti WHERE idutente = ?";
         if ($onlyApproved) {
             $query .= " AND stato = 'approvato'";
@@ -526,7 +541,8 @@ class DatabaseHelper
         return $result->fetch_assoc()['count'];
     }
 
-    public function getAuthorAverageRating($idutente) {
+    public function getAuthorAverageRating($idutente)
+    {
         $query = "SELECT ROUND(AVG(r.valutazione), 1) as avg_rating 
                   FROM recensioni r 
                   JOIN appunti a ON r.idappunto = a.idappunto 
@@ -546,7 +562,7 @@ class DatabaseHelper
                   JOIN corsi ON appunti.idcorso = corsi.idcorso
                   WHERE appunti.idutente = ? AND appunti.stato != 'approvato'
                   ORDER BY appunti.data_pubblicazione DESC";
-        
+
         $stmt = $this->db->prepare($query);
         $stmt->bind_param("i", $idutente);
         $stmt->execute();

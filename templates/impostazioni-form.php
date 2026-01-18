@@ -3,8 +3,8 @@
         <section aria-label="Impostazioni profilo" class="card shadow-sm border-0 rounded-3 form-card">
             <div class="card-body p-4">
                 <h2 class="text-center mb-4">Impostazioni profilo</h2>
-                
-                <?php if(isset($templateParams["messaggio"])): ?>
+
+                <?php if (isset($templateParams["messaggio"])): ?>
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {
                             <?php if (strpos($templateParams["messaggio"], 'successo') === false): ?>
@@ -26,7 +26,7 @@
                         <label for="email" class="form-label">Email</label>
                         <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($templateParams["currentUser"]["email"]); ?>" required />
                     </div>
-                    
+
                     <div class="mb-3">
                         <label for="password" class="form-label">Nuova password <small class="text-muted">(lascia vuoto per non cambiare)</small></label>
                         <input type="password" class="form-control" id="password" name="password" />
@@ -74,7 +74,6 @@
             }, 3000);
             return;
         }
-
         document.getElementById('deleteAccountForm').submit();
     }
 </script>

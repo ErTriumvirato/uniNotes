@@ -1,19 +1,31 @@
 <?php
 require_once 'config.php';
 
-function isUserLoggedIn() {
+function isUserLoggedIn() // Verifica se l'utente è loggato
+{
     return isset($_SESSION['username']);
 }
 
-function isUserAdmin() {
+function isUserAdmin() // Verifica se l'utente è admin
+{
     return isUserLoggedIn() && $_SESSION['isAdmin'] == true;
 }
 
-function getCurrentURI() {
+function getCurrentURI() // Restituisce l'URI corrente
+{
     return urlencode($_SERVER['REQUEST_URI']);
 }
 
-function requireLogin($targetPage = null) {
+function requireAdmin() // Richiede che l'utente sia admin
+{
+    if (!isUserAdmin()) {
+        header("Location: index.php");
+        exit();
+    }
+}
+
+function requireLogin($targetPage = null) // Richiede il login, opzionalmente con redirect
+{
     global $dbh;
     // if not logged in
     if (!isUserLoggedIn()) {
@@ -31,7 +43,7 @@ function requireLogin($targetPage = null) {
             exit;
         }
     }
-    
+
     // if logged in
     return true;
 }
