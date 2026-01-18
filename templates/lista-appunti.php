@@ -63,7 +63,7 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
     </div>
 </section>
 
-<section aria-label="Lista appunti" id="articles-container" class="d-flex flex-column gap-3">
+<section aria-label="Lista appunti" id="articles-container" class="d-flex flex-column gap-3" aria-live="polite">
     <?php if (!empty($appunti)): foreach ($appunti as $appunto): ?>
             <article class="card shadow-sm border-0 article-card" id="article-<?= $appunto['idappunto'] ?>">
                 <div class="card-body">
@@ -98,15 +98,18 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
                     <?php if ($showActions): ?>
                         <div class="d-flex gap-2 mt-3 justify-content-end">
                             <?php if ($appunto['stato'] === 'in_revisione'): ?>
-                                <button type="button" class="btn btn-sm btn-outline-success" onclick="handleApprove(<?= $appunto['idappunto'] ?>)" title="Approva">
+                                <button type="button" class="btn btn-sm btn-outline-success" onclick="handleApprove(<?= $appunto['idappunto'] ?>)" title="Approva" aria-label="Approva appunto">
                                     <i class="bi bi-check-lg" aria-hidden="true"></i>
+                                    <span class="visually-hidden">Approva</span>
                                 </button>
-                                <button type="button" class="btn btn-sm btn-outline-warning" onclick="handleReject(<?= $appunto['idappunto'] ?>)" title="Rifiuta">
+                                <button type="button" class="btn btn-sm btn-outline-warning" onclick="handleReject(<?= $appunto['idappunto'] ?>)" title="Rifiuta" aria-label="Rifiuta appunto">
                                     <i class="bi bi-x-lg" aria-hidden="true"></i>
+                                    <span class="visually-hidden">Rifiuta</span>
                                 </button>
                             <?php endif; ?>
-                            <button type="button" class="btn btn-sm btn-outline-danger" data-id="<?= $appunto['idappunto'] ?>" onclick="handleDelete(this)" title="Elimina">
+                            <button type="button" class="btn btn-sm btn-outline-danger" data-id="<?= $appunto['idappunto'] ?>" onclick="handleDelete(this)" title="Elimina" aria-label="Elimina appunto">
                                 <i class="bi bi-trash" aria-hidden="true"></i>
+                                <span class="visually-hidden">Elimina</span>
                             </button>
                         </div>
                     <?php endif; ?>
@@ -141,16 +144,19 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
         let buttons = '';
         if (art.stato === 'in_revisione') {
             buttons += `
-                <button type="button" class="btn btn-sm btn-outline-success" onclick="handleApprove(${art.idappunto})" title="Approva">
+                <button type="button" class="btn btn-sm btn-outline-success" onclick="handleApprove(${art.idappunto})" title="Approva" aria-label="Approva appunto">
                     <i class="bi bi-check-lg" aria-hidden="true"></i>
+                    <span class="visually-hidden">Approva</span>
                 </button>
-                <button type="button" class="btn btn-sm btn-outline-warning" onclick="handleReject(${art.idappunto})" title="Rifiuta">
+                <button type="button" class="btn btn-sm btn-outline-warning" onclick="handleReject(${art.idappunto})" title="Rifiuta" aria-label="Rifiuta appunto">
                     <i class="bi bi-x-lg" aria-hidden="true"></i>
+                    <span class="visually-hidden">Rifiuta</span>
                 </button>`;
         }
         buttons += `
-            <button type="button" class="btn btn-sm btn-outline-danger" data-id="${art.idappunto}" onclick="handleDelete(this)" title="Elimina">
+            <button type="button" class="btn btn-sm btn-outline-danger" data-id="${art.idappunto}" onclick="handleDelete(this)" title="Elimina" aria-label="Elimina appunto">
                 <i class="bi bi-trash" aria-hidden="true"></i>
+                <span class="visually-hidden">Elimina</span>
             </button>`;
         return `<div class="d-flex gap-2 mt-3 justify-content-end">${buttons}</div>`;
     }
@@ -175,11 +181,23 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
                 let statusBadge = '';
                 if (showActions) {
                     const statusMap = {
-                        'in_revisione': { label: 'Da approvare', class: 'bg-warning text-dark' },
-                        'approvato': { label: 'Approvato', class: 'bg-success' },
-                        'rifiutato': { label: 'Rifiutato', class: 'bg-danger' }
+                        'in_revisione': {
+                            label: 'Da approvare',
+                            class: 'bg-warning text-dark'
+                        },
+                        'approvato': {
+                            label: 'Approvato',
+                            class: 'bg-success'
+                        },
+                        'rifiutato': {
+                            label: 'Rifiutato',
+                            class: 'bg-danger'
+                        }
                     };
-                    const statusInfo = statusMap[art.stato] || { label: art.stato, class: 'bg-secondary' };
+                    const statusInfo = statusMap[art.stato] || {
+                        label: art.stato,
+                        class: 'bg-secondary'
+                    };
                     statusBadge = `<span class="badge ${statusInfo.class}" title="Stato">${statusInfo.label}</span>`;
                 }
 
@@ -258,7 +276,7 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
 
         if (!btn.dataset.confirm) {
             btn.dataset.confirm = 'true';
-            btn.innerHTML = '<i class="bi bi-check-lg"></i>';
+            btn.innerHTML = '<i class="bi bi-check-lg" aria-hidden="true"></i><span class="visually-hidden">Conferma eliminazione</span>';
             btn.classList.remove('btn-outline-danger');
             btn.classList.add('btn-danger');
             setTimeout(() => {
@@ -305,14 +323,10 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
             });
     }
 
-    // Reset dei selettori quando si torna indietro con il browser (bfcache)
-    /*window.addEventListener('pageshow', (event) => {
+    // Aggiorna gli articoli quando si torna alla pagina dal back/forward
+    window.addEventListener('pageshow', (event) => {
         if (event.persisted) {
-            // Resetta i selettori ai valori di default per sincronizzarli con il contenuto PHP
-            if (approvalSelect) approvalSelect.value = defaultApprovalFilter;
-            sortSelect.value = 'data_pubblicazione';
-            orderSelect.value = 'DESC';
-            searchInput.value = <?= json_encode($search) ?>;
+            updateArticles();
         }
-    });*/
+    });
 </script>

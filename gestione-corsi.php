@@ -69,7 +69,8 @@ if (!empty($action)) {
                 break;
 
             case 'get_ssds':
-                $ssds = $dbh->getAllSSD();
+                $search = $_GET['search'] ?? '';
+                $ssds = $dbh->getAllSSD($search);
                 echo json_encode(['success' => true, 'data' => $ssds]);
                 break;
 

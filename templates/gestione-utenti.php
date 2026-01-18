@@ -39,12 +39,12 @@
                     <table class="table table-hover align-middle table-sm">
                         <thead class="table-light">
                             <tr>
-                                <th>Username</th>
-                                <th class="col-ruolo">Ruolo</th>
-                                <th class="text-end">Azioni</th>
+                                <th scope="col">Username</th>
+                                <th scope="col" class="col-ruolo">Ruolo</th>
+                                <th scope="col" class="text-end">Azioni</th>
                             </tr>
                         </thead>
-                        <tbody id="usersTableBody">
+                        <tbody id="usersTableBody" aria-live="polite">
                         </tbody>
                     </table>
                 </div>
@@ -192,7 +192,7 @@
         function deleteUser(id, btn) {
             if (!btn.dataset.confirm) {
                 btn.dataset.confirm = 'true';
-                btn.innerHTML = '<i class="bi bi-check-lg"></i>';
+                btn.innerHTML = '<i class="bi bi-check-lg" aria-hidden="true"></i><span class="visually-hidden">Conferma eliminazione</span>';
                 btn.classList.remove('btn-outline-danger');
                 btn.classList.add('btn-danger');
                 setTimeout(() => {

@@ -33,10 +33,24 @@ class DatabaseHelper
         return $result->fetch_assoc();
     }
 
-    public function getAllSSD()
+    public function getAllSSD($search = null)
     {
         $query = "SELECT * FROM ssd";
+        $params = [];
+        $types = "";
+
+        if (!empty($search)) {
+            $query .= " WHERE nome LIKE ? OR descrizione LIKE ?";
+            $searchTerm = "%" . $search . "%";
+            $params[] = $searchTerm;
+            $params[] = $searchTerm;
+            $types .= "ss";
+        }
+
         $stmt = $this->db->prepare($query);
+        if (!empty($params)) {
+            $stmt->bind_param($types, ...$params);
+        }
         $stmt->execute();
         $result = $stmt->get_result();
         return $result->fetch_all(MYSQLI_ASSOC);

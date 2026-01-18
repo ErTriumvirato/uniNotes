@@ -23,8 +23,10 @@ header("Expires: 0"); // Proxies
 
 <body class="d-flex flex-column min-vh-100">
 
+    <a class="skip-link" href="#main-content">Salta al contenuto principale</a>
+
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light shadow-sm fixed-top">
+        <nav class="navbar navbar-expand-lg navbar-light shadow-sm fixed-top" aria-label="Navigazione principale">
             <div class="container-fluid">
                 <div class="d-flex align-items-center gap-3">
                     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
@@ -67,7 +69,7 @@ header("Expires: 0"); // Proxies
                         <a href="login.php" class="btn btn-primary btn-sm px-4">Accedi</a>
                     <?php } else { ?>
                         <nav class="user-menu" aria-label="Menu utente">
-                            <button type="button" class="nav-link user-menu-btn" onclick="toggleUserMenu()" aria-expanded="false" aria-haspopup="true" aria-controls="user-dropdown">
+                            <button type="button" class="nav-link user-menu-btn" onclick="toggleUserMenu()" aria-expanded="false" aria-haspopup="true" aria-controls="user-dropdown" aria-label="Apri menu utente">
                                 <?php echo htmlspecialchars($_SESSION['username']); ?> ▾
                             </button>
                             <ul id="user-dropdown" class="user-dropdown" role="menu" aria-label="Opzioni utente">
@@ -83,13 +85,13 @@ header("Expires: 0"); // Proxies
     </header>
 
     <!-- Banner errori -->
-    <div id="error-banner" class="alert alert-danger alert-dismissible fade position-fixed top-0 start-50 translate-middle-x mt-5 pt-4 w-75" role="alert" style="display: none; margin-top: 80px !important; z-index: 2000;">
+    <div id="error-banner" class="alert alert-danger alert-dismissible fade position-fixed top-0 start-50 translate-middle-x mt-5 pt-4 w-75" role="alert" aria-live="assertive" style="display: none; margin-top: 80px !important; z-index: 2000;">
         <span id="error-message"></span>
         <button type="button" class="btn-close" onclick="hideError()" aria-label="Chiudi"></button>
     </div>
 
     <!-- Contenuto principale -->
-    <main class="container flex-grow-1 mt-5 pt-5">
+    <main id="main-content" class="container flex-grow-1 mt-5 pt-5" tabindex="-1">
         <?php
         if (($templateParams["nome"] === "templates/dettagli-corso.php")
             || ($templateParams["nome"] === "templates/gestione-corsi.php")

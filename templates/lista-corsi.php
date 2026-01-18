@@ -10,7 +10,7 @@ $showFollowFilter = !empty($idutente);
 require 'filtri-corsi.php';
 ?>
 
-<section id="courses-container" class="row g-4" aria-label="Lista corsi">
+<section id="courses-container" class="row g-4" aria-label="Lista corsi" aria-live="polite">
     <?php foreach ($corsi as $corso):
         $isFollowing = $idutente ? $dbh->isFollowingCourse($idutente, $corso['idcorso']) : false;
     ?>

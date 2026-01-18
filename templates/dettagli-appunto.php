@@ -85,6 +85,7 @@ if (!empty($appunto)) {
                             </div>
                             <button class="btn btn-sm btn-outline-danger delete-review-btn" data-review-id="<?php echo $userReview['idrecensione']; ?>" aria-label="Elimina recensione" onclick="handleDeleteReview(this)" title="Elimina">
                                 <i class="bi bi-trash" aria-hidden="true"></i>
+                                <span class="visually-hidden">Elimina recensione</span>
                             </button>
                         </div>
                     <?php elseif (!isUserLoggedIn()): ?>
@@ -107,15 +108,18 @@ if (!empty($appunto)) {
                     <?php if (isUserAdmin()): ?>
                     <div class="d-flex gap-2" id="admin-actions">
                         <?php if ($appunto['stato'] === 'in_revisione'): ?>
-                        <button type="button" class="btn btn-sm btn-outline-success" onclick="handleApprove(<?= $appunto['idappunto'] ?>)" title="Approva">
+                        <button type="button" class="btn btn-sm btn-outline-success" onclick="handleApprove(<?= $appunto['idappunto'] ?>)" title="Approva" aria-label="Approva appunto">
                             <i class="bi bi-check-lg" aria-hidden="true"></i>
+                            <span class="visually-hidden">Approva</span>
                         </button>
-                        <button type="button" class="btn btn-sm btn-outline-warning" onclick="handleReject(<?= $appunto['idappunto'] ?>)" title="Rifiuta">
+                        <button type="button" class="btn btn-sm btn-outline-warning" onclick="handleReject(<?= $appunto['idappunto'] ?>)" title="Rifiuta" aria-label="Rifiuta appunto">
                             <i class="bi bi-x-lg" aria-hidden="true"></i>
+                            <span class="visually-hidden">Rifiuta</span>
                         </button>
                         <?php endif; ?>
-                        <button type="button" class="btn btn-sm btn-outline-danger" data-id="<?= $appunto['idappunto'] ?>" onclick="handleDeleteArticle(this)" title="Elimina">
+                        <button type="button" class="btn btn-sm btn-outline-danger" data-id="<?= $appunto['idappunto'] ?>" onclick="handleDeleteArticle(this)" title="Elimina" aria-label="Elimina appunto">
                             <i class="bi bi-trash" aria-hidden="true"></i>
+                            <span class="visually-hidden">Elimina</span>
                         </button>
                     </div>
                     <?php endif; ?>
@@ -170,6 +174,7 @@ if (!empty($appunto)) {
                             </div>
                             <button class="btn btn-sm btn-outline-danger delete-review-btn" data-review-id="${data.review.idrecensione}" aria-label="Elimina recensione" onclick="handleDeleteReview(this)" title="Elimina">
                                 <i class="bi bi-trash" aria-hidden="true"></i>
+                                <span class="visually-hidden">Elimina recensione</span>
                             </button>
                         </div>
                     `;
@@ -195,13 +200,13 @@ if (!empty($appunto)) {
 
         if (!btn.dataset.confirm) {
             btn.dataset.confirm = 'true';
-            btn.innerHTML = '<i class="bi bi-check-lg"></i>';
+            btn.innerHTML = '<i class="bi bi-check-lg" aria-hidden="true"></i><span class="visually-hidden">Conferma eliminazione</span>';
             btn.classList.remove('btn-outline-danger');
             btn.classList.add('btn-danger');
             setTimeout(() => {
                 if (btn.dataset.confirm) {
                     delete btn.dataset.confirm;
-                    btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i>';
+                    btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i><span class="visually-hidden">Elimina recensione</span>';
                     btn.classList.remove('btn-danger');
                     btn.classList.add('btn-outline-danger');
                 }
@@ -255,12 +260,12 @@ if (!empty($appunto)) {
             } else {
                 showError(data.message || 'Errore durante l\'eliminazione della recensione.');
                 btn.disabled = false;
-                btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i>';
+                btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i><span class="visually-hidden">Elimina recensione</span>';
             }
         })
         .catch(() => {
             btn.disabled = false;
-            btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i>';
+            btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i><span class="visually-hidden">Elimina recensione</span>';
             showError('Si è verificato un errore. Riprova.');
         });
     }
@@ -343,13 +348,13 @@ if (!empty($appunto)) {
 
         if (!btn.dataset.confirm) {
             btn.dataset.confirm = 'true';
-            btn.innerHTML = '<i class="bi bi-check-lg"></i>';
+            btn.innerHTML = '<i class="bi bi-check-lg" aria-hidden="true"></i><span class="visually-hidden">Conferma eliminazione</span>';
             btn.classList.remove('btn-outline-danger');
             btn.classList.add('btn-danger');
             setTimeout(() => {
                 if (btn.dataset.confirm) {
                     delete btn.dataset.confirm;
-                    btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i>';
+                    btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i><span class="visually-hidden">Elimina appunto</span>';
                     btn.classList.remove('btn-danger');
                     btn.classList.add('btn-outline-danger');
                 }
@@ -371,7 +376,7 @@ if (!empty($appunto)) {
                 } else {
                     showError('Errore durante l\'eliminazione');
                     btn.disabled = false;
-                    btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i>';
+                    btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i><span class="visually-hidden">Elimina appunto</span>';
                     delete btn.dataset.confirm;
                     btn.classList.remove('btn-danger');
                     btn.classList.add('btn-outline-danger');
@@ -380,7 +385,7 @@ if (!empty($appunto)) {
             .catch(() => {
                 showError('Errore di connessione');
                 btn.disabled = false;
-                btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i>';
+                btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i><span class="visually-hidden">Elimina appunto</span>';
                 delete btn.dataset.confirm;
                 btn.classList.remove('btn-danger');
                 btn.classList.add('btn-outline-danger');

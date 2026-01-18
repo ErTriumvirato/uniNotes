@@ -28,13 +28,13 @@
                     <table class="table table-hover align-middle table-sm">
                         <thead class="table-light">
                             <tr>
-                                <th>Nome</th>
-                                <th>SSD</th>
+                                <th scope="col">Nome</th>
+                                <th scope="col">SSD</th>
                                 <!--<th>Descrizione</th>-->
-                                <th class="text-end">Azioni</th>
+                                <th scope="col" class="text-end">Azioni</th>
                             </tr>
                         </thead>
-                        <tbody id="coursesTableBody">
+                        <tbody id="coursesTableBody" aria-live="polite">
                         </tbody>
                     </table>
                 </div>
@@ -51,16 +51,29 @@
                     </button>
                 </div>
 
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <button class="btn btn-sm btn-outline-secondary d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#ssdFiltersCollapse" aria-expanded="false" aria-controls="ssdFiltersCollapse">
+                        <i class="bi bi-filter"></i> Filtri
+                    </button>
+                </div>
+
+                <div class="collapse d-md-block" id="ssdFiltersCollapse">
+                    <div class="mb-4">
+                        <label for="searchSSD" class="form-label small text-muted">Cerca</label>
+                        <input type="text" id="searchSSD" class="form-control" placeholder="Cerca SSD..." oninput="debouncedLoadSSDs()">
+                    </div>
+                </div>
+
                 <div>
                     <table class="table table-hover align-middle table-sm">
                         <thead class="table-light">
                             <tr>
-                                <th>Codice</th>
-                                <th>Descrizione</th>
-                                <th class="text-end">Azioni</th>
+                                <th scope="col">Codice</th>
+                                <th scope="col">Descrizione</th>
+                                <th scope="col" class="text-end">Azioni</th>
                             </tr>
                         </thead>
-                        <tbody id="ssdTableBody">
+                        <tbody id="ssdTableBody" aria-live="polite">
                         </tbody>
                     </table>
                 </div>
@@ -150,6 +163,11 @@
             searchTimeout = setTimeout(loadCourses, 300);
         }
 
+        function debouncedLoadSSDs() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(loadSSDs, 300);
+        }
+
         function loadCourses() {
             const search = document.getElementById('searchCourse').value;
             const ssd = document.getElementById('filterSSD').value;
@@ -185,13 +203,12 @@
         }
 
         function loadSSDs() {
-            fetch('gestione-corsi.php?action=get_ssds')
+            const search = document.getElementById('searchSSD').value;
+
+            fetch(`gestione-corsi.php?action=get_ssds&search=${encodeURIComponent(search)}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // Populate Table
-                        const tbody = document.getElementById('ssdTableBody');
-                        tbody.innerHTML = '';
 
                         // Populate Filter Select
                         const filterSelect = document.getElementById('filterSSD');
@@ -202,6 +219,10 @@
                         const modalSelect = document.getElementById('courseSSD');
                         modalSelect.innerHTML = '';
 
+                        // Populate Table
+                        const tbody = document.getElementById('ssdTableBody');
+                        tbody.innerHTML = '';
+                        
                         data.data.forEach(ssd => {
                             // Table
                             tbody.innerHTML += `
@@ -282,7 +303,7 @@
         function deleteCourse(id, btn) {
             if (!btn.dataset.confirm) {
                 btn.dataset.confirm = 'true';
-                btn.innerHTML = '<i class="bi bi-check-lg"></i>';
+                btn.innerHTML = '<i class="bi bi-check-lg" aria-hidden="true"></i><span class="visually-hidden">Conferma eliminazione</span>';
                 btn.classList.remove('btn-outline-danger');
                 btn.classList.add('btn-danger');
                 setTimeout(() => {
@@ -362,7 +383,7 @@
         function deleteSSD(id, btn) {
             if (!btn.dataset.confirm) {
                 btn.dataset.confirm = 'true';
-                btn.innerHTML = '<i class="bi bi-check-lg"></i>';
+                btn.innerHTML = '<i class="bi bi-check-lg" aria-hidden="true"></i><span class="visually-hidden">Conferma eliminazione</span>';
                 btn.classList.remove('btn-outline-danger');
                 btn.classList.add('btn-danger');
                 setTimeout(() => {
