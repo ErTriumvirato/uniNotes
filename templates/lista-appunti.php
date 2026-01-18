@@ -67,7 +67,7 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
                                 </a>
                             </h5>
                             <p class="card-text text-muted small mb-2">di <?= htmlspecialchars($appunto['autore']) ?></p>
-                            <div class="d-flex gap-2 align-items-center flex-nowrap mt-2">
+                            <div class="d-flex gap-2 row-gap-2 align-items-center flex-wrap mt-2">
                                 <?php if ($isAdmin): ?>
                                     <?php
                                     $statusMap = [
@@ -200,7 +200,7 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
                                         <a href="appunto.php?id=${art.idappunto}" class="text-decoration-none text-dark ${showActions ? '' : 'stretched-link'}">${art.titolo}</a>
                                     </h5>
                                     <p class="card-text text-muted small mb-2">di ${art.autore}</p>
-                                    <div class="d-flex gap-2 align-items-center flex-nowrap mt-2">
+                                    <div class="d-flex gap-2 row-gap-2 align-items-center flex-wrap mt-2">
                                         ${statusBadge}
                                         <span class="badge bg-light text-dark border" title="Media recensioni">★ ${art.media_recensioni || 'N/A'}</span>
                                         <span class="badge bg-light text-dark border" title="Visualizzazioni">${art.numero_visualizzazioni} Visualizzazioni</span>
