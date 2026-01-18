@@ -47,7 +47,7 @@ if (!empty($appunto)) {
 
                     <!-- Reviews Section inside Article -->
                     <?php if ($appunto['stato'] === 'approvato' || isUserAdmin()): ?>
-                        <section aria-label="Sezione Recensioni" id="reviews-section" class="mb-4 pt-4 border-top" <?php echo ($appunto['stato'] !== 'approvato') ? 'style="display:none;"' : ''; ?>>
+                        <section aria-label="Sezione Recensioni" id="reviews-section" class="mb-4 pt-4 border-top <?php echo ($appunto['stato'] !== 'approvato') ? 'd-none' : ''; ?>">
                             <?php
                             $isAuthor = isUserLoggedIn() && $_SESSION['idutente'] == $appunto['idutente'];
                             $userReview = (isUserLoggedIn() && !$isAuthor) ? $dbh->getUserReview($appunto['idappunto'], $_SESSION['idutente']) : null;

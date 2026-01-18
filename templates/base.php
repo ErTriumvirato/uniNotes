@@ -84,7 +84,7 @@
 
     <!-- Banner errori -->
     <div id="error-banner"
-        class="alert alert-danger alert-dismissible position-fixed top-0 start-50 translate-middle-x mt-5 pt-4 w-75" role="alert" aria-live="assertive" style="display: none; margin-top: 80px !important; z-index: 2000;">
+        class="alert alert-danger alert-dismissible position-fixed top-0 start-50 translate-middle-x mt-5 pt-4 w-75 error-banner banner-layer is-hidden" role="alert" aria-live="assertive">
         <span id="error-message"></span>
         <button type="button" class="btn-close" onclick="hideError()" aria-label="Chiudi"></button>
     </div>
@@ -92,7 +92,7 @@
 
     <!-- Banner cookie -->
     <?php if (!isset($_SESSION['cookieBannerClosed']) || $_SESSION['cookieBannerClosed'] !== true): ?>
-        <div id="cookie-banner" class="alert alert-light border shadow-sm position-fixed bottom-0 start-0 end-0 m-0 rounded-0" role="dialog" aria-live="polite" style="z-index: 2000;" aria-label="Informativa cookie">
+        <div id="cookie-banner" class="alert alert-light border shadow-sm position-fixed bottom-0 start-0 end-0 m-0 rounded-0 banner-layer" role="dialog" aria-live="polite" aria-label="Informativa cookie">
             <div class="container d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3 py-3">
                 <div>
                     <strong>Informativa cookie</strong>
@@ -143,8 +143,8 @@
             banner.classList.remove('alert-danger', 'alert-success');
             banner.classList.add('alert-' + type);
 
-            banner.style.display = 'block';
-            banner.classList.add('show')
+            banner.classList.remove('is-hidden');
+            banner.classList.add('show');
         }
 
         // Mostra banner di errore
@@ -161,7 +161,7 @@
         function hideError() {
             const banner = document.getElementById('error-banner');
             banner.classList.remove('show');
-            banner.style.display = 'none';
+            banner.classList.add('is-hidden');
         }
 
         // Funzione per tornare alla pagina precedente
@@ -199,7 +199,7 @@
                 },
                 body: 'action=closeCookieBanner'
             }).then(() => {
-                document.getElementById('cookie-banner').style.display = 'none';
+                document.getElementById('cookie-banner').classList.add('is-hidden');
             });
         }
     </script>

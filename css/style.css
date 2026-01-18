@@ -195,6 +195,21 @@ textarea:focus-visible {
 	color: var(--primary-color);
 }
 
+/* Sopra tutti gli altri elementi */
+.banner-layer {
+	z-index: 2000;
+}
+
+/* Spaziatura banner errore */
+.error-banner {
+	margin-top: 80px !important;
+}
+
+/* Nascondi elemento */
+.is-hidden {
+	display: none !important;
+}
+
 /* Colonna ruolo fissa */
 .col-ruolo {
 	width: 20%;
@@ -209,10 +224,16 @@ textarea:focus-visible {
 	min-width: 60%;
 }
 
+/* Colonna azioni fissa */
 .col-azioni {
 	width: 20%;
 	max-width: 20%;
 	min-width: 20%;
+}
+
+/* Colonna azioni compatta */
+.col-actions-compact {
+	width: 1%;
 }
 
 /* Applicato a telefoni e tablet */
