@@ -42,8 +42,8 @@ $seguendoCorsi = $userId ? $dbh->hasFollowedCourses($userId) : false;
                                     <?php echo date('d/m/Y', strtotime($appunto['data_pubblicazione'])); ?>
                                 </p>
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <span class="badge border badge-vote">
-                                        ★ <?php echo $appunto['media_recensioni'] ? htmlspecialchars($appunto['media_recensioni']) : 'N/A'; ?>
+                                    <span class="badge border badge-vote" role="img" aria-label="Valutazione: <?php echo $appunto['media_recensioni'] ? htmlspecialchars($appunto['media_recensioni']) : 'Non disponibile'; ?> su 5">
+                                        <span aria-hidden="true">★ <?php echo $appunto['media_recensioni'] ? htmlspecialchars($appunto['media_recensioni']) : 'N/A'; ?></span>
                                     </span>
                                     <small><?php echo $appunto['numero_visualizzazioni']; ?> visualizzazioni</small>
                                 </div>
@@ -79,8 +79,8 @@ $seguendoCorsi = $userId ? $dbh->hasFollowedCourses($userId) : false;
                                     <?php echo date('d/m/Y', strtotime($appunto['data_pubblicazione'])); ?>
                                 </p>
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <span class="badge border badge-vote">
-                                        ★ <?php echo $appunto['media_recensioni'] ? htmlspecialchars($appunto['media_recensioni']) : 'N/A'; ?>
+                                    <span class="badge border badge-vote" role="img" aria-label="Valutazione: <?php echo $appunto['media_recensioni'] ? htmlspecialchars($appunto['media_recensioni']) : 'Non disponibile'; ?> su 5">
+                                        <span aria-hidden="true">★ <?php echo $appunto['media_recensioni'] ? htmlspecialchars($appunto['media_recensioni']) : 'N/A'; ?></span>
                                     </span>
                                     <small><?php echo $appunto['numero_visualizzazioni']; ?> visualizzazioni</small>
                                 </div>

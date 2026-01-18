@@ -79,9 +79,11 @@ if (!empty($appunto)) {
                                 <div id="already-reviewed-container" class="d-flex justify-content-between align-items-center bg-light p-3 rounded" data-review-id="<?php echo $userReview['idrecensione']; ?>">
                                     <div class="d-flex align-items-center gap-2">
                                         <span class="fw-bold">La tua recensione:</span>
-                                        <span class="text-warning">
-                                            <?php for ($i = 0; $i < $userReview['valutazione']; $i++) echo "★";
-                                            for ($i = $userReview['valutazione']; $i < 5; $i++) echo "☆"; ?>
+                                        <span class="text-warning" role="img" aria-label="Valutazione: <?php echo $userReview['valutazione']; ?> su 5 stelle">
+                                            <span aria-hidden="true">
+                                                <?php for ($i = 0; $i < $userReview['valutazione']; $i++) echo "★";
+                                                for ($i = $userReview['valutazione']; $i < 5; $i++) echo "☆"; ?>
+                                            </span>
                                         </span>
                                     </div>
                                     <button class="btn btn-sm btn-outline-danger delete-review-btn" data-review-id="<?php echo $userReview['idrecensione']; ?>" aria-label="Elimina recensione" onclick="handleDeleteReview(this)" title="Elimina">

@@ -79,11 +79,17 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
                                     ];
                                     $statusInfo = $statusMap[$appunto['stato']] ?? ['label' => $appunto['stato'], 'class' => 'bg-secondary'];
                                     ?>
-                                    <span class="badge <?php echo $statusInfo['class']; ?>" title="Stato"><?php echo $statusInfo['label']; ?></span>
+                                    <span class="badge <?php echo $statusInfo['class']; ?>" title="Stato" aria-label="Stato: <?php echo $statusInfo['label']; ?>"><?php echo $statusInfo['label']; ?></span>
                                 <?php endif; ?>
-                                <span class="badge bg-light text-dark border" title="Media recensioni">★ <?= htmlspecialchars($appunto['media_recensioni'] ?: 'N/A') ?></span>
-                                <span class="badge bg-light text-dark border" title="Visualizzazioni"><?= (int)$appunto['numero_visualizzazioni'] ?> Visualizzazioni</span>
-                                <span class="badge bg-light text-dark border" title="Data pubblicazione"><?= date('d/m/y', strtotime($appunto['data_pubblicazione'])) ?></span>
+                                <span class="badge bg-light text-dark border" title="Media recensioni" role="img" aria-label="Valutazione media: <?= htmlspecialchars($appunto['media_recensioni'] ?: 'Non disponibile') ?> su 5">
+                                    <span aria-hidden="true">★ <?= htmlspecialchars($appunto['media_recensioni'] ?: 'N/A') ?></span>
+                                </span>
+                                <span class="badge bg-light text-dark border" title="Visualizzazioni" aria-label="<?= (int)$appunto['numero_visualizzazioni'] ?> visualizzazioni">
+                                    <?= (int)$appunto['numero_visualizzazioni'] ?> Visualizzazioni
+                                </span>
+                                <span class="badge bg-light text-dark border" title="Data pubblicazione" aria-label="Pubblicato il <?= date('d/m/Y', strtotime($appunto['data_pubblicazione'])) ?>">
+                                    <?= date('d/m/y', strtotime($appunto['data_pubblicazione'])) ?>
+                                </span>
                             </div>
                         </div>
                     </div>
