@@ -14,7 +14,7 @@ if (!$appunto) {
     // Controllo se l'appunto è approvato
     $isApproved = ($appunto['stato'] === 'approvato');
 
-    if (!$isApproved && !$isUserAdmin()) {
+    if (!$isApproved && !isUserAdmin()) {
         // Accesso negato
         header("Location: index.php");
         exit();

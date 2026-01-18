@@ -60,16 +60,14 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
             <article class="card shadow-sm border-0 article-card" id="article-<?= $appunto['idappunto'] ?>">
                 <div class="card-body">
                     <div class="row align-items-center">
-                        <div class="col-12 col-md-8">
+                        <div class="col-12">
                             <h5 class="card-title mb-1">
                                 <a href="appunto.php?id=<?= htmlspecialchars($appunto['idappunto']) ?>" class="text-decoration-none text-dark <?= $showActions ? '' : 'stretched-link' ?>">
                                     <?= htmlspecialchars($appunto['titolo']) ?>
                                 </a>
                             </h5>
                             <p class="card-text text-muted small mb-2">di <?= htmlspecialchars($appunto['autore']) ?></p>
-                        </div>
-                        <div class="col-12 col-md-4 text-md-end mt-2 mt-md-0">
-                            <div class="d-flex gap-2 justify-content-md-end flex-wrap">
+                            <div class="d-flex gap-2 align-items-center flex-nowrap mt-2">
                                 <?php if ($isAdmin): ?>
                                     <?php
                                     $statusMap = [
@@ -79,17 +77,11 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
                                     ];
                                     $statusInfo = $statusMap[$appunto['stato']] ?? ['label' => $appunto['stato'], 'class' => 'bg-secondary'];
                                     ?>
-                                    <span class="badge <?php echo $statusInfo['class']; ?>" title="Stato" aria-label="Stato: <?php echo $statusInfo['label']; ?>"><?php echo $statusInfo['label']; ?></span>
+                                    <span class="badge <?php echo $statusInfo['class']; ?>" title="Stato"><?php echo $statusInfo['label']; ?></span>
                                 <?php endif; ?>
-                                <span class="badge bg-light text-dark border" title="Media recensioni" role="img" aria-label="Valutazione media: <?= htmlspecialchars($appunto['media_recensioni'] ?: 'Non disponibile') ?> su 5">
-                                    <span aria-hidden="true">★ <?= htmlspecialchars($appunto['media_recensioni'] ?: 'N/A') ?></span>
-                                </span>
-                                <span class="badge bg-light text-dark border" title="Visualizzazioni" aria-label="<?= (int)$appunto['numero_visualizzazioni'] ?> visualizzazioni">
-                                    <?= (int)$appunto['numero_visualizzazioni'] ?> Visualizzazioni
-                                </span>
-                                <span class="badge bg-light text-dark border" title="Data pubblicazione" aria-label="Pubblicato il <?= date('d/m/Y', strtotime($appunto['data_pubblicazione'])) ?>">
-                                    <?= date('d/m/y', strtotime($appunto['data_pubblicazione'])) ?>
-                                </span>
+                                <span class="badge bg-light text-dark border" title="Media recensioni">★ <?= htmlspecialchars($appunto['media_recensioni'] ?: 'N/A') ?></span>
+                                <span class="badge bg-light text-dark border" title="Visualizzazioni"><?= (int)$appunto['numero_visualizzazioni'] ?> Visualizzazioni</span>
+                                <span class="badge bg-light text-dark border" title="Data pubblicazione"><?= date('d/m/y', strtotime($appunto['data_pubblicazione'])) ?></span>
                             </div>
                         </div>
                     </div>
@@ -203,14 +195,12 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
                     <article class="card shadow-sm border-0 article-card" id="article-${art.idappunto}">
                         <div class="card-body">
                             <div class="row align-items-center">
-                                <div class="col-12 col-md-8">
+                                <div class="col-12">
                                     <h5 class="card-title mb-1">
                                         <a href="appunto.php?id=${art.idappunto}" class="text-decoration-none text-dark ${showActions ? '' : 'stretched-link'}">${art.titolo}</a>
                                     </h5>
                                     <p class="card-text text-muted small mb-2">di ${art.autore}</p>
-                                </div>
-                                <div class="col-12 col-md-4 text-md-end mt-2 mt-md-0">
-                                    <div class="d-flex gap-2 justify-content-md-end flex-wrap">
+                                    <div class="d-flex gap-2 align-items-center flex-nowrap mt-2">
                                         ${statusBadge}
                                         <span class="badge bg-light text-dark border" title="Media recensioni">★ ${art.media_recensioni || 'N/A'}</span>
                                         <span class="badge bg-light text-dark border" title="Visualizzazioni">${art.numero_visualizzazioni} Visualizzazioni</span>
