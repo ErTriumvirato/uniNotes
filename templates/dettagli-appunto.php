@@ -3,7 +3,6 @@ $appunto = $templateParams["appunto"];
 
 if (!empty($appunto)) {
     $dbh->incrementArticleViews($_GET['id']);
-    $reviews = $dbh->getReviewsByArticle($_GET['id']);
 ?>
 
 <div class="row justify-content-center">
@@ -46,6 +45,56 @@ if (!empty($appunto)) {
                     <?php echo nl2br(htmlspecialchars($appunto['contenuto'])); ?>
                 </div>
 
+                <!-- Reviews Section inside Article -->
+                <?php if ($appunto['stato'] === 'approvato' || isUserAdmin()): ?>
+                <section aria-label="Sezione Recensioni" id="reviews-section" class="mb-4 pt-4 border-top" <?php echo ($appunto['stato'] !== 'approvato') ? 'style="display:none;"' : ''; ?>>
+                    <?php 
+                    $isAuthor = isUserLoggedIn() && $_SESSION['idutente'] == $appunto['idutente'];
+                    $userReview = (isUserLoggedIn() && !$isAuthor) ? $dbh->getUserReview($appunto['idappunto'], $_SESSION['idutente']) : null;
+                    
+                    if (isUserLoggedIn() && !$isAuthor && !$userReview && ($appunto['stato'] === 'approvato' || isUserAdmin())): 
+                    ?>
+                        <div id="review-form-container">
+                            <h5 class="mb-3">Lascia una recensione</h5>
+                            <form id="review-form" data-idappunto="<?php echo htmlspecialchars($appunto['idappunto']); ?>" onsubmit="handleReviewFormSubmit(event)">
+                                <div class="row g-2 align-items-end">
+                                    <div class="col-8 col-sm-6 col-md-4">
+                                        <label for="valutazione" class="form-label visually-hidden">Valutazione</label>
+                                        <select name="valutazione" id="valutazione" class="form-select text-center" required>
+                                            <option value="" selected disabled>Vota...</option>
+                                            <option value="5">5 ★★★★★</option>
+                                            <option value="4">4 ★★★★</option>
+                                            <option value="3">3 ★★★</option>
+                                            <option value="2">2 ★★</option>
+                                            <option value="1">1 ★</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button type="submit" class="btn btn-primary">Invia</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    <?php elseif (isUserLoggedIn() && !$isAuthor && $userReview): ?>
+                        <div id="already-reviewed-container" class="d-flex justify-content-between align-items-center bg-light p-3 rounded" data-review-id="<?php echo $userReview['idrecensione']; ?>">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="fw-bold">La tua recensione:</span>
+                                <span class="text-warning">
+                                    <?php for($i=0; $i<$userReview['valutazione']; $i++) echo "★"; for($i=$userReview['valutazione']; $i<5; $i++) echo "☆";?>
+                                </span>
+                            </div>
+                            <button class="btn btn-sm btn-outline-danger delete-review-btn" data-review-id="<?php echo $userReview['idrecensione']; ?>" aria-label="Elimina recensione" onclick="handleDeleteReview(this)" title="Elimina">
+                                <i class="bi bi-trash" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    <?php elseif (!isUserLoggedIn()): ?>
+                        <p class="mb-0 text-muted">
+                            <a href="login.php?redirect=<?= getCurrentURI(); ?>">Accedi</a> per lasciare una recensione.
+                        </p>
+                    <?php endif; ?>
+                </section>
+                <?php endif; ?>
+
                 <footer class="d-flex flex-wrap gap-3 pt-3 border-top align-items-center justify-content-between">
                     <div class="d-flex gap-3">
                         <span class="badge bg-light text-dark border p-2">
@@ -74,76 +123,7 @@ if (!empty($appunto)) {
             </div>
         </article>
 
-        <!-- Reviews Section -->
-        <?php if ($appunto['stato'] === 'approvato' || isUserAdmin()): ?>
-        <section aria-labelledby="reviews-title" id="reviews-section" <?php echo ($appunto['stato'] !== 'approvato') ? 'style="display:none;"' : ''; ?>>
-            <h3 id="reviews-title" class="mb-4">Recensioni</h3>
-            
-            <?php 
-            $isAuthor = isUserLoggedIn() && $_SESSION['idutente'] == $appunto['idutente'];
-            $hasReviewed = isUserLoggedIn() && $dbh->hasUserReviewed($appunto['idappunto'], $_SESSION['idutente']);
-            if (isUserLoggedIn() && !$isAuthor && !$hasReviewed && ($appunto['stato'] === 'approvato' || isUserAdmin())): 
-            ?>
-                <section aria-label="Scrivi una recensione" id="review-form-card" class="card shadow-sm border-0 mb-4 form-card">
-                    <div class="card-body p-4">
-                        <h5 class="card-title mb-3">Lascia una recensione</h5>
-                        <form id="review-form" data-idappunto="<?php echo htmlspecialchars($appunto['idappunto']); ?>" onsubmit="handleReviewFormSubmit(event)">
-                            <div class="mb-3">
-                                <label for="valutazione" class="form-label">Valutazione</label>
-                                <select name="valutazione" id="valutazione" class="form-select" required>
-                                    <option value="" selected disabled>Seleziona un voto</option>
-                                    <option value="5">5 - Eccellente</option>
-                                    <option value="4">4 - Molto buono</option>
-                                    <option value="3">3 - Buono</option>
-                                    <option value="2">2 - Sufficiente</option>
-                                    <option value="1">1 - Scarso</option>
-                                </select>
-                            </div>
-                            <button type="submit" class="btn btn-outline-primary">Invia Recensione</button>
-                        </form>
-                    </div>
-                </section>
-            <?php elseif (isUserLoggedIn() && !$isAuthor): ?>
-                <div id="already-reviewed-card" class="card shadow-sm border-0 mb-4 bg-light">
-                    <div class="card-body p-4 text-center">
-                        <p class="mb-0 text-muted fst-italic">Hai già recensito questo appunto.</p>
-                    </div>
-                </div>
-            <?php elseif (!isUserLoggedIn()): ?>
-                <div class="alert alert-warning mb-4" role="alert">
-                    Effettua il <a href="login.php?redirect=<?= getCurrentURI(); ?>" class="alert-link">login</a> per lasciare una recensione.
-                </div>
-            <?php endif; ?>
-
-            <div id="reviews-list">
-                <?php if (!empty($reviews)): ?>
-                    <div class="d-flex flex-column gap-3">
-                        <?php foreach ($reviews as $review): ?>
-                            <div class="card shadow-sm border-0" data-review-id="<?php echo $review['idrecensione']; ?>">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <h5 class="card-title mb-0"><?php echo htmlspecialchars($review['username']); ?></h5>
-                                        <div class="d-flex align-items-center gap-2">
-                                            <div class="text-warning">
-                                                <?php for($i=0; $i<$review['valutazione']; $i++) echo "★"; for($i=$review['valutazione']; $i<5; $i++) echo "☆";?>
-                                            </div>
-                                            <?php if (isUserLoggedIn() && $_SESSION['idutente'] == $review['idutente']): ?>
-                                                <button class="btn btn-sm btn-outline-danger delete-review-btn" data-review-id="<?php echo $review['idrecensione']; ?>" aria-label="Elimina recensione" onclick="handleDeleteReview(this)" title="Elimina">
-                                                    <i class="bi bi-trash" aria-hidden="true"></i>
-                                                </button>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                <?php else: ?>
-                    <p class="text-muted">Nessuna recensione presente.</p>
-                <?php endif; ?>
-            </div>
-        </section>
-        <?php endif; ?>
+        <!-- Reviews Section Removed from here -->
     </div>
 </div>
 <?php
@@ -179,50 +159,25 @@ if (!empty($appunto)) {
         .then(data => {
             if (data.success) {
                 // Nascondi il form e mostra il messaggio
-                const formCard = document.getElementById('review-form-card');
-                if (formCard) {
-                    formCard.outerHTML = `
-                        <div id="already-reviewed-card" class="card shadow-sm border-0 mb-4 bg-light">
-                            <div class="card-body p-4 text-center">
-                                <p class="mb-0 text-muted fst-italic">Hai già recensito questo appunto.</p>
+                const container = document.getElementById('review-form-container');
+                if (container) {
+                    const stars = '★'.repeat(data.review.valutazione) + '☆'.repeat(5 - data.review.valutazione);
+                    container.outerHTML = `
+                        <div id="already-reviewed-container" class="d-flex justify-content-between align-items-center bg-light p-3 rounded" data-review-id="${data.review.idrecensione}">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="fw-bold">La tua recensione:</span>
+                                <span class="text-warning">${stars}</span>
                             </div>
+                            <button class="btn btn-sm btn-outline-danger delete-review-btn" data-review-id="${data.review.idrecensione}" aria-label="Elimina recensione" onclick="handleDeleteReview(this)" title="Elimina">
+                                <i class="bi bi-trash" aria-hidden="true"></i>
+                            </button>
                         </div>
                     `;
                 }
 
                 // Aggiorna la media delle recensioni
                 const avgBadge = document.getElementById('avg-rating-badge');
-                avgBadge.textContent = '★ ' + data.new_avg;
-
-                // Aggiungi la nuova recensione alla lista
-                const reviewsList = document.getElementById('reviews-list');
-                const stars = '★'.repeat(data.review.valutazione) + '☆'.repeat(5 - data.review.valutazione);
-
-                // Se non ci sono recensioni, rimuovi il messaggio "Nessuna recensione"
-                const noReviewsMsg = reviewsList.querySelector('.text-muted');
-                if (noReviewsMsg) {
-                    reviewsList.innerHTML = '<div class="d-flex flex-column gap-3"></div>';
-                }
-
-                // Aggiungi la nuova recensione all'inizio della lista
-                const reviewsContainer = reviewsList.querySelector('.d-flex.flex-column.gap-3');
-                reviewsContainer.insertAdjacentHTML('afterbegin', `
-                    <div class="card shadow-sm border-0" data-review-id="${data.review.idrecensione}">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <h5 class="card-title mb-0">${data.review.username}</h5>
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="text-warning">
-                                        ${stars}
-                                    </div>
-                                    <button class="btn btn-sm btn-outline-danger delete-review-btn" data-review-id="${data.review.idrecensione}" aria-label="Elimina recensione" onclick="handleDeleteReview(this)" title="Elimina">
-                                        <i class="bi bi-trash" aria-hidden="true"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `);
+                if (avgBadge) avgBadge.textContent = '★ ' + data.new_avg;
             }
         })
         .catch(() => {
@@ -235,7 +190,8 @@ if (!empty($appunto)) {
     // Gestione eliminazione recensioni
     function handleDeleteReview(btn) {
         const idrecensione = btn.dataset.reviewId;
-        const reviewCard = btn.closest('.card[data-review-id]');
+        // In the new layout, the container is the element itself or slightly different
+        const reviewContainer = document.getElementById('already-reviewed-container');
 
         if (!btn.dataset.confirm) {
             btn.dataset.confirm = 'true';
@@ -266,44 +222,35 @@ if (!empty($appunto)) {
         .then(data => {
             if (data.success) {
                 setTimeout(() => {
-                    reviewCard.remove();
-
-                    // Controlla se non ci sono più recensioni
-                    const reviewsList = document.getElementById('reviews-list');
-                    const remainingReviews = reviewsList.querySelectorAll('.card[data-review-id]');
-                    if (remainingReviews.length === 0) {
-                        reviewsList.innerHTML = '<p class="text-muted">Nessuna recensione presente.</p>';
+                    if (reviewContainer) {
+                        reviewContainer.outerHTML = `
+                            <div id="review-form-container">
+                                <h5 class="mb-3">Lascia una recensione</h5>
+                                <form id="review-form" data-idappunto="<?php echo htmlspecialchars($appunto['idappunto']); ?>" onsubmit="handleReviewFormSubmit(event)">
+                                    <div class="row g-2 align-items-end">
+                                        <div class="col-8 col-sm-6 col-md-4">
+                                            <label for="valutazione" class="form-label visually-hidden">Valutazione</label>
+                                            <select name="valutazione" id="valutazione" class="form-select text-center" required>
+                                                <option value="" selected disabled>Vota...</option>
+                                                <option value="5">5 ★★★★★</option>
+                                                <option value="4">4 ★★★★</option>
+                                                <option value="3">3 ★★★</option>
+                                                <option value="2">2 ★★</option>
+                                                <option value="1">1 ★</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-auto">
+                                            <button type="submit" class="btn btn-primary">Invia</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        `;
                     }
 
                     // Aggiorna la media delle recensioni
                     const avgBadge = document.getElementById('avg-rating-badge');
-                    avgBadge.textContent = '★ ' + data.new_avg;
-
-                    // Mostra il form per lasciare una nuova recensione
-                    const alreadyReviewedCard = document.getElementById('already-reviewed-card');
-                    if (alreadyReviewedCard) {
-                        alreadyReviewedCard.outerHTML = `
-                            <div id="review-form-card" class="card shadow-sm border-0 mb-4 form-card">
-                                <div class="card-body p-4">
-                                    <h5 class="card-title mb-3">Lascia una recensione</h5>
-                                    <form id="review-form" data-idappunto="<?php echo htmlspecialchars($appunto['idappunto']); ?>" onsubmit="handleReviewFormSubmit(event)">
-                                        <div class="mb-3">
-                                            <label for="valutazione" class="form-label">Valutazione</label>
-                                            <select name="valutazione" id="valutazione" class="form-select" required>
-                                                <option value="" selected disabled>Seleziona un voto</option>
-                                                <option value="5">5 - Eccellente</option>
-                                                <option value="4">4 - Molto buono</option>
-                                                <option value="3">3 - Buono</option>
-                                                <option value="2">2 - Sufficiente</option>
-                                                <option value="1">1 - Scarso</option>
-                                            </select>
-                                        </div>
-                                        <button type="submit" class="btn btn-outline-primary">Invia Recensione</button>
-                                    </form>
-                                </div>
-                            </div>
-                        `;
-                    }
+                    if (avgBadge) avgBadge.textContent = '★ ' + data.new_avg;
                 }, 300);
             } else {
                 showError(data.message || 'Errore durante l\'eliminazione della recensione.');

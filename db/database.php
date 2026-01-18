@@ -334,6 +334,15 @@ class DatabaseHelper
         return $row['count'] > 0;
     }
 
+    public function getUserReview($idappunto, $idutente)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM recensioni WHERE idappunto = ? AND idutente = ?");
+        $stmt->bind_param("ii", $idappunto, $idutente);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_assoc();
+    }
+
     public function getApprovedArticlesByCourseWithFilters($idcorso, $sort, $order)
     {
         $allowedSort = ['data_pubblicazione', 'media_recensioni', 'numero_visualizzazioni'];
