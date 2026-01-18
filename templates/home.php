@@ -43,7 +43,7 @@ $hasFollowedCourses = $userId ? $dbh->hasFollowedCourses($userId) : false;
                                 </p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="badge border badge-vote">
-                                        ★ <?php echo $appunto['media_recensioni'] ? htmlspecialchars($appunto['media_recensioni']) : '-'; ?>
+                                        ★ <?php echo $appunto['media_recensioni'] ? htmlspecialchars($appunto['media_recensioni']) : 'N/A'; ?>
                                     </span>
                                     <small><?php echo $appunto['numero_visualizzazioni']; ?> visualizzazioni</small>
                                 </div>
@@ -80,7 +80,7 @@ $hasFollowedCourses = $userId ? $dbh->hasFollowedCourses($userId) : false;
                                 </p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="badge border badge-vote">
-                                        ★ <?php echo $appunto['media_recensioni'] ? htmlspecialchars($appunto['media_recensioni']) : '-'; ?>
+                                        ★ <?php echo $appunto['media_recensioni'] ? htmlspecialchars($appunto['media_recensioni']) : 'N/A'; ?>
                                     </span>
                                     <small><?php echo $appunto['numero_visualizzazioni']; ?> visualizzazioni</small>
                                 </div>

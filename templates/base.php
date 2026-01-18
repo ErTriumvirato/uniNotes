@@ -17,13 +17,10 @@ header("Expires: 0"); // Proxies
     <link rel="stylesheet" href="css/style.css" />
     <link rel="icon" href="uploads/img/favicon.png" type="image/x-icon" />
     <script src="utils/functions.js"></script>
-    <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
-    </script>
+    <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-
-    <a class="skip-link" href="#main-content">Salta al contenuto principale</a>
 
     <header>
         <nav class="navbar navbar-expand-lg navbar-light shadow-sm fixed-top" aria-label="Navigazione principale">
@@ -90,8 +87,21 @@ header("Expires: 0"); // Proxies
         <button type="button" class="btn-close" onclick="hideError()" aria-label="Chiudi"></button>
     </div>
 
+    <!-- Banner cookie -->
+    <?php if (!isset($_SESSION['cookieBannerClosed']) || $_SESSION['cookieBannerClosed'] !== true): ?>
+    <div id="cookie-banner" class="alert alert-light border shadow-sm position-fixed bottom-0 start-0 end-0 m-0 rounded-0" role="dialog" aria-live="polite" style="z-index: 2000;" aria-label="Informativa cookie">
+        <div class="container d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3 py-3">
+            <div>
+                <strong>Informativa cookie</strong>
+                <p class="mb-0 small">Usiamo solo cookie di sessione PHP per il funzionamento del sito. Nessun cookie di profilazione o marketing.</p>
+            </div>
+            <button id="cookie-accept" type="button" class="btn btn-primary btn-sm px-4" onclick="closeCookieBanner()">Ok</button>
+        </div>
+    </div>
+    <?php endif; ?>
+
     <!-- Contenuto principale -->
-    <main id="main-content" class="container flex-grow-1 mt-5 pt-5" tabindex="-1">
+    <main class="container flex-grow-1 mt-5 pt-5" tabindex="-1">
         <?php
         if (($templateParams["nome"] === "templates/dettagli-corso.php")
             || ($templateParams["nome"] === "templates/gestione-corsi.php")
@@ -175,14 +185,17 @@ header("Expires: 0"); // Proxies
             btn.setAttribute('aria-expanded', isOpen);
         }
 
-        document.addEventListener('click', function(e) {
-            const userMenu = document.querySelector('.user-menu');
-            const dropdown = document.getElementById('user-dropdown');
-            if (userMenu && dropdown && !userMenu.contains(e.target)) {
-                dropdown.classList.remove('open');
-                document.querySelector('.user-menu-btn')?.setAttribute('aria-expanded', 'false');
-            }
-        });
+        function closeCookieBanner() {
+            fetch('index.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'action=closeCookieBanner'
+            }).then(() => {
+                document.getElementById('cookie-banner').style.display = 'none';
+            });
+        }
     </script>
 </body>
 
