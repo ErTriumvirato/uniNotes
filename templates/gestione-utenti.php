@@ -30,7 +30,7 @@
                         <select id="filterRole" class="form-select" onchange="loadUsers()">
                             <option value="all">Tutti</option>
                             <option value="admin">Amministratori</option>
-                            <option value="user">Utenti standard</option>
+                            <option value="user">Utenti</option>
                         </select>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
                         <thead class="table-light">
                             <tr>
                                 <th>Username</th>
-                                <th>Ruolo</th>
+                                <th class="col-ruolo">Ruolo</th>
                                 <th class="text-end">Azioni</th>
                             </tr>
                         </thead>
@@ -74,7 +74,7 @@
                         <div class="mb-3">
                             <label for="ruolo" class="form-label">Ruolo</label>
                             <select class="form-select" id="ruolo" name="ruolo">
-                                <option value="0">Utente standard</option>
+                                <option value="0">Utente</option>
                                 <option value="1">Amministratore</option>
                             </select>
                         </div>
@@ -119,14 +119,14 @@
                         tbody.innerHTML = '';
                         data.data.forEach(user => {
                             const roleBadge = user.isAdmin == 1 ?
-                                'Admin' :
+                                'Amministratore' :
                                 'Utente';
 
                             tbody.innerHTML += `
                         <tr>
                             <td class="text-break">${user.username}</td>
-                            <td class="">${roleBadge}</td>
-                            <td class="text-end" style="width: 1%;">
+                            <td class="col-ruolo">${roleBadge}</td>
+                            <td class="text-end col-azioni">
                                 <div class="d-flex gap-1 flex-column flex-md-row justify-content-end align-items-end">
                                     <button type="button" class="btn btn-sm btn-outline-secondary" onclick="editUser(${user.idutente})" title="Modifica">
                                         <i class="bi bi-pencil" aria-hidden="true"></i>
