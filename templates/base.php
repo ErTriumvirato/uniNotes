@@ -82,7 +82,7 @@
 
     <!-- Banner errori -->
     <div id="error-banner"
-        class="alert alert-danger alert-dismissible position-fixed top-0 start-50 translate-middle-x mt-5 pt-4 w-75 error-banner banner-layer is-hidden" role="alert" aria-live="assertive">
+        class="alert alert-danger alert-dismissible position-fixed top-0 start-50 translate-middle-x mt-5 pt-4 w-auto error-banner banner-layer is-hidden" role="alert" aria-live="assertive">
         <span id="error-message"></span>
         <button type="button" class="btn-close" onclick="hideError()" aria-label="Chiudi"></button>
     </div>
@@ -105,7 +105,8 @@
         <!-- Pulsante indietro solamente per alcune pagine specifiche -->
         <?php
         if (($templateParams["nome"] === "templates/dettagli-corso.php")
-            || ($templateParams["nome"] === "templates/gestione-corsi.php")
+            || ($templateParams["nome"] === "templates/gestione-corsi-template.php")
+            || ($templateParams["nome"] === "templates/gestione-ssd-template.php")
             || ($templateParams["nome"] === "templates/gestione-utenti.php")
             || ($templateParams["nome"] === "templates/appunti-da-approvare.php")
             || ($templateParams["nome"] === "templates/appunti-da-gestire.php")
@@ -129,80 +130,21 @@
             <p class="mb-0 small"> uniNotes - Paolo Foschini, Alessandro Testa, Ciro Bassi</p>
         </div>
     </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="utils/functions.js"></script>
-    <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-    <script>
-        // Funzione generica per mostrare un banner
-        function showBanner(message, type) {
-            const banner = document.getElementById('error-banner');
-            const msgSpan = document.getElementById('error-message');
-            msgSpan.textContent = message;
-
-            banner.classList.remove('alert-danger', 'alert-success');
-            banner.classList.add('alert-' + type);
-
-            banner.classList.remove('is-hidden');
-            banner.classList.add('show');
-        }
-
-        // Mostra banner di errore
-        function showError(message) {
-            showBanner(message, 'danger');
-        }
-
-        // Mostra banner di successo
-        function showSuccess(message) {
-            showBanner(message, 'success');
-        }
-
-        // Nasconde il banner di errore
-        function hideError() {
-            const banner = document.getElementById('error-banner');
-            banner.classList.remove('show');
-            banner.classList.add('is-hidden');
-        }
-
-        // Funzione per tornare alla pagina precedente
-        function goBack() {
-            const referrer = document.referrer;
-            const currentDomain = window.location.origin;
-            const currentUrl = window.location.href;
-
-            if (referrer &&
-                referrer.startsWith(currentDomain) &&
-                currentUrl !== currentDomain &&
-                currentUrl !== currentDomain + '/' &&
-                currentUrl !== currentDomain + '/index.php' &&
-                currentUrl !== referrer) {
-
-                history.back();
-            } else if (!referrer.startsWith(currentDomain)) {
-                window.location.href = '/';
-            }
-        }
-
-        // Funzione per gestire il menu utente
-        function toggleUserMenu() {
-            const dropdown = document.getElementById('user-dropdown');
-            const btn = document.querySelector('.user-menu-btn');
-            const isOpen = dropdown.classList.toggle('open');
-            btn.setAttribute('aria-expanded', isOpen);
-        }
-
-        function closeCookieBanner() {
-            fetch('index.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: 'action=closeCookieBanner'
-            }).then(() => {
-                document.getElementById('cookie-banner').classList.add('is-hidden');
-            });
-        }
-    </script>
 </body>
 
 </html>
+
+<!-- Script Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+<!-- Rendering di formule matematiche -->
+<script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+<?php
+// Inclusione di script .js passati come parametri
+if (isset($templateParams["script"])) {
+    foreach ($templateParams["script"] as $script) {
+        echo '<script src="' . $script . '"></script>';
+    }
+}
+?>

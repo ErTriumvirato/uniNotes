@@ -11,6 +11,7 @@ $appunti = $dbh->getApprovedArticlesByUserIdWithFilters($templateParams['profilo
 <h2 class="mb-4">Profilo di <?php echo htmlspecialchars($templateParams['profiloUtente']['username']); ?></h2>
 
 <section aria-label="Statistiche utente" class="row g-2 g-md-4 mb-5">
+    <h2 class="visually-hidden">Statistiche utente</h2>
     <div class="col-4">
         <div class="card h-100 border-0 shadow-sm text-center p-2 p-md-3">
             <div class="card-body p-1 p-md-3">
@@ -41,5 +42,5 @@ $appunti = $dbh->getApprovedArticlesByUserIdWithFilters($templateParams['profilo
 $titoloFiltri = "Appunti di " . htmlspecialchars($templateParams['profiloUtente']['username']);
 $ajaxUrl = "profilo.php?id=" . $templateParams['profiloUtente']['idutente'];
 $nomeutente = $templateParams['profiloUtente']['username'];
-include 'lista-appunti.php';
+include 'templates/appunti-template.php';
 ?>

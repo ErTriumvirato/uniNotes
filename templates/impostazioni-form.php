@@ -5,15 +5,10 @@
                 <h2 class="text-center mb-4">Impostazioni profilo</h2>
 
                 <?php if (isset($templateParams["messaggio"])): ?>
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function() {
-                            <?php if (strpos($templateParams["messaggio"], 'successo') === false): ?>
-                                showError("<?php echo addslashes($templateParams['messaggio']); ?>");
-                            <?php else: ?>
-                                showSuccess("<?php echo addslashes($templateParams['messaggio']); ?>");
-                            <?php endif; ?>
-                        });
-                    </script>
+                    <div id="server-message" 
+                         data-message="<?php echo htmlspecialchars($templateParams['messaggio']); ?>" 
+                         data-type="<?php echo (strpos($templateParams["messaggio"], 'successo') !== false) ? 'success' : 'danger'; ?>">
+                    </div>
                 <?php endif; ?>
 
                 <form action="impostazioni.php" method="POST">
@@ -58,22 +53,5 @@
 </div>
 
 <script>
-    function handleDeleteAccount(btn) {
-        if (!btn.dataset.confirm) {
-            btn.dataset.confirm = 'true';
-            btn.textContent = 'Conferma eliminazione';
-            btn.classList.remove('btn-outline-danger');
-            btn.classList.add('btn-danger');
-            setTimeout(() => {
-                if (btn.dataset.confirm) {
-                    delete btn.dataset.confirm;
-                    btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i> Elimina account';
-                    btn.classList.remove('btn-danger');
-                    btn.classList.add('btn-outline-danger');
-                }
-            }, 3000);
-            return;
-        }
-        document.getElementById('deleteAccountForm').submit();
-    }
+
 </script>

@@ -61,5 +61,6 @@ $templateParams["corso"] = $corso;
 $templateParams["isFollowing"] = $idutente ? $dbh->isFollowingCourse($idutente, $idCorso) : false;
 $templateParams["titolo"] = htmlspecialchars($corso['nome']);
 $templateParams["nome"] = "templates/dettagli-corso.php";
+array_push($templateParams["script"], "js/dettagli-corso.js");
 
 require_once 'templates/base.php';

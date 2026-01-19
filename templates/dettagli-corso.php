@@ -29,16 +29,7 @@ $appunti = $dbh->getApprovedArticlesByCourseWithFilters($idCorso, 'data_pubblica
         $ajaxUrl = "corso.php?id=" . $idCorso;
         $nomecorso = $corso['nome'];
         $messaggioVuoto = "Nessun appunto disponibile per questo corso.";
-        include 'lista-appunti.php';
+        include 'templates/appunti-template.php';
         ?>
     </div>
 </div>
-
-<script>
-    function handleFollowClick(button) {
-        handleButtonAction(button, "corso.php?id=" + encodeURIComponent(button.dataset.idcorso), "toggleFollow=" + encodeURIComponent(button.dataset.idcorso), (data, el) => {
-            el.innerHTML = data.following ? "Smetti di seguire" : "Segui corso";
-            el.classList.replace(data.following ? "btn-outline-primary" : "btn-outline-danger", data.following ? "btn-outline-danger" : "btn-outline-primary");
-        });
-    }
-</script>

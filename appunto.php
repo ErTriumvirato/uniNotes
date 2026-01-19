@@ -129,5 +129,6 @@ if (isset($_POST['deleteReview'])) {
 $templateParams["appunto"] = $appunto; // Passa i dettagli dell'appunto al template
 $templateParams["titolo"] = $appunto ? $appunto['titolo'] : "Appunto non trovato";
 $templateParams["nome"] = "templates/dettagli-appunto.php";
+array_push($templateParams["script"], "js/dettagli-appunto.js");
 
 require_once 'templates/base.php';

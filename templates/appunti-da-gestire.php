@@ -9,14 +9,15 @@
 
     <!-- Sezione gestione appunti -->
     <section aria-label="Gestione appunti" class="card shadow-sm border-0 mb-5">
+        <h2 class="visually-hidden">Gestione appunti</h2>
         <div class="card-body p-3 p-md-4">
             <?php
-            // Usate da `lista-appunti.php`
+            // Usate da `templates/appunti-template.php`
             $titoloFiltri = "";
-            $messaggioVuoto = "Nessun appunto disponibile.";
+            $defaultMessage = "Nessun appunto disponibile.";
 
             // Inclusione del template che genera la lista degli appunti
-            include 'lista-appunti.php';
+            include 'templates/appunti-template.php';
             ?>
         </div>
     </section>

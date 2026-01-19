@@ -83,4 +83,6 @@ if (!empty($action)) {
 
 $templateParams["titolo"] = "Gestione Utenti";
 $templateParams["nome"] = "templates/gestione-utenti.php";
+array_push($templateParams["script"], "js/gestione-utenti.js");
+
 require_once 'templates/base.php';

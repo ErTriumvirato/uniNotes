@@ -39,6 +39,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'filter') {
 
 $templateParams["titolo"] = "Gestione Appunti";
 $templateParams["nome"] = "templates/appunti-da-gestire.php";
-$templateParams["appunti"] = $dbh->getAdminApprovedArticles();
+array_push($templateParams["script"], "js/appunti.js");
 
 require_once 'templates/base.php';

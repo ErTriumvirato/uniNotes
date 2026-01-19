@@ -1,5 +1,7 @@
 <?php
 $courses = $dbh->getCourses();
+
+// Ottieni l'ID del corso selezionato della GET, se presente (se l'utente è stato reindirizzato dalla pagina del corso)
 $selectedCourseId = isset($_GET['idcorso']) ? (int)$_GET['idcorso'] : null;
 ?>
 
@@ -9,6 +11,7 @@ $selectedCourseId = isset($_GET['idcorso']) ? (int)$_GET['idcorso'] : null;
             <div class="card-body p-4">
                 <h2 class="text-center mb-4">Carica appunti</h2>
 
+                <!-- Form di caricamento appunti -->
                 <form action="creazione-appunti.php" method="post">
                     <div class="mb-3">
                         <label for="course" class="form-label">Corso</label>
@@ -41,6 +44,7 @@ $selectedCourseId = isset($_GET['idcorso']) ? (int)$_GET['idcorso'] : null;
     </div>
 </div>
 
+<!-- Articoli in attesa di approvazione -->
 <?php if (!empty($templateParams["unapprovedArticles"])): ?>
     <section aria-labelledby="appunto-in-attesa" class="row justify-content-center mt-5">
         <div class="col-12 col-md-8 col-lg-6">

@@ -3,13 +3,10 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-define("UPLOAD_DIR", "./upload/");
+define("UPLOAD_DIR", "./upload/"); // Cartella di upload dei file
+$templateParams["script"] = array("js/base.js"); // Script JS presente in tutte le pagine
 
-require_once("utils/functions.php");
+require_once("functions.php");
 require_once("db/database.php");
 
-if (false) {
-    $dbh = new DatabaseHelper("db", "user", "user_password", "uniNotes", 3306);
-} else {
-    $dbh = new DatabaseHelper("localhost", "root", "", "uniNotes", 3306);
-}
+$dbh = new DatabaseHelper("localhost", "root", "", "uniNotes", 3306);

@@ -593,7 +593,7 @@ class DatabaseHelper
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getArticlesWithFilters($nomeutente = null, $nomecorso = null, $sort = 'data_pubblicazione', $order = 'DESC', $search = '', $approvalFilter = 'approved')
+    public function getArticlesWithFilters($nomeutente = '', $nomecorso = '', $sort = 'data_pubblicazione', $order = 'DESC', $search = '', $approvalFilter = 'approved')
     {
         $allowedSort = ['data_pubblicazione', 'media_recensioni', 'numero_visualizzazioni'];
         $allowedOrder = ['ASC', 'DESC'];
@@ -626,19 +626,19 @@ class DatabaseHelper
         }
         // 'all' non aggiunge filtri
 
-        if ($nomeutente !== null) {
+        if (!empty($nomeutente)) {
             $query .= " AND utenti.username = ?";
             $params[] = $nomeutente;
             $types .= "s";
         }
 
-        if ($nomecorso !== null) {
+        if (!empty($nomecorso)) {
             $query .= " AND corsi.nome = ?";
             $params[] = $nomecorso;
             $types .= "s";
         }
 
-        if (!empty($search) && $search !== '') {
+        if (!empty($search)) {
             $query .= " AND (appunti.titolo LIKE ? OR utenti.username LIKE ? OR corsi.nome LIKE ?)";
             $searchTerm = "%" . $search . "%";
             $params[] = $searchTerm;
