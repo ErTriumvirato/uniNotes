@@ -104,7 +104,7 @@ if (!empty($appunto)) {
                                 <?php echo (int)$appunto['numero_visualizzazioni']; ?> Visualizzazioni
                             </span>
                             <span id="avg-rating-badge" class="badge bg-light text-dark border p-2">
-                                ★ <?php echo $appunto['media_recensioni'] ?: 'N/A'; ?>
+                                ★ <?php echo $appunto['media_recensioni'] ?: 'N/A'; ?> (<?php echo (int)($appunto['numero_recensioni'] ?? 0); ?>)
                             </span>
                         </div>
                         <?php if (isUserAdmin()): ?>
@@ -180,7 +180,7 @@ if (!empty($appunto)) {
 
                     // Aggiorna la media delle recensioni
                     const avgBadge = document.getElementById('avg-rating-badge');
-                    if (avgBadge) avgBadge.textContent = '★ ' + data.new_avg;
+                    if (avgBadge) avgBadge.textContent = '★ ' + data.new_avg + ' (' + data.new_count + ')';
                 }
             })
             .catch(() => {
@@ -252,7 +252,7 @@ if (!empty($appunto)) {
 
                         // Aggiorna la media delle recensioni
                         const avgBadge = document.getElementById('avg-rating-badge');
-                        avgBadge.textContent = '★ ' + data.new_avg;
+                        avgBadge.textContent = '★ ' + data.new_avg + ' (' + data.new_count + ')';
 
                         // Puliamo la lista recensioni visuale in ogni caso
                         const reviewsList = document.getElementById('reviews-list');

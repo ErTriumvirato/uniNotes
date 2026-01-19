@@ -213,7 +213,8 @@ class DatabaseHelper
     public function getArticleById($idappunto)
     {
         $query = "SELECT appunti.*, utenti.username AS autore, corsi.nome AS nome_corso,
-            ROUND(AVG(recensioni.valutazione), 1) AS media_recensioni
+            ROUND(AVG(recensioni.valutazione), 1) AS media_recensioni,
+            COUNT(recensioni.idrecensione) AS numero_recensioni
             FROM appunti
             JOIN utenti ON appunti.idutente = utenti.idutente
             JOIN corsi ON appunti.idcorso = corsi.idcorso
