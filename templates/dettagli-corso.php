@@ -3,7 +3,7 @@ $idCorso = (int)$_GET['id'];
 $corso = $dbh->getCourseById($idCorso);
 $idutente = $_SESSION["idutente"] ?? null;
 $isFollowing = $idutente ? $dbh->isFollowingCourse($idutente, $idCorso) : false;
-$appunti = $dbh->getApprovedArticlesByCourseWithFilters($idCorso, 'data_pubblicazione', 'DESC');
+//$appunti = $dbh->getNotesWithFilters(idcorso: $idCorso, sort: 'data_pubblicazione', order: 'DESC');
 ?>
 
 <div class="row justify-content-center">
@@ -25,10 +25,10 @@ $appunti = $dbh->getApprovedArticlesByCourseWithFilters($idCorso, 'data_pubblica
         </section>
 
         <?php
-        $titoloFiltri = "Appunti disponibili";
-        $ajaxUrl = "corso.php?id=" . $idCorso;
-        $nomecorso = $corso['nome'];
-        $messaggioVuoto = "Nessun appunto disponibile per questo corso.";
+        $templateParams["titoloFiltri"] = "Appunti disponibili";
+        $templateParams["ajaxUrl"] = "corso.php?id=" . $idCorso;
+        $templateParams["idcorso"] = $idCorso;
+        $templateParams["defaultMessage"] = "Nessun appunto disponibile per questo corso.";
         include 'templates/appunti-template.php';
         ?>
     </div>

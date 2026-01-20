@@ -4,9 +4,9 @@ const sortSelect = document.getElementById("ajax-sort");
 const orderSelect = document.getElementById("ajax-order");
 const searchInput = document.getElementById("ajax-search");
 const approvalSelect = document.getElementById("ajax-approval");
-const container = document.getElementById("articles-container");
-const nomeutente = container.dataset.nomeutente ?? "";
-const nomecorso = container.dataset.nomecorso ?? "";
+const container = document.getElementById("notes-container");
+const idutente = container.dataset.idutente ?? "";
+const idcorso = container.dataset.idcorso ?? "";
 const defaultApprovalFilter = approvalSelect ? approvalSelect.value : "approved";
 const defaultMessage = container.dataset.defaultMessage || "Nessun appunto disponibile.";
 const showActions = approvalSelect;
@@ -14,21 +14,23 @@ const showActions = approvalSelect;
 let searchTimeout;
 searchInput.addEventListener("input", () => {
 	clearTimeout(searchTimeout);
-	searchTimeout = setTimeout(updateArticles, 300);
+	searchTimeout = setTimeout(updateNotes, 300);
 });
 
-container.addEventListener("click", (e) => {
-	const btn = e.target.closest("button");
-	if (!btn) return;
+// Aggiunge i listener per i bottoni di azione
+function attachActionListeners() {
+	container.querySelectorAll(".btn-action-approve").forEach((btn) => {
+		btn.addEventListener("click", () => handleApprove(btn.dataset.id));
+	});
+	container.querySelectorAll(".btn-action-reject").forEach((btn) => {
+		btn.addEventListener("click", () => handleReject(btn.dataset.id));
+	});
+	container.querySelectorAll(".btn-action-delete").forEach((btn) => {
+		btn.addEventListener("click", () => handleDelete(btn));
+	});
+}
 
-	if (btn.classList.contains("btn-action-approve")) {
-		handleApprove(btn.dataset.id);
-	} else if (btn.classList.contains("btn-action-reject")) {
-		handleReject(btn.dataset.id);
-	} else if (btn.classList.contains("btn-action-delete")) {
-		handleDelete(btn);
-	}
-});
+attachActionListeners();
 
 function renderActionButtons(el) {
 	if (!showActions) return "";
@@ -53,13 +55,13 @@ function renderActionButtons(el) {
 }
 
 // Aggiorna gli appunti
-function updateArticles() {
+function updateNotes() {
 	const searchValue = searchInput.value.trim();
 	const approvalValue = approvalSelect ? approvalSelect.value : defaultApprovalFilter;
 
 	let url = `appunti.php?action=filter&sort=${encodeURIComponent(sortSelect.value)}&order=${encodeURIComponent(orderSelect.value)}`;
-	if (nomeutente !== "") url += `&nomeutente=${encodeURIComponent(nomeutente)}`;
-	if (nomecorso !== "") url += `&nomecorso=${encodeURIComponent(nomecorso)}`;
+	if (idutente !== "") url += `&idutente=${encodeURIComponent(idutente)}`;
+	if (idcorso !== "") url += `&idcorso=${encodeURIComponent(idcorso)}`;
 	if (searchValue !== "") url += `&search=${encodeURIComponent(searchValue)}`;
 	url += `&approval=${encodeURIComponent(approvalValue)}`;
 
@@ -96,7 +98,7 @@ function updateArticles() {
 			container.insertAdjacentHTML(
 				"beforeend",
 				`
-                <article class="card shadow-sm border-0 article-card" id="article-${el.idappunto}">
+                <article class="card shadow-sm border-0 note-card" id="note-${el.idappunto}">
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-12">
@@ -117,6 +119,7 @@ function updateArticles() {
                 </article>`,
 			);
 		});
+		attachActionListeners();
 	});
 }
 
@@ -133,7 +136,7 @@ function handleApprove(id) {
 		.then((res) => res.json())
 		.then((data) => {
 			if (data.success) {
-				updateArticles();
+				updateNotes();
 			} else {
 				showError("Errore durante l'approvazione");
 			}
@@ -154,7 +157,7 @@ function handleReject(id) {
 		.then((res) => res.json())
 		.then((data) => {
 			if (data.success) {
-				updateArticles();
+				updateNotes();
 			} else {
 				showError("Errore durante il rifiuto");
 			}
@@ -165,11 +168,12 @@ function handleReject(id) {
 // Handler per eliminazione appunto
 function handleDelete(btn) {
 	const id = btn.dataset.id;
-	const card = document.getElementById(`article-${id}`);
+	const card = document.getElementById(`note-${id}`);
 
 	if (!btn.dataset.confirm) {
 		btn.dataset.confirm = "true";
-		btn.innerHTML = '<em class="bi bi-check-lg" aria-hidden="true"></em><span class="visually-hidden">Conferma eliminazione</span>';
+		btn.innerHTML =
+			'<em class="bi bi-check-lg" aria-hidden="true"></em><span class="visually-hidden">Conferma eliminazione</span>';
 		btn.classList.remove("btn-outline-danger");
 		btn.classList.add("btn-danger");
 		setTimeout(() => {
@@ -196,7 +200,7 @@ function handleDelete(btn) {
 		.then((res) => res.json())
 		.then((data) => {
 			if (data.success) {
-				updateArticles();
+				updateNotes();
 			} else {
 				showError("Errore durante l'eliminazione");
 				btn.disabled = false;
@@ -219,6 +223,9 @@ function handleDelete(btn) {
 // Aggiorna gli articoli quando si torna alla pagina dal back/forward
 window.addEventListener("pageshow", (event) => {
 	if (event.persisted) {
-		updateArticles();
+		updateNotes();
 	}
 });
+
+// Caricamento iniziale
+updateNotes();

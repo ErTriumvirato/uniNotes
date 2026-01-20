@@ -6,13 +6,13 @@ if (!isset($_GET['id']) || empty($_GET['id']) || !is_numeric($_GET['id']) || $_G
     exit();
 }
 
-$appunto = $dbh->getArticleById($_GET['id']);
+$note = $dbh->getNoteById($_GET['id']);
 
-if (!$appunto) {
+if (!$note) {
     // Appunto non trovato, lasciamo gestire al template o redirect
 } else { // Appunto trovato
     // Controllo se l'appunto è approvato
-    $isApproved = ($appunto['stato'] === 'approvato');
+    $isApproved = ($note['stato'] === 'approvato');
 
     if (!$isApproved && !isUserAdmin()) {
         // Accesso negato
@@ -29,7 +29,7 @@ if (isset($_POST['valutazione'])) {
         $idutente = $_SESSION['idutente'];
         $valutazione = intval($_POST['valutazione']);
 
-        if ($appunto['stato'] !== 'approvato') {
+        if ($note['stato'] !== 'approvato') {
             if (isset($_POST['ajax'])) {
                 header('Content-Type: application/json');
                 echo json_encode(['success' => false, 'message' => 'Non puoi recensire un appunto non approvato.']);
@@ -39,7 +39,7 @@ if (isset($_POST['valutazione'])) {
             exit();
         }
 
-        if ($appunto['idutente'] == $idutente) {
+        if ($note['idutente'] == $idutente) {
             if (isset($_POST['ajax'])) {
                 header('Content-Type: application/json');
                 echo json_encode(['success' => false, 'message' => 'Non puoi recensire il tuo stesso appunto.']);
@@ -57,11 +57,11 @@ if (isset($_POST['valutazione'])) {
                 header('Content-Type: application/json');
 
                 // Recupera i dati aggiornati
-                $updatedArticle = $dbh->getArticleById($idappunto);
+                $updatedNote = $dbh->getNoteById($idappunto);
                 $username = $_SESSION['username'];
 
                 // Recupera l'ID della recensione appena creata
-                $reviews = $dbh->getReviewsByArticle($idappunto);
+                $reviews = $dbh->getReviewsByNote($idappunto);
                 $newReview = null;
                 foreach ($reviews as $review) {
                     if ($review['idutente'] == $idutente) {
@@ -77,8 +77,8 @@ if (isset($_POST['valutazione'])) {
                         'username' => $username,
                         'valutazione' => $valutazione
                     ],
-                    'new_avg' => $updatedArticle['media_recensioni'] ?: 'N/A',
-                    'new_count' => (int)$updatedArticle['numero_recensioni']
+                    'new_avg' => $updatedNote['media_recensioni'] ?: 'N/A',
+                    'new_count' => (int)$updatedNote['numero_recensioni']
                 ]);
                 exit();
             }
@@ -104,12 +104,12 @@ if (isset($_POST['deleteReview'])) {
 
             if ($deleted) {
                 // Recupera i dati aggiornati
-                $updatedArticle = $dbh->getArticleById($idappunto);
+                $updatedNote = $dbh->getNoteById($idappunto);
 
                 echo json_encode([
                     'success' => true,
-                    'new_avg' => $updatedArticle['media_recensioni'] ?: 'N/A',
-                    'new_count' => (int)$updatedArticle['numero_recensioni']
+                    'new_avg' => $updatedNote['media_recensioni'] ?: 'N/A',
+                    'new_count' => (int)$updatedNote['numero_recensioni']
                 ]);
             } else {
                 echo json_encode([
@@ -126,8 +126,8 @@ if (isset($_POST['deleteReview'])) {
 }
 
 // L'appunto esiste ed è stato approvato (o l'utente è admin)
-$templateParams["appunto"] = $appunto; // Passa i dettagli dell'appunto al template
-$templateParams["titolo"] = $appunto ? $appunto['titolo'] : "Appunto non trovato";
+$templateParams["appunto"] = $note; // Passa i dettagli dell'appunto al template
+$templateParams["titolo"] = $note ? $note['titolo'] : "Appunto non trovato";
 $templateParams["nome"] = "templates/dettagli-appunto.php";
 array_push($templateParams["script"], "js/dettagli-appunto.js");
 

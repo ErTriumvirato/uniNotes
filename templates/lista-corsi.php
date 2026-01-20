@@ -1,6 +1,6 @@
 <?php
 require_once 'config.php';
-$corsi = $dbh->getCoursesWithSSD();
+$corsi = $dbh->getCoursesWithFilters(); // Prende i corsi
 $idutente = $_SESSION["idutente"] ?? null;
 $ssds = $templateParams["ssds"];
 ?>

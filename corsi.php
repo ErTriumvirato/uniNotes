@@ -8,7 +8,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'filter') {
     $filterType = $_GET['filterType'] ?? 'all';
     $idutente = $_SESSION["idutente"] ?? null;
 
-    $courses = $dbh->getCoursesWithSSD($search, $ssd, $idutente, $filterType);
+    $courses = $dbh->getCoursesWithFilters($idutente, $ssd, $filterType, $search);
 
     $result = [];
     foreach ($courses as $course) {

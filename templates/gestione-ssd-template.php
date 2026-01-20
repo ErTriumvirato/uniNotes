@@ -24,7 +24,7 @@
             <div class="collapse d-md-block" id="ssdFiltersCollapse">
                 <div class="mb-4">
                     <label for="searchSSD" class="form-label small text-muted">Cerca</label>
-                    <input type="text" id="searchSSD" class="form-control" placeholder="Cerca SSD...">
+                    <input type="text" id="searchSSD" class="form-control" placeholder="Cerca SSD..." />
                 </div>
             </div>
 
@@ -56,14 +56,14 @@
             </div>
             <div class="modal-body">
                 <form id="ssdForm">
-                    <input type="hidden" id="ssdId" name="id">
+                    <input type="hidden" id="ssdId" name="id" />
                     <div class="mb-3">
                         <label for="ssdName" class="form-label">Codice (es. INF/01)</label>
-                        <input type="text" class="form-control" id="ssdName" name="nome" required>
+                        <input type="text" class="form-control" id="ssdName" name="nome" required />
                     </div>
                     <div class="mb-3">
                         <label for="ssdDescription" class="form-label">Descrizione</label>
-                        <input type="text" class="form-control" id="ssdDescription" name="descrizione" required>
+                        <input type="text" class="form-control" id="ssdDescription" name="descrizione" required />
                     </div>
                 </form>
             </div>

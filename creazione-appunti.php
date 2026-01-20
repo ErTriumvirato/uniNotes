@@ -4,11 +4,14 @@ require_once 'config.php';
 requireLogin();
 
 if (isset($_POST["invia"]) && isset($_POST["course"]) && isset($_POST["title"]) && isset($_POST["text"])) {
-    $dbh->createArticle($_POST["course"], $_POST["title"], $_POST["text"], $_SESSION["idutente"]);
+    $dbh->createNote($_POST["course"], $_POST["title"], $_POST["text"], $_SESSION["idutente"]);
 }
 
 $templateParams["titolo"] = "Creazione appunti";
 $templateParams["nome"] = "templates/upload-form.php";
-$templateParams["unapprovedArticles"] = $dbh->getUnapprovedArticlesByAuthor($_SESSION["idutente"]);
+$allNotes = $dbh->getNotesWithFilters(idutente: $_SESSION["idutente"], approvalFilter: 'all');
+$templateParams["unapprovedNotes"] = array_filter($allNotes, function ($note) {
+    return $note['stato'] !== 'approvato';
+});
 
 require_once 'templates/base.php';

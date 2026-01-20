@@ -35,7 +35,7 @@ $filterTypeCallback = $filterTypeCallback ?? 'filterCourses()';
     <div class="row g-2 align-items-end collapse d-md-flex" id="filtersCollapse">
         <div class="col-12 col-md-<?php echo $showFollowFilter ? '4' : '6'; ?>">
             <label for="<?php echo $searchId; ?>" class="form-label small text-muted">Cerca</label>
-            <input type="text" id="<?php echo $searchId; ?>" class="form-control" placeholder="Cerca corso..." oninput="<?php echo $searchCallback; ?>">
+            <input type="text" id="<?php echo $searchId; ?>" class="form-control" placeholder="Cerca corso..." oninput="<?php echo $searchCallback; ?>" />
         </div>
         <div class="col-12 col-md-<?php echo $showFollowFilter ? '4' : '6'; ?>">
             <label for="<?php echo $ssdId; ?>" class="form-label small text-muted">SSD</label>

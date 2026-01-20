@@ -3,7 +3,7 @@
 let userModalBS = null;
 let searchTimeout = null;
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
 	userModalBS = new bootstrap.Modal(document.getElementById("userModal"));
 
 	document.getElementById("btn-new-user").addEventListener("click", openUserModal);
@@ -117,7 +117,8 @@ function saveUser() {
 function deleteUser(id, btn) {
 	if (!btn.dataset.confirm) {
 		btn.dataset.confirm = "true";
-		btn.innerHTML = '<em class="bi bi-check-lg" aria-hidden="true"></em><span class="visually-hidden">Conferma eliminazione</span>';
+		btn.innerHTML =
+			'<em class="bi bi-check-lg" aria-hidden="true"></em><span class="visually-hidden">Conferma eliminazione</span>';
 		btn.classList.remove("btn-outline-danger");
 		btn.classList.add("btn-danger");
 		setTimeout(() => {

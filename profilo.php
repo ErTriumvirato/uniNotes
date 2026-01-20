@@ -22,7 +22,7 @@ $templateParams["isOwner"] = $isOwner;
 
 $templateParams["stats"] = [
     "corsi_seguiti" => $dbh->getFollowedCoursesCount($idProfilo),
-    "appunti_scritti" => $dbh->getArticlesCountByAuthor($idProfilo, true),
+    "appunti_scritti" => $dbh->getNotesCountByAuthor($idProfilo, true),
     "media_recensioni" => $dbh->getAuthorAverageRating($idProfilo)
 ];
 

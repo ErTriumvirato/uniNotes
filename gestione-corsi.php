@@ -14,7 +14,7 @@ if (!empty($action)) {
                 $ssd = $_GET['ssd'] ?? '';
                 $sort = $_GET['sort'] ?? 'nome';
 
-                $courses = $dbh->getCoursesWithSSD($search, $ssd); // Recupera corsi con filtro
+                $courses = $dbh->getCoursesWithFilters(null, $ssd, 'all', $search); // Recupera corsi con filtro
 
                 if ($sort === 'nome') { // Ordina per nome corso
                     usort($courses, function ($a, $b) {

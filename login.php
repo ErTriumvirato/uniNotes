@@ -9,7 +9,7 @@ if (isUserLoggedIn()) {
 if (isset($_POST['login'])) { // Gestione del login
     $nomeUtente = $_POST['username'];
     $password = $_POST['password'];
-    $utente = $dbh->getUserByUsername($nomeUtente); // Recupera i dati utente dal database
+    $utente = $dbh->getUsersWithFilters(username: $nomeUtente); // Recupera i dati utente dal database
 
     if ($utente && password_verify($password, $utente['password'])) { // Verifica la password
         $_SESSION['idutente'] = $utente['idutente'];

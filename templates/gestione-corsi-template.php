@@ -30,7 +30,6 @@
                         <tr>
                             <th scope="col">Nome</th>
                             <th scope="col">SSD</th>
-                            <!--<th>Descrizione</th>-->
                             <th scope="col" class="text-end">Azioni</th>
                         </tr>
                     </thead>
@@ -40,8 +39,6 @@
             </div>
         </div>
     </section>
-
-
 
     <!-- Modal Corso -->
     <div class="modal fade" id="courseModal" tabindex="-1" aria-hidden="true">
@@ -53,19 +50,19 @@
                 </div>
                 <div class="modal-body">
                     <form id="courseForm" data-courseId="">
-                        <input type="hidden" id="courseId" name="id">
+                        <input type="hidden" id="courseId" name="id" />
                         <div class="mb-3">
                             <label for="courseName" class="form-label">Nome corso</label>
-                            <input type="text" class="form-control" id="courseName" name="nome" required>
+                            <input type="text" class="form-control" id="courseName" name="nome" required />
                         </div>
                         <div class="mb-3">
                             <label for="courseDescription" class="form-label">Descrizione</label>
-                            <input type="text" class="form-control" id="courseDescription" name="descrizione" required>
+                            <input type="text" class="form-control" id="courseDescription" name="descrizione" required />
                         </div>
                         <div class="mb-3">
                             <label for="courseSSD" class="form-label">SSD</label>
                             <select class="form-select" id="courseSSD" name="idssd" required>
-                                <!-- Populated by JS -->
+                                <!-- Riempito da JS -->
                             </select>
                         </div>
                     </form>

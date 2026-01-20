@@ -12,7 +12,7 @@ if (!empty($action)) {
             case 'get_users': // Recupera la lista degli utenti con filtri opzionali
                 $search = $_GET['search'] ?? '';
                 $role = $_GET['role'] ?? 'all';
-                $users = $dbh->getUsers($search, $role);
+                $users = $dbh->getUsersWithFilters(role: $role, search: $search);
                 echo json_encode(['success' => true, 'data' => $users]);
                 break;
 

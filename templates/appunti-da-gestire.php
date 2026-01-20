@@ -13,8 +13,8 @@
         <div class="card-body p-3 p-md-4">
             <?php
             // Usate da `templates/appunti-template.php`
-            $titoloFiltri = "";
-            $defaultMessage = "Nessun appunto disponibile.";
+            $templateParams["titoloFiltri"] = "";
+            $templateParams["defaultMessage"] = "Nessun appunto disponibile.";
 
             // Inclusione del template che genera la lista degli appunti
             include 'templates/appunti-template.php';

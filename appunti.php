@@ -16,11 +16,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'], $_POST['ida
     $success = false;
 
     if ($action === 'approve') {
-        $success = $dbh->approveArticle($id);
+        $success = $dbh->approveNote($id);
     } elseif ($action === 'reject') {
-        $success = $dbh->rejectArticle($id);
+        $success = $dbh->rejectNote($id);
     } elseif ($action === 'delete') {
-        $success = $dbh->deleteArticle($id);
+        $success = $dbh->deleteNote($id);
     }
 
     header('Content-Type: application/json');
@@ -28,15 +28,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'], $_POST['ida
     exit;
 }
 
+
+// Handle GET request for filtering notes
 if (isset($_GET['action']) && $_GET['action'] === 'filter') {
     $sort = $_GET['sort'] ?? 'data_pubblicazione';
     $order = $_GET['order'] ?? 'DESC';
-    $nomeutente = isset($_GET['nomeutente']) ? $_GET['nomeutente'] : null;
-    $nomecorso = isset($_GET['nomecorso']) ? $_GET['nomecorso'] : null;
+    $idutente = isset($_GET['idutente']) ? $_GET['idutente'] : '';
+    $idcorso = isset($_GET['idcorso']) ? $_GET['idcorso'] : '';
     $search = isset($_GET['search']) ? $_GET['search'] : '';
     $approvalFilter = isset($_GET['approval']) ? $_GET['approval'] : 'approved';
 
-    $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, $sort, $order, $search, $approvalFilter);
+    $appunti = $dbh->getNotesWithFilters(idutente: $idutente, idcorso: $idcorso, sort: $sort, order: $order, search: $search, approvalFilter: $approvalFilter);
 
     $response = array_map(function ($res) {
         $res['numero_visualizzazioni'] = (int)$res['numero_visualizzazioni'];

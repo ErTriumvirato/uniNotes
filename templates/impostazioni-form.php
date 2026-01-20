@@ -5,9 +5,9 @@
                 <h1 class="text-center mb-4 h2">Impostazioni profilo</h1>
 
                 <?php if (isset($templateParams["messaggio"])): ?>
-                    <div id="server-message" 
-                         data-message="<?php echo htmlspecialchars($templateParams['messaggio']); ?>" 
-                         data-type="<?php echo (strpos($templateParams["messaggio"], 'successo') !== false) ? 'success' : 'danger'; ?>">
+                    <div id="server-message"
+                        data-message="<?php echo htmlspecialchars($templateParams['messaggio']); ?>"
+                        data-type="<?php echo (strpos($templateParams["messaggio"], 'successo') !== false) ? 'success' : 'danger'; ?>">
                     </div>
                 <?php endif; ?>
 
@@ -37,7 +37,7 @@
                     </div>
                 </form>
 
-                <hr class="my-4">
+                <hr class="my-4" />
 
                 <form action="impostazioni.php" method="POST" id="deleteAccountForm">
                     <input type="hidden" name="delete_account" value="1" />

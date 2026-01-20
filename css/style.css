@@ -85,7 +85,7 @@ textarea:focus-visible {
 
 .navbar-nav .nav-link:hover,
 .navbar-nav .nav-link.active,
-.article-card:hover .article-title-link {
+.note-card:hover .note-title-link {
 	color: var(--primary-color);
 }
 
@@ -115,7 +115,7 @@ textarea:focus-visible {
 
 /* Hover */
 .course-card,
-.article-card,
+.note-card,
 .admin-card {
 	transition:
 		transform 0.2s ease-in-out,
@@ -123,13 +123,13 @@ textarea:focus-visible {
 }
 
 .course-card:hover,
-.article-card:hover,
+.note-card:hover,
 .admin-card:hover {
 	transform: translateY(-2px);
 	box-shadow: 8px 16px rgba(0, 0, 0, 0.15);
 }
 
-.article-title-link {
+.note-title-link {
 	color: var(--bs-body-color);
 	transition: color 0.3s ease;
 }

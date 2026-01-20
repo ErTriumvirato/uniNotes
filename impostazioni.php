@@ -17,7 +17,7 @@ if (isset($_POST['submit'])) { // Gestione dell'aggiornamento del profilo
 
     // Controllo se il nome utente è già in uso
     if (!isset($templateParams["messaggio"]) && $newUsername !== $currentUser['username']) {
-        $existingUser = $dbh->getUserByUsername($newUsername);
+        $existingUser = $dbh->getUsersWithFilters(username: $newUsername);
         if ($existingUser) {
             $templateParams["messaggio"] = "Username già in uso!";
         }
