@@ -28,7 +28,7 @@
                     </a>
                 </div>
 
-                <div class="offcanvas on-start flex-grow-1" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas offcanvas-start flex-grow-1" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                     <!-- Menu di navigazione dispositivi mobile -->
                     <div class="offcanvas-header">
                         <h2 class="offcanvas-title h5" id="offcanvasNavbarLabel">Menu</h2>

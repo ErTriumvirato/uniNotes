@@ -6,21 +6,6 @@
 	--focus-ring-color: rgba(90, 24, 154, 0.35);
 }
 
-/* Chrome, Safari, Edge, Opera */
-::-webkit-scrollbar {
-	display: none;
-}
-
-/* Firefox */
-* {
-	scrollbar-width: none;
-}
-
-/* Internet Explorer 10+ */
-body {
-	-ms-overflow-style: none;
-}
-
 body {
 	font-family:
 		system-ui,
@@ -254,7 +239,6 @@ textarea:focus-visible {
 /* Applicato a telefoni e tablet */
 @media (max-width: 991.98px) {
 	.navbar-collapse {
-		background-color: white;
 		padding: 16px;
 		border-radius: 8px;
 		margin-top: 8px;
