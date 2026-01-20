@@ -8,7 +8,7 @@ $statistiche = [
 $appunti = $dbh->getApprovedArticlesByUserIdWithFilters($templateParams['profiloUtente']['idutente'], 'data_pubblicazione', 'DESC');
 ?>
 
-<h2 class="mb-4">Profilo di <?php echo htmlspecialchars($templateParams['profiloUtente']['username']); ?></h2>
+<h1 class="mb-4 h2">Profilo di <?php echo htmlspecialchars($templateParams['profiloUtente']['username']); ?></h1>
 
 <section aria-label="Statistiche utente" class="row g-2 g-md-4 mb-5">
     <h2 class="visually-hidden">Statistiche utente</h2>

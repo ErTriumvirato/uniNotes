@@ -7,7 +7,7 @@ $appunto = $templateParams["appunto"];
     <div class="col-12 col-md-8 col-lg-6">
         <section aria-label="Modifica appunto" class="card shadow-sm border-0 rounded-3 form-card">
             <div class="card-body p-4">
-                <h2 class="text-center mb-4">Modifica appunti</h2>
+                <h1 class="text-center mb-4 h2">Modifica appunti</h1>
 
                 <?php if ($appunto['stato'] === 'rifiutato'): ?>
                     <div class="alert alert-danger" role="alert">

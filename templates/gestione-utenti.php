@@ -1,9 +1,7 @@
     <div class="container">
         <header class="row mb-4">
             <div class="col-12">
-                <h2 class="display-5 fw-bold">Gestione utenti</h2>
-            </div>
-        </header>
+            <h1 class="display-5 fw-bold h2">Gestione utenti</h1>
 
         <section aria-labelledby="titolo-gestione-utenti" class="card shadow-sm border-0 mb-5">
             <div class="card-body p-3 p-md-4">
@@ -56,7 +54,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="userModalTitle">Nuovo utente</h5>
+                    <h2 class="modal-title h5" id="userModalTitle">Nuovo utente</h2>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
                 </div>
                 <div class="modal-body">

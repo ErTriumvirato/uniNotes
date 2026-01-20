@@ -1,7 +1,7 @@
 <div class="container">
     <header class="row mb-4">
         <div class="col-12">
-            <h2 class="display-5 fw-bold">Gestione SSD</h2>
+            <h1 class="display-5 fw-bold h2">Gestione SSD</h1>
         </div>
     </header>
 
@@ -9,7 +9,7 @@
     <section aria-labelledby="sezione-ssd" class="card shadow-sm border-0 mb-5">
         <div class="card-body p-3 p-md-4">
             <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-                <h3 id="sezione-ssd" class="card-title mb-0">SSD (Settori Scientifico Disciplinari)</h3>
+                <h2 id="sezione-ssd" class="card-title mb-0 h3">SSD (Settori Scientifico Disciplinari)</h2>
                 <button type="button" class="btn btn-outline-primary" id="btn-new-ssd">
                     Nuovo SSD
                 </button>
@@ -51,7 +51,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="ssdModalTitle">Nuovo SSD</h5>
+                <h2 class="modal-title h5" id="ssdModalTitle">Nuovo SSD</h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
             </div>
             <div class="modal-body">

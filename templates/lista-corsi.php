@@ -24,11 +24,11 @@ require 'filtri-corsi.php';
         <div class="col-12 col-md-6 col-lg-4">
             <article class="card h-100 shadow-sm border-0 course-card">
                 <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">
+                    <h3 class="card-title h5">
                         <a href="corso.php?id=<?php echo htmlspecialchars((int)$corso['idcorso']); ?>" class="text-decoration-none text-dark stretched-link">
                             <?php echo htmlspecialchars($corso['nomeCorso']); ?>
                         </a>
-                    </h5>
+                    </h3>
                     <p class="card-text text-muted mb-4">
                         SSD: <span class="badge bg-light text-dark border"><?php echo htmlspecialchars($corso['nomeSSD']); ?></span>
                     </p>

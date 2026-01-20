@@ -15,7 +15,7 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
 
 <section aria-label="Filtri appunti" class="mb-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3 class="mb-0"><?= $titoloFiltri ?></h3>
+        <h2 class="mb-0 h3"><?= $titoloFiltri ?></h2>
         <button class="btn btn-sm btn-outline-secondary d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#filtersCollapse" aria-expanded="false" aria-controls="filtersCollapse">
             <em class="bi bi-filter"></em> Filtri
         </button>
@@ -62,11 +62,11 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-12">
-                            <h5 class="card-title mb-1">
+                            <h3 class="card-title mb-1 h5">
                                 <a href="appunto.php?id=<?= htmlspecialchars($appunto['idappunto']) ?>" class="text-decoration-none text-dark <?= $showActions ? '' : 'stretched-link' ?>">
                                     <?= htmlspecialchars($appunto['titolo']) ?>
                                 </a>
-                            </h5>
+                            </h3>
                             <p class="card-text text-muted small mb-2">di <?= htmlspecialchars($appunto['autore']) ?></p>
                             <div class="d-flex gap-2 row-gap-2 align-items-center flex-wrap mt-2">
                                 <?php if ($isAdmin): ?>

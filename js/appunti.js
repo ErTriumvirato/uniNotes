@@ -100,9 +100,9 @@ function updateArticles() {
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-12">
-                                <h5 class="card-title mb-1">
+                                <h3 class="card-title mb-1 h5">
                                     <a href="appunto.php?id=${el.idappunto}" class="text-decoration-none text-dark ${showActions ? "" : "stretched-link"}">${el.titolo}</a>
-                                </h5>
+                                </h3>
                                 <p class="card-text text-muted small mb-2">di ${el.autore}</p>
                                 <div class="d-flex gap-2 row-gap-2 align-items-center flex-wrap mt-2">
                                     ${statusBadge}

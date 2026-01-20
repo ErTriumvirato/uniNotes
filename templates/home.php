@@ -13,7 +13,7 @@ $seguendoCorsi = $userId ? $dbh->hasFollowedCourses($userId) : false;
 
 <?php if ($userId && !$seguendoCorsi): ?>
     <div class="alert alert-info mb-5" role="alert">
-        <h4 class="alert-heading">Non segui ancora nessun corso!</h4>
+        <h2 class="alert-heading h4">Non segui ancora nessun corso!</h2>
         <p>Inizia a seguire dei corsi per poter visualizzare degli appunti qui.</p>
         <a href="corsi.php" class="btn btn-outline-primary">Esplora i corsi</a>
     </div>

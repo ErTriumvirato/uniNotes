@@ -3,7 +3,7 @@
     <!-- Titolo -->
     <header class="row mb-4">
         <div class="col-12">
-            <h2 class="display-5 fw-bold">Gestione appunti</h2>
+            <h1 class="display-5 fw-bold h2">Gestione appunti</h1>
         </div>
     </header>
 

@@ -2,7 +2,7 @@
     <div class="col-12 col-md-8 col-lg-6">
         <section aria-label="Impostazioni profilo" class="card shadow-sm border-0 rounded-3 form-card">
             <div class="card-body p-4">
-                <h2 class="text-center mb-4">Impostazioni profilo</h2>
+                <h1 class="text-center mb-4 h2">Impostazioni profilo</h1>
 
                 <?php if (isset($templateParams["messaggio"])): ?>
                     <div id="server-message" 

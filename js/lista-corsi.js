@@ -45,11 +45,11 @@ function filterCourses() {
 			col.innerHTML = `
                     <div class="card h-100 shadow-sm border-0 course-card">
                         <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">
+                            <h3 class="card-title h5">
                                 <a href="corso.php?id=${corso.idcorso}" class="text-decoration-none text-dark stretched-link">
                                     ${corso.nomeCorso}
                                 </a>
-                            </h5>
+                            </h3>
                             <p class="card-text text-muted mb-4">
                                 SSD: <span class="badge bg-light text-dark border">${corso.nomeSSD}</span>
                             </p>

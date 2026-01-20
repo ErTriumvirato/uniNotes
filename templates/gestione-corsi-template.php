@@ -1,7 +1,7 @@
 <div class="container">
     <header class="row mb-4">
         <div class="col-12">
-            <h2 class="display-5 fw-bold">Gestione corsi</h2>
+            <h1 class="display-5 fw-bold h2">Gestione corsi</h1>
         </div>
     </header>
 
@@ -9,7 +9,7 @@
     <section aria-labelledby="sezione-corsi" class="card shadow-sm border-0 mb-5">
         <div class="card-body p-3 p-md-4">
             <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-                <h3 id="sezione-corsi" class="card-title mb-0">Corsi</h3>
+                <h2 id="sezione-corsi" class="card-title mb-0 h3">Corsi</h2>
                 <button type="button" class="btn btn-outline-primary" id="btn-new-course">
                     Nuovo Corso
                 </button>
@@ -48,7 +48,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="courseModalTitle">Nuovo corso</h5>
+                    <h2 class="modal-title h5" id="courseModalTitle">Nuovo corso</h2>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
                 </div>
                 <div class="modal-body">

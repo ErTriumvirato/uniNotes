@@ -28,10 +28,10 @@
                     </a>
                 </div>
 
-                <div class="offcanvas offcanvas-start flex-grow-1" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas on-start flex-grow-1" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                     <!-- Menu di navigazione dispositivi mobile -->
                     <div class="offcanvas-header">
-                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+                        <h2 class="offcanvas-title h5" id="offcanvasNavbarLabel">Menu</h2>
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Chiudi menu di navigazione"></button>
                     </div>
                     <!-- Menu di navigazione -->

@@ -143,7 +143,7 @@ function handleDeleteReview(btn) {
                 setTimeout(() => {
                     reviewCard.outerHTML = `
                         <div id="review-form-container">
-                            <h5 class="mb-3">Lascia una recensione</h5>
+                            <h3 class="mb-3 h5">Lascia una recensione</h3>
                             <form id="review-form" data-idappunto="${idappunto}">
                                 <div class="row g-2 align-items-end">
                                     <div class="col-8 col-sm-6 col-md-4">

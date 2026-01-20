@@ -9,7 +9,7 @@ $selectedCourseId = isset($_GET['idcorso']) ? (int)$_GET['idcorso'] : null;
     <div class="col-12 col-md-8 col-lg-6">
         <section aria-label="Carica appunti" class="card shadow-sm border-0 rounded-3 form-card">
             <div class="card-body p-4">
-                <h2 class="text-center mb-4">Carica appunti</h2>
+                <h1 class="text-center mb-4 h2">Carica appunti</h1>
 
                 <!-- Form di caricamento appunti -->
                 <form action="creazione-appunti.php" method="post">
@@ -48,7 +48,7 @@ $selectedCourseId = isset($_GET['idcorso']) ? (int)$_GET['idcorso'] : null;
 <?php if (!empty($templateParams["unapprovedArticles"])): ?>
     <section aria-labelledby="appunto-in-attesa" class="row justify-content-center mt-5">
         <div class="col-12 col-md-8 col-lg-6">
-            <h3 id="appunto-in-attesa" class="text-center mb-4">In attesa di approvazione</h3>
+            <h2 id="appunto-in-attesa" class="text-center mb-4 h3">In attesa di approvazione</h2>
             <div class="d-flex flex-column gap-3">
                 <?php foreach ($templateParams["unapprovedArticles"] as $article): ?>
                     <article class="card shadow-sm border-0 rounded-3">
