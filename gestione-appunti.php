@@ -1,12 +1,7 @@
 <?php
 require_once 'config.php';
 
-requireLogin();
-
-if (!isUserAdmin()) {
-    header("Location: index.php");
-    exit();
-}
+requireAdmin();
 
 // Handle Delete Action
 if (isset($_POST['action']) && $_POST['action'] === 'delete' && isset($_POST['idappunto'])) {
