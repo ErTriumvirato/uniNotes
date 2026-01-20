@@ -65,7 +65,7 @@
                         <a href="login.php" class="btn btn-primary btn-sm px-4">Accedi</a>
                     <?php } else { ?>
                         <nav class="user-menu" aria-label="Menu utente">
-                            <button type="button" class="nav-link user-menu-btn" onclick="toggleUserMenu()" aria-expanded="false" aria-haspopup="true" aria-controls="user-dropdown" aria-label="Apri menu utente">
+                            <button type="button" class="nav-link user-menu-btn" aria-expanded="false" aria-haspopup="true" aria-controls="user-dropdown" aria-label="Apri menu utente">
                                 <?php echo htmlspecialchars($_SESSION['username']); ?> ▾
                             </button>
                             <ul id="user-dropdown" class="user-dropdown" role="menu" aria-label="Menu utente">
@@ -84,7 +84,7 @@
     <div id="error-banner"
         class="alert alert-danger alert-dismissible position-fixed top-0 start-50 translate-middle-x mt-5 pt-4 w-auto error-banner banner-layer is-hidden" role="alert" aria-live="assertive">
         <span id="error-message"></span>
-        <button type="button" class="btn-close" onclick="hideError()" aria-label="Chiudi"></button>
+        <button type="button" class="btn-close" id="btn-close-error" aria-label="Chiudi"></button>
     </div>
 
 
@@ -96,7 +96,7 @@
                     <strong>Informativa cookie</strong>
                     <p class="mb-0 small">Usiamo solo cookie di sessione per il funzionamento del sito. Nessun cookie di profilazione.</p>
                 </div>
-                <button id="cookie-accept" type="button" class="btn btn-primary btn-sm px-4" onclick="closeCookieBanner()">Ok</button>
+                <button id="cookie-accept" type="button" class="btn btn-primary btn-sm px-4">Ok</button>
             </div>
         </div>
     <?php endif; ?>
@@ -113,7 +113,7 @@
             || ($templateParams["nome"] === "templates/menu-appunti.php")
             || ($templateParams["nome"] === "templates/dettagli-appunto.php")
         ) { ?>
-            <button class="btn btn-outline-secondary mb-3" onclick="goBack()">← Indietro</button>
+            <button class="btn btn-outline-secondary mb-3" id="btn-back">← Indietro</button>
         <?php
         } ?>
 

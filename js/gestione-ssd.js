@@ -6,6 +6,21 @@ let searchTimeout = null;
 document.addEventListener("DOMContentLoaded", function () {
 	ssdModalBS = new bootstrap.Modal(document.getElementById("ssdModal"));
 
+	document.getElementById("btn-new-ssd").addEventListener("click", openSSDModal);
+	document.getElementById("btn-save-ssd").addEventListener("click", saveSSD);
+	document.getElementById("searchSSD").addEventListener("input", debouncedLoadSSDs);
+
+	document.getElementById("ssdTableBody").addEventListener("click", (e) => {
+		const btn = e.target.closest("button");
+		if (!btn) return;
+
+		if (btn.classList.contains("btn-edit-ssd")) {
+			editSSD(btn.dataset.id);
+		} else if (btn.classList.contains("btn-delete-ssd")) {
+			deleteSSD(btn.dataset.id, btn);
+		}
+	});
+
 	loadSSDs();
 });
 
@@ -32,11 +47,11 @@ function loadSSDs() {
                                     <td class="text-break">${ssd.descrizione}</td>
                                     <td class="text-end col-actions-compact">
                                         <div class="d-flex gap-1 flex-column flex-md-row justify-content-end align-items-end">
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="editSSD(${ssd.idssd})" title="Modifica">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary btn-edit-ssd" data-id="${ssd.idssd}" title="Modifica">
                                                 <i class="bi bi-pencil" aria-hidden="true"></i>
                                                 <span class="visually-hidden">Modifica</span>
                                             </button>
-                                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteSSD(${ssd.idssd}, this)" title="Elimina">
+                                            <button type="button" class="btn btn-sm btn-outline-danger btn-delete-ssd" data-id="${ssd.idssd}" title="Elimina">
                                                 <i class="bi bi-trash" aria-hidden="true"></i>
                                                 <span class="visually-hidden">Elimina</span>
                                             </button>
@@ -89,7 +104,7 @@ function saveSSD() {
 				loadSSDs();
 				showSuccess(data.message);
 			} else {
-				showError("Errore: " + data.message);
+				showError(data.message);
 			}
 		});
 }
@@ -127,7 +142,7 @@ function deleteSSD(id, btn) {
 				loadCourses();
 				showSuccess(data.message);
 			} else {
-				showError("Errore: " + data.message);
+				showError(data.message);
 			}
 		});
 }

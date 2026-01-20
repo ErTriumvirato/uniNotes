@@ -8,7 +8,7 @@
         <section aria-labelledby="titolo-gestione-utenti" class="card shadow-sm border-0 mb-5">
             <div class="card-body p-3 p-md-4">
                 <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-                    <button type="button" class="btn btn-outline-primary" onclick="openUserModal()">
+                    <button type="button" class="btn btn-outline-primary" id="btn-new-user">
                         Nuovo utente
                     </button>
                 </div>
@@ -22,11 +22,11 @@
                 <div class="row g-2 align-items-end collapse d-md-flex mb-4" id="userFiltersCollapse">
                     <div class="col-12 col-md-6">
                         <label for="searchUser" class="form-label small text-muted">Cerca</label>
-                        <input type="text" id="searchUser" class="form-control" placeholder="Cerca utente per username..." oninput="debouncedLoadUsers()">
+                        <input type="text" id="searchUser" class="form-control" placeholder="Cerca utente per username...">
                     </div>
                     <div class="col-12 col-md-6">
                         <label for="filterRole" class="form-label small text-muted">Ruolo</label>
-                        <select id="filterRole" class="form-select" onchange="loadUsers()">
+                        <select id="filterRole" class="form-select">
                             <option value="all">Tutti</option>
                             <option value="admin">Amministratori</option>
                             <option value="user">Utenti</option>
@@ -86,7 +86,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
-                    <button type="button" class="btn btn-primary" onclick="saveUser()">Salva</button>
+                    <button type="button" class="btn btn-primary" id="btn-save-user">Salva</button>
                 </div>
             </div>
         </div>

@@ -11,6 +11,11 @@ document.addEventListener('DOMContentLoaded', function () {
             showError(message);
         }
     }
+
+    const btnDeleteAccount = document.getElementById('btn-delete-account');
+    if (btnDeleteAccount) {
+        btnDeleteAccount.addEventListener('click', () => handleDeleteAccount(btnDeleteAccount));
+    }
 });
 
 function handleDeleteAccount(btn) {

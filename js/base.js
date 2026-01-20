@@ -95,3 +95,17 @@ function handleButtonAction(button, path, bodyText, onSuccess) {
 			if (button) button.disabled = false;
 		});
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+	const userMenuBtn = document.querySelector(".user-menu-btn");
+	if (userMenuBtn) userMenuBtn.addEventListener("click", toggleUserMenu);
+
+	const errorCloseBtn = document.getElementById("btn-close-error");
+	if (errorCloseBtn) errorCloseBtn.addEventListener("click", hideError);
+
+	const cookieAcceptBtn = document.getElementById("cookie-accept");
+	if (cookieAcceptBtn) cookieAcceptBtn.addEventListener("click", closeCookieBanner);
+
+	const backBtn = document.getElementById("btn-back");
+	if (backBtn) backBtn.addEventListener("click", goBack);
+});

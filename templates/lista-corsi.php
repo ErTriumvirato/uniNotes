@@ -33,10 +33,9 @@ require 'filtri-corsi.php';
                         SSD: <span class="badge bg-light text-dark border"><?php echo htmlspecialchars($corso['nomeSSD']); ?></span>
                     </p>
                     <div class="mt-auto">
-                        <button type="button" class="btn btn-sm w-100 position-relative z-2 <?php echo htmlspecialchars($isFollowing ? 'btn-outline-danger' : 'btn-outline-primary'); ?>"
+                        <button type="button" class="btn btn-sm w-100 position-relative z-2 btn-follow <?php echo htmlspecialchars($isFollowing ? 'btn-outline-danger' : 'btn-outline-primary'); ?>"
                             data-idcorso="<?= htmlspecialchars((int)$corso['idcorso']) ?>"
-                            data-following="<?= htmlspecialchars($isFollowing ? 'true' : 'false') ?>"
-                            onclick="handleFollowClick(this)">
+                            data-following="<?= htmlspecialchars($isFollowing ? 'true' : 'false') ?>">
                             <?php if ($isFollowing): ?>
                                 Smetti di seguire
                             <?php else: ?>

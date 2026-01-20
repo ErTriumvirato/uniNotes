@@ -5,6 +5,23 @@ let searchTimeout = null;
 
 document.addEventListener("DOMContentLoaded", function() {
 	userModalBS = new bootstrap.Modal(document.getElementById("userModal"));
+
+	document.getElementById("btn-new-user").addEventListener("click", openUserModal);
+	document.getElementById("btn-save-user").addEventListener("click", saveUser);
+	document.getElementById("searchUser").addEventListener("input", debouncedLoadUsers);
+	document.getElementById("filterRole").addEventListener("change", loadUsers);
+
+	document.getElementById("usersTableBody").addEventListener("click", (e) => {
+		const btn = e.target.closest("button");
+		if (!btn) return;
+
+		if (btn.classList.contains("btn-edit-user")) {
+			editUser(btn.dataset.id);
+		} else if (btn.classList.contains("btn-delete-user")) {
+			deleteUser(btn.dataset.id, btn);
+		}
+	});
+
 	loadUsers();
 });
 
@@ -32,11 +49,11 @@ function loadUsers() {
                             <td class="col-ruolo">${roleBadge}</td>
                             <td class="text-end col-azioni">
                                 <div class="d-flex gap-1 flex-column flex-md-row justify-content-end align-items-end">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="editUser(${user.idutente})" title="Modifica">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary btn-edit-user" data-id="${user.idutente}" title="Modifica">
                                         <i class="bi bi-pencil" aria-hidden="true"></i>
                                         <span class="visually-hidden">Modifica</span>
                                     </button>
-                                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteUser(${user.idutente}, this)" title="Elimina">
+                                    <button type="button" class="btn btn-sm btn-outline-danger btn-delete-user" data-id="${user.idutente}" title="Elimina">
                                         <i class="bi bi-trash" aria-hidden="true"></i>
                                         <span class="visually-hidden">Elimina</span>
                                     </button>
@@ -91,7 +108,7 @@ function saveUser() {
 				loadUsers();
 				showSuccess(data.message);
 			} else {
-				showError("Errore: " + data.message);
+				showError(data.message);
 			}
 		});
 }
@@ -128,7 +145,7 @@ function deleteUser(id, btn) {
 				loadUsers();
 				showSuccess(data.message);
 			} else {
-				showError("Errore: " + data.message);
+				showError(data.message);
 			}
 		});
 }

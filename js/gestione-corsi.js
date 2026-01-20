@@ -7,6 +7,20 @@ document.addEventListener("DOMContentLoaded", function () {
 	courseModalBS = new bootstrap.Modal(document.getElementById("courseModal"));
 	loadFiltersSSDs();
 	loadCourses();
+
+	document.getElementById("btn-new-course").addEventListener("click", openCourseModal);
+	document.getElementById("btn-save-course").addEventListener("click", saveCourse);
+
+	document.getElementById("coursesTableBody").addEventListener("click", (e) => {
+		const btn = e.target.closest("button");
+		if (!btn) return;
+
+		if (btn.classList.contains("btn-edit-course")) {
+			editCourse(btn.dataset.id);
+		} else if (btn.classList.contains("btn-delete-course")) {
+			deleteCourse(btn.dataset.id, btn);
+		}
+	});
 });
 
 function debouncedLoadCourses() {
@@ -31,11 +45,11 @@ function loadCourses() {
                                     <td class="">${course.nomeSSD}</td>
                                     <td class="text-end col-actions-compact">
                                         <div class="d-flex gap-1 flex-column flex-md-row justify-content-end align-items-end">
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="editCourse(${course.idcorso})" title="Modifica">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary btn-edit-course" data-id="${course.idcorso}" title="Modifica">
                                                 <i class="bi bi-pencil" aria-hidden="true"></i>
                                                 <span class="visually-hidden">Modifica</span>
                                             </button>
-                                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteCourse(${course.idcorso}, this)" title="Elimina">
+                                            <button type="button" class="btn btn-sm btn-outline-danger btn-delete-course" data-id="${course.idcorso}" title="Elimina">
                                                 <i class="bi bi-trash" aria-hidden="true"></i>
                                                 <span class="visually-hidden">Elimina</span>
                                             </button>
@@ -87,7 +101,7 @@ function saveCourse() {
 				loadCourses();
 				showSuccess(data.message);
 			} else {
-				showError("Errore: " + data.message);
+				showError(data.message);
 			}
 		});
 }
@@ -123,7 +137,7 @@ function deleteCourse(id, btn) {
 				loadCourses();
 				showSuccess(data.message);
 			} else {
-				showError("Errore: " + data.message);
+				showError(data.message);
 			}
 		});
 }

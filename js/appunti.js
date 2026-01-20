@@ -17,22 +17,35 @@ searchInput.addEventListener("input", () => {
 	searchTimeout = setTimeout(updateArticles, 300);
 });
 
+container.addEventListener("click", (e) => {
+	const btn = e.target.closest("button");
+	if (!btn) return;
+
+	if (btn.classList.contains("btn-action-approve")) {
+		handleApprove(btn.dataset.id);
+	} else if (btn.classList.contains("btn-action-reject")) {
+		handleReject(btn.dataset.id);
+	} else if (btn.classList.contains("btn-action-delete")) {
+		handleDelete(btn);
+	}
+});
+
 function renderActionButtons(el) {
 	if (!showActions) return "";
 	let buttons = "";
 	if (el.stato === "in_revisione") {
 		buttons += `
-            <button type="button" class="btn btn-sm btn-outline-success" onclick="handleApprove(${el.idappunto})" title="Approva" aria-label="Approva appunto">
+            <button type="button" class="btn btn-sm btn-outline-success btn-action-approve" data-id="${el.idappunto}" title="Approva" aria-label="Approva appunto">
                 <i class="bi bi-check-lg" aria-hidden="true"></i>
                 <span class="visually-hidden">Approva</span>
             </button>
-            <button type="button" class="btn btn-sm btn-outline-warning" onclick="handleReject(${el.idappunto})" title="Rifiuta" aria-label="Rifiuta appunto">
+            <button type="button" class="btn btn-sm btn-outline-warning btn-action-reject" data-id="${el.idappunto}" title="Rifiuta" aria-label="Rifiuta appunto">
                 <i class="bi bi-x-lg" aria-hidden="true"></i>
                 <span class="visually-hidden">Rifiuta</span>
             </button>`;
 	}
 	buttons += `
-        <button type="button" class="btn btn-sm btn-outline-danger" data-id="${el.idappunto}" onclick="handleDelete(this)" title="Elimina" aria-label="Elimina appunto">
+        <button type="button" class="btn btn-sm btn-outline-danger btn-action-delete" data-id="${el.idappunto}" title="Elimina" aria-label="Elimina appunto">
             <i class="bi bi-trash" aria-hidden="true"></i>
             <span class="visually-hidden">Elimina</span>
         </button>`;

@@ -42,7 +42,7 @@
                 <form action="impostazioni.php" method="POST" id="deleteAccountForm">
                     <input type="hidden" name="delete_account" value="1" />
                     <div class="d-grid gap-2">
-                        <button type="button" onclick="handleDeleteAccount(this)" class="btn btn-outline-danger">
+                        <button type="button" id="btn-delete-account" class="btn btn-outline-danger">
                             <i class="bi bi-trash" aria-hidden="true"></i> Elimina account
                         </button>
                     </div>
@@ -51,7 +51,3 @@
         </section>
     </div>
 </div>
-
-<script>
-
-</script>

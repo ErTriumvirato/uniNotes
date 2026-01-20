@@ -15,7 +15,7 @@ $appunti = $dbh->getApprovedArticlesByCourseWithFilters($idCorso, 'data_pubblica
                     <span class="badge bg-secondary mb-3"><?php echo htmlspecialchars($corso['nomeSSD']); ?></span>
                 </div>
                 <div class="d-flex gap-2 flex-wrap">
-                    <button type="button" id="followBtn" class="btn <?php echo $isFollowing ? 'btn-outline-danger' : 'btn-outline-primary'; ?>" data-idcorso="<?php echo htmlspecialchars($idCorso); ?>" onclick="handleFollowClick(this)">
+                    <button type="button" id="followBtn" class="btn <?php echo $isFollowing ? 'btn-outline-danger' : 'btn-outline-primary'; ?>" data-idcorso="<?php echo htmlspecialchars($idCorso); ?>">
                         <?php echo htmlspecialchars($isFollowing ? 'Smetti di seguire' : 'Segui corso'); ?>
                     </button>
                     <a href="creazione-appunti.php?idcorso=<?php echo htmlspecialchars($idCorso); ?>" class="btn btn-outline-secondary">Carica appunti</a>

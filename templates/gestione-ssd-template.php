@@ -10,7 +10,7 @@
         <div class="card-body p-3 p-md-4">
             <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
                 <h3 id="sezione-ssd" class="card-title mb-0">SSD (Settori Scientifico Disciplinari)</h3>
-                <button type="button" class="btn btn-outline-primary" onclick="openSSDModal()">
+                <button type="button" class="btn btn-outline-primary" id="btn-new-ssd">
                     Nuovo SSD
                 </button>
             </div>
@@ -24,7 +24,7 @@
             <div class="collapse d-md-block" id="ssdFiltersCollapse">
                 <div class="mb-4">
                     <label for="searchSSD" class="form-label small text-muted">Cerca</label>
-                    <input type="text" id="searchSSD" class="form-control" placeholder="Cerca SSD..." oninput="debouncedLoadSSDs()">
+                    <input type="text" id="searchSSD" class="form-control" placeholder="Cerca SSD...">
                 </div>
             </div>
 
@@ -69,7 +69,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
-                <button type="button" class="btn btn-primary" onclick="saveSSD()">Salva</button>
+                <button type="button" class="btn btn-primary" id="btn-save-ssd">Salva</button>
             </div>
         </div>
     </div>

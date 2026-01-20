@@ -16,6 +16,15 @@ const ssdSelect = document.getElementById("ssd");
 const filterTypeSelect = document.getElementById("filterType");
 const coursesContainer = document.getElementById("courses-container");
 
+if (coursesContainer) {
+	coursesContainer.addEventListener("click", (event) => {
+		const button = event.target.closest(".btn-follow");
+		if (button) {
+			handleFollowClick(button);
+		}
+	});
+}
+
 // Filtri corsi
 function filterCourses() {
 	const url = `corsi.php?action=filter&search=${encodeURIComponent(searchInput.value)}&ssd=${encodeURIComponent(ssdSelect.value)}&filterType=${encodeURIComponent(filterTypeSelect?.value || "all")}`;
@@ -45,10 +54,9 @@ function filterCourses() {
                                 SSD: <span class="badge bg-light text-dark border">${corso.nomeSSD}</span>
                             </p>
                             <div class="mt-auto">
-                                <button type="button" class="btn btn-sm w-100 position-relative z-2 ${btnClass}"
+                                <button type="button" class="btn btn-sm w-100 position-relative z-2 btn-follow ${btnClass}"
                                         data-idcorso="${corso.idcorso}"
-                                        data-following="${corso.isFollowing}"
-                                        onclick="handleFollowClick(this)">
+                                        data-following="${corso.isFollowing}">
                                     ${followText}
                                 </button>
                             </div>

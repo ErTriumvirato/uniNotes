@@ -10,7 +10,7 @@
         <div class="card-body p-3 p-md-4">
             <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
                 <h3 id="sezione-corsi" class="card-title mb-0">Corsi</h3>
-                <button type="button" class="btn btn-outline-primary" onclick="openCourseModal()">
+                <button type="button" class="btn btn-outline-primary" id="btn-new-course">
                     Nuovo Corso
                 </button>
             </div>
@@ -72,7 +72,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
-                    <button type="button" class="btn btn-primary" onclick="saveCourse()">Salva</button>
+                    <button type="button" class="btn btn-primary" id="btn-save-course">Salva</button>
                 </div>
             </div>
         </div>

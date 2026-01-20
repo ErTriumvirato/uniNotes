@@ -89,16 +89,16 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
                     <?php if ($showActions): ?>
                         <div class="d-flex gap-2 mt-3 justify-content-end">
                             <?php if ($appunto['stato'] === 'in_revisione'): ?>
-                                <button type="button" class="btn btn-sm btn-outline-success" onclick="handleApprove(<?= $appunto['idappunto'] ?>)" title="Approva" aria-label="Approva appunto">
+                                <button type="button" class="btn btn-sm btn-outline-success btn-action-approve" data-id="<?= $appunto['idappunto'] ?>" title="Approva" aria-label="Approva appunto">
                                     <i class="bi bi-check-lg" aria-hidden="true"></i>
                                     <span class="visually-hidden">Approva</span>
                                 </button>
-                                <button type="button" class="btn btn-sm btn-outline-warning" onclick="handleReject(<?= $appunto['idappunto'] ?>)" title="Rifiuta" aria-label="Rifiuta appunto">
+                                <button type="button" class="btn btn-sm btn-outline-warning btn-action-reject" data-id="<?= $appunto['idappunto'] ?>" title="Rifiuta" aria-label="Rifiuta appunto">
                                     <i class="bi bi-x-lg" aria-hidden="true"></i>
                                     <span class="visually-hidden">Rifiuta</span>
                                 </button>
                             <?php endif; ?>
-                            <button type="button" class="btn btn-sm btn-outline-danger" data-id="<?= $appunto['idappunto'] ?>" onclick="handleDelete(this)" title="Elimina" aria-label="Elimina appunto">
+                            <button type="button" class="btn btn-sm btn-outline-danger btn-action-delete" data-id="<?= $appunto['idappunto'] ?>" title="Elimina" aria-label="Elimina appunto">
                                 <i class="bi bi-trash" aria-hidden="true"></i>
                                 <span class="visually-hidden">Elimina</span>
                             </button>
