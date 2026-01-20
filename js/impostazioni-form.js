@@ -27,7 +27,7 @@ function handleDeleteAccount(btn) {
         setTimeout(() => {
             if (btn.dataset.confirm) {
                 delete btn.dataset.confirm;
-                btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i> Elimina account';
+                btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em> Elimina account';
                 btn.classList.remove('btn-danger');
                 btn.classList.add('btn-outline-danger');
             }

@@ -48,11 +48,11 @@ function loadSSDs() {
                                     <td class="text-end col-actions-compact">
                                         <div class="d-flex gap-1 flex-column flex-md-row justify-content-end align-items-end">
                                             <button type="button" class="btn btn-sm btn-outline-secondary btn-edit-ssd" data-id="${ssd.idssd}" title="Modifica">
-                                                <i class="bi bi-pencil" aria-hidden="true"></i>
+                                                <em class="bi bi-pencil" aria-hidden="true"></em>
                                                 <span class="visually-hidden">Modifica</span>
                                             </button>
                                             <button type="button" class="btn btn-sm btn-outline-danger btn-delete-ssd" data-id="${ssd.idssd}" title="Elimina">
-                                                <i class="bi bi-trash" aria-hidden="true"></i>
+                                                <em class="bi bi-trash" aria-hidden="true"></em>
                                                 <span class="visually-hidden">Elimina</span>
                                             </button>
                                         </div>
@@ -113,13 +113,13 @@ function saveSSD() {
 function deleteSSD(id, btn) {
 	if (!btn.dataset.confirm) {
 		btn.dataset.confirm = "true";
-		btn.innerHTML = '<i class="bi bi-check-lg" aria-hidden="true"></i><span class="visually-hidden">Conferma eliminazione</span>';
+		btn.innerHTML = '<em class="bi bi-check-lg" aria-hidden="true"></em><span class="visually-hidden">Conferma eliminazione</span>';
 		btn.classList.remove("btn-outline-danger");
 		btn.classList.add("btn-danger");
 		setTimeout(() => {
 			if (btn.dataset.confirm) {
 				delete btn.dataset.confirm;
-				btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i><span class="visually-hidden">Elimina</span>';
+				btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em><span class="visually-hidden">Elimina</span>';
 				btn.classList.remove("btn-danger");
 				btn.classList.add("btn-outline-danger");
 			}

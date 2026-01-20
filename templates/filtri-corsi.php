@@ -28,7 +28,7 @@ $filterTypeCallback = $filterTypeCallback ?? 'filterCourses()';
     <h2 class="visually-hidden">Filtri corsi</h2>
     <div class="d-flex justify-content-between align-items-center mb-3">
         <button class="btn btn-sm btn-outline-secondary d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#filtersCollapse" aria-expanded="false" aria-controls="filtersCollapse">
-            <i class="bi bi-filter"></i> Filtri
+            <em class="bi bi-filter"></em> Filtri
         </button>
     </div>
 

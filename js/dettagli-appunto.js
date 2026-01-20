@@ -82,7 +82,7 @@ function handleReviewFormSubmit(e) {
                                 <span class="text-warning">${stars}</span>
                             </div>
                             <button class="btn btn-sm btn-outline-danger delete-review-btn" data-review-id="${data.review.idrecensione}" aria-label="Elimina recensione" title="Elimina">
-                                <i class="bi bi-trash" aria-hidden="true"></i>
+                                <em class="bi bi-trash" aria-hidden="true"></em>
                             </button>
                         </div>
                     `;
@@ -108,13 +108,13 @@ function handleDeleteReview(btn) {
 
     if (!btn.dataset.confirm) {
         btn.dataset.confirm = 'true';
-        btn.innerHTML = '<i class="bi bi-check-lg"></i>';
+        btn.innerHTML = '<em class="bi bi-check-lg"></em>';
         btn.classList.remove('btn-outline-danger');
         btn.classList.add('btn-danger');
         setTimeout(() => {
             if (btn && btn.dataset.confirm) {
                 delete btn.dataset.confirm;
-                btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i>';
+                btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em>';
                 btn.classList.remove('btn-danger');
                 btn.classList.add('btn-outline-danger');
             }
@@ -179,12 +179,12 @@ function handleDeleteReview(btn) {
                 if (typeof showError === 'function') showError(data.message || 'Errore durante l\'eliminazione della recensione.');
                 else alert(data.message || 'Errore durante l\'eliminazione della recensione.');
                 btn.disabled = false;
-                btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i>';
+                btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em>';
             }
         })
         .catch(() => {
             btn.disabled = false;
-            btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i>';
+            btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em>';
             if (typeof showError === 'function') showError('Si è verificato un errore. Riprova.');
             else alert('Si è verificato un errore. Riprova.');
         });
@@ -278,13 +278,13 @@ function handleDeleteArticle(btn) {
 
     if (!btn.dataset.confirm) {
         btn.dataset.confirm = 'true';
-        btn.innerHTML = '<i class="bi bi-check-lg"></i>';
+        btn.innerHTML = '<em class="bi bi-check-lg"></em>';
         btn.classList.remove('btn-outline-danger');
         btn.classList.add('btn-danger');
         setTimeout(() => {
             if (btn && btn.dataset.confirm) {
                 delete btn.dataset.confirm;
-                btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i>';
+                btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em>';
                 btn.classList.remove('btn-danger');
                 btn.classList.add('btn-outline-danger');
             }
@@ -309,7 +309,7 @@ function handleDeleteArticle(btn) {
             } else {
                 if (typeof showError === 'function') showError('Errore durante l\'eliminazione');
                 btn.disabled = false;
-                btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i>';
+                btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em>';
                 delete btn.dataset.confirm;
                 btn.classList.remove('btn-danger');
                 btn.classList.add('btn-outline-danger');
@@ -318,7 +318,7 @@ function handleDeleteArticle(btn) {
         .catch(() => {
             if (typeof showError === 'function') showError('Errore di connessione');
             btn.disabled = false;
-            btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i>';
+            btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em>';
             delete btn.dataset.confirm;
             btn.classList.remove('btn-danger');
             btn.classList.add('btn-outline-danger');

@@ -15,7 +15,7 @@
 
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <button class="btn btn-sm btn-outline-secondary d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#userFiltersCollapse" aria-expanded="false" aria-controls="userFiltersCollapse">
-                        <i class="bi bi-filter"></i> Filtri
+                        <em class="bi bi-filter"></em> Filtri
                     </button>
                 </div>
 

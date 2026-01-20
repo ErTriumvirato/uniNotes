@@ -67,7 +67,7 @@ $selectedCourseId = isset($_GET['idcorso']) ? (int)$_GET['idcorso'] : null;
                                     <span class="text-muted small"><?php echo date('d/m/Y', strtotime($article['data_pubblicazione'])); ?></span>
                                     <?php if ($article['stato'] === 'rifiutato'): ?>
                                         <a href="modifica-appunti.php?id=<?php echo $article['idappunto']; ?>" class="btn btn-sm btn-outline-danger" title="Modifica">
-                                            <i class="bi bi-pencil" aria-hidden="true"></i>
+                                            <em class="bi bi-pencil" aria-hidden="true"></em>
                                             <span class="visually-hidden">Modifica</span>
                                         </a>
                                     <?php else: ?>

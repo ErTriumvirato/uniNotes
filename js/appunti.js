@@ -36,17 +36,17 @@ function renderActionButtons(el) {
 	if (el.stato === "in_revisione") {
 		buttons += `
             <button type="button" class="btn btn-sm btn-outline-success btn-action-approve" data-id="${el.idappunto}" title="Approva" aria-label="Approva appunto">
-                <i class="bi bi-check-lg" aria-hidden="true"></i>
+                <em class="bi bi-check-lg" aria-hidden="true"></em>
                 <span class="visually-hidden">Approva</span>
             </button>
             <button type="button" class="btn btn-sm btn-outline-warning btn-action-reject" data-id="${el.idappunto}" title="Rifiuta" aria-label="Rifiuta appunto">
-                <i class="bi bi-x-lg" aria-hidden="true"></i>
+                <em class="bi bi-x-lg" aria-hidden="true"></em>
                 <span class="visually-hidden">Rifiuta</span>
             </button>`;
 	}
 	buttons += `
         <button type="button" class="btn btn-sm btn-outline-danger btn-action-delete" data-id="${el.idappunto}" title="Elimina" aria-label="Elimina appunto">
-            <i class="bi bi-trash" aria-hidden="true"></i>
+            <em class="bi bi-trash" aria-hidden="true"></em>
             <span class="visually-hidden">Elimina</span>
         </button>`;
 	return `<div class="d-flex gap-2 mt-3 justify-content-end">${buttons}</div>`;
@@ -169,13 +169,13 @@ function handleDelete(btn) {
 
 	if (!btn.dataset.confirm) {
 		btn.dataset.confirm = "true";
-		btn.innerHTML = '<i class="bi bi-check-lg" aria-hidden="true"></i><span class="visually-hidden">Conferma eliminazione</span>';
+		btn.innerHTML = '<em class="bi bi-check-lg" aria-hidden="true"></em><span class="visually-hidden">Conferma eliminazione</span>';
 		btn.classList.remove("btn-outline-danger");
 		btn.classList.add("btn-danger");
 		setTimeout(() => {
 			if (btn.dataset.confirm) {
 				delete btn.dataset.confirm;
-				btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i> Elimina';
+				btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em> Elimina';
 				btn.classList.remove("btn-danger");
 				btn.classList.add("btn-outline-danger");
 			}
@@ -200,7 +200,7 @@ function handleDelete(btn) {
 			} else {
 				showError("Errore durante l'eliminazione");
 				btn.disabled = false;
-				btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i> Elimina';
+				btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em> Elimina';
 				delete btn.dataset.confirm;
 				btn.classList.remove("btn-danger");
 				btn.classList.add("btn-outline-danger");
@@ -209,7 +209,7 @@ function handleDelete(btn) {
 		.catch(() => {
 			showError("Errore di connessione");
 			btn.disabled = false;
-			btn.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i> Elimina';
+			btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em> Elimina';
 			delete btn.dataset.confirm;
 			btn.classList.remove("btn-danger");
 			btn.classList.add("btn-outline-danger");

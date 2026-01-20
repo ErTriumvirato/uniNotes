@@ -17,7 +17,7 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="mb-0"><?= $titoloFiltri ?></h3>
         <button class="btn btn-sm btn-outline-secondary d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#filtersCollapse" aria-expanded="false" aria-controls="filtersCollapse">
-            <i class="bi bi-filter"></i> Filtri
+            <em class="bi bi-filter"></em> Filtri
         </button>
     </div>
 
@@ -90,16 +90,16 @@ $appunti = $dbh->getArticlesWithFilters($nomeutente, $nomecorso, 'data_pubblicaz
                         <div class="d-flex gap-2 mt-3 justify-content-end">
                             <?php if ($appunto['stato'] === 'in_revisione'): ?>
                                 <button type="button" class="btn btn-sm btn-outline-success btn-action-approve" data-id="<?= $appunto['idappunto'] ?>" title="Approva" aria-label="Approva appunto">
-                                    <i class="bi bi-check-lg" aria-hidden="true"></i>
+                                    <em class="bi bi-check-lg" aria-hidden="true"></em>
                                     <span class="visually-hidden">Approva</span>
                                 </button>
                                 <button type="button" class="btn btn-sm btn-outline-warning btn-action-reject" data-id="<?= $appunto['idappunto'] ?>" title="Rifiuta" aria-label="Rifiuta appunto">
-                                    <i class="bi bi-x-lg" aria-hidden="true"></i>
+                                    <em class="bi bi-x-lg" aria-hidden="true"></em>
                                     <span class="visually-hidden">Rifiuta</span>
                                 </button>
                             <?php endif; ?>
                             <button type="button" class="btn btn-sm btn-outline-danger btn-action-delete" data-id="<?= $appunto['idappunto'] ?>" title="Elimina" aria-label="Elimina appunto">
-                                <i class="bi bi-trash" aria-hidden="true"></i>
+                                <em class="bi bi-trash" aria-hidden="true"></em>
                                 <span class="visually-hidden">Elimina</span>
                             </button>
                         </div>

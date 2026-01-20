@@ -30,14 +30,14 @@ if (!empty($appunto)) {
                                     <div class="d-flex gap-2" id="admin-actions">
                                         <?php if ($appunto['stato'] === 'in_revisione'): ?>
                                             <button type="button" class="btn btn-sm btn-outline-success btn-approve" data-id="<?= $appunto['idappunto'] ?>" title="Approva">
-                                                <i class="bi bi-check-lg" aria-hidden="true"></i>
+                                                <em class="bi bi-check-lg" aria-hidden="true"></em>
                                             </button>
                                             <button type="button" class="btn btn-sm btn-outline-warning btn-reject" data-id="<?= $appunto['idappunto'] ?>" title="Rifiuta">
-                                                <i class="bi bi-x-lg" aria-hidden="true"></i>
+                                                <em class="bi bi-x-lg" aria-hidden="true"></em>
                                             </button>
                                         <?php endif; ?>
                                         <button type="button" class="btn btn-sm btn-outline-danger btn-delete-article" data-id="<?= $appunto['idappunto'] ?>" title="Elimina">
-                                            <i class="bi bi-trash" aria-hidden="true"></i>
+                                            <em class="bi bi-trash" aria-hidden="true"></em>
                                         </button>
                                     </div>
                                 </div>
@@ -118,7 +118,7 @@ if (!empty($appunto)) {
                                         </span>
                                     </div>
                                     <button class="btn btn-sm btn-outline-danger delete-review-btn" data-review-id="<?php echo $userReview['idrecensione']; ?>" aria-label="Elimina recensione" title="Elimina">
-                                        <i class="bi bi-trash" aria-hidden="true"></i>
+                                        <em class="bi bi-trash" aria-hidden="true"></em>
                                     </button>
                                 </div>
                             <?php elseif (!isUserLoggedIn()): // Utente non loggato
