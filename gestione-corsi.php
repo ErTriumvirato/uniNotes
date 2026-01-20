@@ -71,6 +71,6 @@ if (!empty($action)) {
 
 $templateParams["titolo"] = "Gestione Corsi";
 $templateParams["nome"] = "templates/gestione-corsi-template.php";
-array_push($templateParams["script"], "js/gestione-corsi.js", "js/gestione-ssd.js");
+array_push($templateParams["script"], "js/gestione-corsi.js");
 
 require_once 'templates/base.php';

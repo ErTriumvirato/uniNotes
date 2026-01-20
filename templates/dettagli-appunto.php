@@ -12,16 +12,6 @@ if (!empty($appunto)) {
                     <header class="mb-4 border-bottom pb-3">
                         <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3">
                             <h1 class="display-5 fw-bold mb-3"><?php echo htmlspecialchars($appunto['titolo']); ?></h1>
-                            <div class="d-flex flex-column align-items-md-end gap-2">
-                                <div class="d-flex gap-3">
-                                    <span class="badge bg-light text-dark border p-2">
-                                        <?php echo (int)$appunto['numero_visualizzazioni']; ?> Visualizzazioni
-                                    </span>
-                                    <span id="avg-rating-badge" class="badge bg-light text-dark border p-2">
-                                        ★ <?php echo $appunto['media_recensioni'] ?: 'N/A'; ?> (<?php echo (int)($appunto['numero_recensioni'] ?? 0); ?>)
-                                    </span>
-                                </div>
-                            </div>
                         </div>
                         <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3">
                             <?php if (isUserAdmin()): ?>
@@ -66,6 +56,15 @@ if (!empty($appunto)) {
                             <div>
                                 <span><?php echo date_format(date_create($appunto['data_pubblicazione']), 'd/m/Y H:i'); ?></span>
                             </div>
+                            <div class="vr d-none d-md-block"></div>
+                            <div class="d-flex gap-2">
+                                <span class="badge bg-light text-dark border p-2">
+                                    <?php echo (int)$appunto['numero_visualizzazioni']; ?> Visualizzazioni
+                                </span>
+                                <span id="avg-rating-badge" class="badge bg-light text-dark border p-2">
+                                    ★ <?php echo $appunto['media_recensioni'] ?: 'N/A'; ?> (<?php echo (int)($appunto['numero_recensioni'] ?? 0); ?>)
+                                </span>
+                            </div>
                         </div>
                     </header>
 
@@ -77,7 +76,7 @@ if (!empty($appunto)) {
                     $isAuthor = isUserLoggedIn() && $_SESSION['idutente'] == $appunto['idutente'];
                     if (($appunto['stato'] === 'approvato' || isUserAdmin()) && !$isAuthor):
                     ?>
-                        <section aria-label="Sezione Recensioni" id="reviews-section" class="mb-4 pt-4 border-top <?php echo ($appunto['stato'] !== 'approvato') ? 'd-none' : ''; ?>">
+                        <section aria-label="Sezione Recensioni" id="reviews-section" class="mb-0 pt-4 border-top <?php echo ($appunto['stato'] !== 'approvato') ? 'd-none' : ''; ?>">
                             <h2 class="visually-hidden">Recensioni</h2>
                             <?php
                             $userReview = (isUserLoggedIn() && !$isAuthor) ? $dbh->getUserReview($appunto['idappunto'], $_SESSION['idutente']) : null;

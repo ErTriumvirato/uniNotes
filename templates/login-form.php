@@ -5,8 +5,9 @@
                 <h2 class="text-center mb-4">Accedi</h2>
 
                 <?php if (isset($templateParams["error"])): ?>
-                    <div class="alert alert-danger" role="alert">
-                        <?php echo htmlspecialchars($templateParams["error"]); ?>
+                    <div id="server-message" 
+                         data-message="<?php echo htmlspecialchars($templateParams['error']); ?>" 
+                         data-type="danger">
                     </div>
                 <?php endif; ?>
 

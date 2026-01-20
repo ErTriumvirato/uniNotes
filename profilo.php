@@ -29,5 +29,6 @@ $templateParams["stats"] = [
 // templateParams
 $templateParams["titolo"] = "Profilo di " . $profiloUtente['username'];
 $templateParams["nome"] = "templates/profilo-utente.php";
+array_push($templateParams["script"], "js/appunti.js");
 
 require_once 'templates/base.php';
