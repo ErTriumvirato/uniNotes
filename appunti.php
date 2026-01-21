@@ -3,24 +3,39 @@ require_once 'config.php';
 
 // Handle POST actions (approve, reject, delete)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'], $_POST['idappunto'])) {
-    requireLogin();
-
-    if (!isUserAdmin()) {
-        header('Content-Type: application/json');
-        echo json_encode(['success' => false, 'message' => 'Non autorizzato']);
-        exit;
-    }
+    //requireLogin();
 
     $action = $_POST['action'];
     $id = intval($_POST['idappunto']);
     $success = false;
 
-    if ($action === 'approve') {
-        $success = $dbh->approveNote($id);
-    } elseif ($action === 'reject') {
-        $success = $dbh->rejectNote($id);
-    } elseif ($action === 'delete') {
-        $success = $dbh->deleteNote($id);
+    if ($action === 'delete') {
+        // Per l'eliminazione, controlliamo se l'utente è admin O se è l'autore dell'appunto
+        if (isUserAdmin()) {
+            $success = $dbh->deleteNote($id);
+        } else {
+            $note = $dbh->getNoteById($id);
+            if ($note && $note['idutente'] == $_SESSION['idutente']) {
+                $success = $dbh->deleteNote($id);
+            } else {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => 'Non autorizzato']);
+                exit;
+            }
+        }
+    } elseif ($action === 'approve' || $action === 'reject') {
+        // Approvazione e rifiuto sono solo per admin
+        if (!isUserAdmin()) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => 'Non autorizzato']);
+            exit;
+        }
+
+        if ($action === 'approve') {
+            $success = $dbh->approveNote($id);
+        } elseif ($action === 'reject') {
+            $success = $dbh->rejectNote($id);
+        }
     }
 
     header('Content-Type: application/json');

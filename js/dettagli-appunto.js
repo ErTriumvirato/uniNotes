@@ -208,7 +208,7 @@ function handleDeleteNote(btn) {
 	// Invia la richiesta AJAX per eliminare l'appunto (definita in base.js)
 	handleButtonAction(btn, "appunti.php", `action=delete&idappunto=${id}`, (data) => {
 		if (data.success) {
-			window.location.href = "gestione-appunti.php";
+			goBack(); // Torna alla pagina precedente
 		} else {
 			showError("Errore durante l'eliminazione");
 			resetDeleteNoteButton(btn);
@@ -218,7 +218,8 @@ function handleDeleteNote(btn) {
 
 // Inizializzazione del modulo di recensioni
 const container = document.getElementById("user-review-interaction"); // Contenitore del modulo di recensioni
-if (container.dataset.config) {
+if (container && container.dataset.config) {
+	// Se il contenitore esiste e ha una configurazione
 	try {
 		const config = JSON.parse(container.dataset.config); // Configurazione passata dal server (dettagli-appunto.php)
 
