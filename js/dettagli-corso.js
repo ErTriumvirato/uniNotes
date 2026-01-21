@@ -1,6 +1,6 @@
-"use strict";
-
+// Gestisce follow e unfollow dei corsi
 function handleFollowClick(button) {
+	// Invia richiesta AJAX per seguire o smettere di seguire il corso (definita in base.js)
 	handleButtonAction(
 		button,
 		"corso.php?id=" + encodeURIComponent(button.dataset.idcorso),
@@ -16,6 +16,4 @@ function handleFollowClick(button) {
 }
 
 const followBtn = document.getElementById("followBtn");
-if (followBtn) {
-	followBtn.addEventListener("click", () => handleFollowClick(followBtn));
-}
+followBtn.addEventListener("click", () => handleFollowClick(followBtn));

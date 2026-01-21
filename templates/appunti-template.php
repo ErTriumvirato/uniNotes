@@ -20,7 +20,7 @@ $defaultMessage = $templateParams["defaultMessage"] ?? "Nessun appunto disponibi
     <div class="row g-2 align-items-end collapse d-md-flex" id="filtersCollapse">
         <div class="col-12 col-md-4">
             <label for="ajax-search" class="form-label small text-muted">Cerca</label>
-            <input type="text" id="ajax-search" class="form-control form-control-sm" placeholder="Cerca appunti..." value="<?= htmlspecialchars($search) ?>" />
+            <input type="text" id="ajax-search" class="form-control form-control-sm" placeholder="Cerca appunti" value="<?= htmlspecialchars($search) ?>" />
         </div>
         <?php if ($showApprovalFilter): ?>
             <div class="col-6 col-md-2">
@@ -54,9 +54,4 @@ $defaultMessage = $templateParams["defaultMessage"] ?? "Nessun appunto disponibi
 <section aria-label="Lista appunti" id="notes-container" data-idutente="<?= htmlspecialchars($idutente) ?>" data-idcorso="<?= htmlspecialchars($idcorso) ?>" data-defaultMessage="<?= htmlspecialchars($defaultMessage) ?>" data-showActions=<?= $showActions ? "true" : "false" ?> class="d-flex flex-column gap-3" aria-live="polite">
     <h2 class="visually-hidden">Lista appunti</h2>
     <!-- Caricamento contenuto con AJAX -->
-    <div class="text-center">
-        <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Caricamento...</span>
-        </div>
-    </div>
 </section>

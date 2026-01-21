@@ -1,12 +1,12 @@
-"use strict";
-
 let courseModalBS = new bootstrap.Modal(document.getElementById("courseModal"));
+
 loadFiltersSSDs();
 loadCourses();
 
 document.getElementById("btn-new-course").addEventListener("click", openCourseModal);
 document.getElementById("btn-save-course").addEventListener("click", saveCourse);
 
+// Gestisce la creazione di un nuovo corso
 function createCourseRow(course) {
 	return `
 		<tr>

@@ -1,6 +1,4 @@
-"use strict";
-
-// Helper functions (Templates)
+// Genera l'HTML per il form di recensione
 function getReviewFormHTML(idappunto) {
 	return `
         <div id="review-form-container">
@@ -10,7 +8,7 @@ function getReviewFormHTML(idappunto) {
                     <div class="col-8 col-sm-6 col-md-4">
                         <label for="valutazione" class="form-label visually-hidden">Valutazione</label>
                         <select name="valutazione" id="valutazione" class="form-select text-center" required>
-                            <option value="" selected disabled>Vota...</option>
+                            <option value="" selected disabled>Vota</option>
                             <option value="5">5 - Eccellente</option>
                             <option value="4">4 - Molto Buono</option>
                             <option value="3">3 - Buono</option>
@@ -27,6 +25,7 @@ function getReviewFormHTML(idappunto) {
     `;
 }
 
+// Genera l'HTML per la visualizzazione della recensione lasciata in precedenza dall'utente
 function getReviewDisplayHTML(review, idappunto) {
 	const stars = "★".repeat(review.valutazione) + "☆".repeat(5 - review.valutazione);
 	return `
@@ -42,6 +41,7 @@ function getReviewDisplayHTML(review, idappunto) {
     `;
 }
 
+// Genera l'HTML per il prompt di login (se l'utente non è loggato)
 function getLoginPromptHTML(loginUrl) {
 	return `
         <p class="mb-0 text-muted">
@@ -50,150 +50,164 @@ function getLoginPromptHTML(loginUrl) {
     `;
 }
 
-// Funzione per gestire il submit del form di recensione
+// Funzione per gestire l'aggiunta di una recensione
 function handleReviewFormSubmit(e) {
-	e.preventDefault();
+	e.preventDefault(); // Impedisce il comportamento di submit predefinito (non ricarica la pagina)
 
-	const form = e.target;
-	const idappunto = form.dataset.idappunto;
-	const valutazioneSelect = form.querySelector("#valutazione");
-	const valutazione = valutazioneSelect ? valutazioneSelect.value : null;
-	const submitBtn = form.querySelector('button[type="submit"]');
+	const form = e.target; // Ottiene il form
+	const idappunto = form.dataset.idappunto; // ID dell'appunto dal dataset del form
+	const valutazioneSelect = form.querySelector("#valutazione"); // Select della valutazione
+	const valutazione = valutazioneSelect.value; // Valutazione selezionata
+	const submitBtn = form.querySelector('button[type="submit"]'); // Bottone di submit
 
-	if (!valutazione) {
-		return;
-	}
+	// Invia la richiesta AJAX per aggiungere la recensione (definita in base.js)
+	handleButtonAction(
+		submitBtn,
+		`appunto.php?id=${idappunto}`,
+		`valutazione=${encodeURIComponent(valutazione)}&ajax=1`,
+		(data) => {
+			if (data.success) {
+				// Se la recensione è stata aggiunta con successo
+				const container = document.getElementById("review-form-container"); // Contenitore del form
+				container.outerHTML = getReviewDisplayHTML(data.review, idappunto); // Sostituisce il form con la visualizzazione della recensione
 
-	handleButtonAction(submitBtn, `appunto.php?id=${idappunto}`, `valutazione=${encodeURIComponent(valutazione)}&ajax=1`, (data) => {
-		if (data.success) {
-			const container = document.getElementById("review-form-container");
-			if (container) container.outerHTML = getReviewDisplayHTML(data.review, idappunto);
+				const avgBadge = document.getElementById("avg-rating-badge"); // Badge della valutazione media
+				avgBadge.textContent = "★ " + data.new_avg + " (" + data.new_count + ")"; // Aggiorna la valutazione media
 
-			const avgBadge = document.getElementById("avg-rating-badge");
-			if (avgBadge) avgBadge.textContent = "★ " + data.new_avg + " (" + data.new_count + ")";
-		}
-	});
+				const deleteBtn = document.querySelector(".delete-review-btn");
+				if (deleteBtn) {
+					deleteBtn.addEventListener("click", () => handleDeleteReview(deleteBtn));
+				}
+			}
+		},
+	);
 }
 
 // Gestione eliminazione recensioni
 function handleDeleteReview(btn) {
-	const idrecensione = btn.dataset.reviewId;
-	const reviewCard = document.getElementById("already-reviewed-container");
+	const idrecensione = btn.dataset.reviewId; // ID della recensione da eliminare
+	const reviewCard = document.getElementById("already-reviewed-container"); // Contenitore della recensione
 
 	if (!btn.dataset.confirm) {
-		btn.dataset.confirm = "true";
-		btn.innerHTML = '<em class="bi bi-check-lg"></em>';
-		btn.classList.remove("btn-outline-danger");
-		btn.classList.add("btn-danger");
+		// Se non è stato confermato
+		btn.dataset.confirm = "true"; // Imposta il flag di conferma
+		btn.innerHTML = '<em class="bi bi-check-lg"></em>'; // Cambia l'icona del bottone
+		btn.classList.remove("btn-outline-danger"); // Rimuove la classe di stile originale
+		btn.classList.add("btn-danger"); // Aggiunge la classe di stile di conferma
 		setTimeout(() => {
-			if (btn && btn.dataset.confirm) {
-				delete btn.dataset.confirm;
-				btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em>';
-				btn.classList.remove("btn-danger");
-				btn.classList.add("btn-outline-danger");
+			// Resetta il bottone dopo 3 secondi se non confermato
+			if (btn.dataset.confirm) {
+				// Se il flag di conferma è ancora presente
+				delete btn.dataset.confirm; // Rimuove il flag di conferma
+				btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em>'; // Ripristina l'icona originale
+				btn.classList.remove("btn-danger"); // Rimuove la classe di stile di conferma
+				btn.classList.add("btn-outline-danger"); // Ripristina la classe di stile originale
 			}
 		}, 3000);
 		return;
 	}
 
-	if (!reviewCard || !reviewCard.dataset.idappunto) {
-		console.error("ID Appunto mancante nel container");
-		return;
-	}
+	const idappunto = reviewCard.dataset.idappunto; // ID dell'appunto dal dataset del contenitore della recensione
 
-	const idappunto = reviewCard.dataset.idappunto;
-
+	// Invia la richiesta AJAX per eliminare la recensione (definita in base.js)
 	handleButtonAction(btn, `appunto.php?id=${idappunto}`, `deleteReview=${encodeURIComponent(idrecensione)}&ajax=1`, (data) => {
 		if (data.success) {
 			setTimeout(() => {
-				reviewCard.outerHTML = getReviewFormHTML(idappunto);
+				reviewCard.outerHTML = getReviewFormHTML(idappunto); // Sostituisce la recensione con il form di recensione
 
 				const avgBadge = document.getElementById("avg-rating-badge");
 				if (avgBadge) avgBadge.textContent = "★ " + data.new_avg + " (" + data.new_count + ")";
 
 				const reviewsList = document.getElementById("reviews-list");
 				if (reviewsList) reviewsList.innerHTML = '<div class="d-flex flex-column gap-3"></div>';
+
+				const newForm = document.getElementById("review-form");
+				if (newForm) {
+					newForm.addEventListener("submit", handleReviewFormSubmit);
+				}
 			}, 300);
 		} else {
-			showError(data.message || "Errore durante l'eliminazione della recensione.");
-			btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em>';
+			// Se c'è stato un errore durante l'eliminazione
+			showError(data.message || "Errore durante l'eliminazione della recensione."); // Mostra un messaggio di errore
+			btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em>'; // Ripristina l'icona originale
 		}
 	});
 }
 
-// Handler per approvazione articolo
+// Approvazione articolo (per admin)
 function handleApprove(id) {
+	// Invia la richiesta AJAX per approvare l'appunto (definita in base.js)
 	handleButtonAction(null, "appunti.php", `action=approve&idappunto=${id}`, (data) => {
 		if (data.success) {
+			// Se l'approvazione è andata a buon fine
 			const badge = document.getElementById("status-badge");
-			if (badge) {
-				badge.className = "badge bg-success";
-				badge.textContent = "Approvato";
-			}
+			badge.className = "badge bg-success"; // Cambia la classe del badge di stato
+			badge.textContent = "Approvato"; // Aggiorna il testo del badge di stato
 
-			const adminActions = document.getElementById("admin-actions");
-			if (adminActions) {
-				adminActions.querySelector(".btn-approve")?.remove();
-				adminActions.querySelector(".btn-reject")?.remove();
-			}
+			// Rimuove i bottoni di approvazione/rifiuto
+			const adminActions = document.getElementById("admin-actions"); // Contenitore delle azioni admin
+			adminActions.querySelector(".btn-approve")?.remove();
+			adminActions.querySelector(".btn-reject")?.remove();
 
+			// Mostra la sezione delle recensioni
 			const reviewsSection = document.getElementById("reviews-section");
-			if (reviewsSection) {
-				reviewsSection.classList.remove("d-none");
-				reviewsSection.style.display = "block";
-			}
+			reviewsSection.classList.remove("d-none");
+			reviewsSection.style.display = "block";
 
-			showSuccess("Appunto approvato con successo");
+			showSuccess("Appunto approvato con successo"); // Mostra un messaggio di successo
 		} else {
-			showError("Errore durante l'approvazione");
+			showError("Errore durante l'approvazione"); // Mostra un messaggio di errore
 		}
 	});
 }
 
-// Handler per rifiuto articolo
+// Rifiuto articolo
 function handleReject(id) {
+	// Invia la richiesta AJAX per rifiutare l'appunto (definita in base.js)
 	handleButtonAction(null, "appunti.php", `action=reject&idappunto=${id}`, (data) => {
 		if (data.success) {
+			// Se il rifiuto è andato a buon fine
+			// Aggiorna il badge di stato
 			const badge = document.getElementById("status-badge");
-			if (badge) {
-				badge.className = "badge bg-danger";
-				badge.textContent = "Rifiutato";
-			}
+			badge.className = "badge bg-danger";
+			badge.textContent = "Rifiutato";
 
+			// Rimuove i bottoni di approvazione/rifiuto
 			const adminActions = document.getElementById("admin-actions");
-			if (adminActions) {
-				adminActions.querySelector(".btn-approve")?.remove();
-				adminActions.querySelector(".btn-reject")?.remove();
-			}
+			adminActions.querySelector(".btn-approve")?.remove();
+			adminActions.querySelector(".btn-reject")?.remove();
 
-			showSuccess("Appunto rifiutato con successo");
+			showSuccess("Appunto rifiutato con successo"); // Mostra un messaggio di successo
 		} else {
-			showError("Errore durante il rifiuto");
+			showError("Errore durante il rifiuto"); // Mostra un messaggio di errore
 		}
 	});
 }
 
-// Resetta il bottone elimina allo stato iniziale
+// Resetta il bottone elimina allo stato iniziale (cestino)
 function resetDeleteNoteButton(btn) {
-	delete btn.dataset.confirm;
-	btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em>';
-	btn.classList.replace("btn-danger", "btn-outline-danger");
+	delete btn.dataset.confirm; // Rimuove il flag di conferma
+	btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em>'; // Ripristina l'icona originale (cestino)
+	btn.classList.replace("btn-danger", "btn-outline-danger"); // Ripristina la classe di stile originale
 }
 
-// Handler per eliminazione articolo
+// Eliminazione articolo
 function handleDeleteNote(btn) {
-	const id = btn.dataset.id;
+	const id = btn.dataset.id; // ID dell'appunto da eliminare
 
 	if (!btn.dataset.confirm) {
-		btn.dataset.confirm = "true";
-		btn.innerHTML = '<em class="bi bi-check-lg"></em>';
-		btn.classList.replace("btn-outline-danger", "btn-danger");
+		// Se non è stato confermato
+		btn.dataset.confirm = "true"; // Imposta il flag di conferma
+		btn.innerHTML = '<em class="bi bi-check-lg"></em>'; // Cambia l'icona del bottone (check)
+		btn.classList.replace("btn-outline-danger", "btn-danger"); // Cambia la classe di stile per indicare conferma
 		setTimeout(() => {
+			// Resetta il bottone dopo 3 secondi se non confermato
 			if (btn?.dataset.confirm) resetDeleteNoteButton(btn);
 		}, 3000);
 		return;
 	}
 
+	// Invia la richiesta AJAX per eliminare l'appunto (definita in base.js)
 	handleButtonAction(btn, "appunti.php", `action=delete&idappunto=${id}`, (data) => {
 		if (data.success) {
 			window.location.href = "gestione-appunti.php";
@@ -204,54 +218,48 @@ function handleDeleteNote(btn) {
 	});
 }
 
-// Initialize User Review Section
-	const container = document.getElementById("user-review-interaction");
-	if (container && container.dataset.config) {
-		try {
-			const config = JSON.parse(container.dataset.config);
+// Inizializzazione del modulo di recensioni
+const container = document.getElementById("user-review-interaction"); // Contenitore del modulo di recensioni
+if (container.dataset.config) {
+	try {
+		const config = JSON.parse(container.dataset.config); // Configurazione passata dal server (dettagli-appunto.php)
 
-			if (!config.isLoggedIn) {
-				container.innerHTML = getLoginPromptHTML(config.loginUrl);
-			} else if (config.userReview) {
-				container.innerHTML = getReviewDisplayHTML(config.userReview, config.idappunto);
-			} else {
-				container.innerHTML = getReviewFormHTML(config.idappunto);
-			}
-
-			// Event Delegation for dynamic elements
-			container.addEventListener("submit", (e) => {
-				if (e.target && e.target.id === "review-form") {
-					handleReviewFormSubmit(e);
-				}
-			});
-
-			container.addEventListener("click", (e) => {
-				const btn = e.target.closest(".delete-review-btn");
-				if (btn) {
-					handleDeleteReview(btn);
-				}
-			});
-
-		} catch (e) {
-			console.error("Error parsing review config", e);
+		if (!config.isLoggedIn) {
+			// Se l'utente non è loggato
+			container.innerHTML = getLoginPromptHTML(config.loginUrl); // Mostra il prompt di login
+		} else if (config.userReview) {
+			// Se l'utente ha già lasciato una recensione
+			container.innerHTML = getReviewDisplayHTML(config.userReview, config.idappunto); // Mostra la recensione lasciata
+			const deleteBtn = container.querySelector(".delete-review-btn"); // Bottone di eliminazione recensione
+			deleteBtn.addEventListener("click", () => handleDeleteReview(deleteBtn)); // Aggiunge il listener per l'eliminazione della recensione
+		} else {
+			// Se l'utente non ha ancora lasciato una recensione
+			container.innerHTML = getReviewFormHTML(config.idappunto); // Mostra il form di recensione
+			const form = container.querySelector("#review-form"); // Form di recensione
+			form.addEventListener("submit", handleReviewFormSubmit); // Aggiunge il listener per il submit del form
 		}
+	} catch (e) {
+		showError("Errore nel caricamento del modulo di recensione."); // Mostra un messaggio di errore
 	}
+}
 
-	// Listener diretti only for static elements (Note Admin Actions)
-	document.querySelectorAll(".btn-approve").forEach((btn) => {
-		btn.addEventListener("click", () => {
-			const id = btn.dataset.id;
-			if (id) handleApprove(id);
-		});
+// Aggiunge i listener per i bottoni di approvazione
+document.querySelectorAll(".btn-approve").forEach((btn) => {
+	btn.addEventListener("click", () => {
+		const id = btn.dataset.id;
+		handleApprove(id);
 	});
+});
 
-	document.querySelectorAll(".btn-reject").forEach((btn) => {
-		btn.addEventListener("click", () => {
-			const id = btn.dataset.id;
-			if (id) handleReject(id);
-		});
+// Aggiunge i listener per i bottoni di rifiuto
+document.querySelectorAll(".btn-reject").forEach((btn) => {
+	btn.addEventListener("click", () => {
+		const id = btn.dataset.id;
+		handleReject(id);
 	});
+});
 
-	document.querySelectorAll(".btn-delete-note").forEach((btn) => {
-		btn.addEventListener("click", () => handleDeleteNote(btn));
-	});
+// Aggiunge i listener per i bottoni di eliminazione appunto
+document.querySelectorAll(".btn-delete-note").forEach((btn) => {
+	btn.addEventListener("click", () => handleDeleteNote(btn));
+});

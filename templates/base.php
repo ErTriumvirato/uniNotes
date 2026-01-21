@@ -13,28 +13,26 @@
 
 <body class="d-flex flex-column min-vh-100">
 
-    <!-- Navbar -->
     <header>
+        <!-- Barra di navigazione -->
         <nav class="navbar navbar-expand-lg navbar-light shadow-sm fixed-top" aria-label="Barra di navigazione">
             <div class="container-fluid">
-                <div class="d-flex align-items-center gap-3">
-                    <!-- Burger button per dispositivi mobile -->
-                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Apri menu di navigazione">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <!-- Logo -->
-                    <a class="navbar-brand" href="index.php">
-                        <img src="uploads/img/logo.png" alt="Logo uniNotes" class="logo-img" />
-                    </a>
-                </div>
+                <!-- Logo -->
+                <a class="navbar-brand" href="index.php">
+                    <img src="uploads/img/logo.png" alt="Logo uniNotes" class="logo-img" />
+                </a>
 
-                <div class="offcanvas offcanvas-start flex-grow-1" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                    <!-- Menu di navigazione dispositivi mobile -->
-                    <div class="offcanvas-header">
-                        <h2 class="offcanvas-title h5" id="offcanvasNavbarLabel">Menu</h2>
-                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Chiudi menu di navigazione"></button>
+                <!-- Pulsante menu per dispositivi mobile -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas" aria-controls="navbarOffcanvas" aria-label="Apri menu di navigazione">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Menu di navigazione -->
+                <div class="offcanvas offcanvas-end flex-lg-grow-1" tabindex="-1" id="navbarOffcanvas" aria-labelledby="navbarOffcanvasLabel">
+                    <div class="offcanvas-header d-lg-none">
+                        <h5 class="offcanvas-title" id="navbarOffcanvasLabel">Menu</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Chiudi"></button>
                     </div>
-                    <!-- Menu di navigazione -->
                     <div class="offcanvas-body">
                         <ul class="navbar-nav mx-auto mb-2 mb-lg-0 text-center">
                             <li class="nav-item">
@@ -43,38 +41,40 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="corsi.php">Corsi</a>
                             </li>
-                            <!-- Mostra il tasto "Carica" solo se l'utente è loggato -->
                             <?php if (isUserLoggedIn()) { ?>
                                 <li class="nav-item">
                                     <a class="nav-link" href="creazione-appunti.php">Carica</a>
                                 </li>
                             <?php } ?>
-                            <!-- Mostra il tasto "Area amministrazione" solo se l'utente è un admin -->
                             <?php if (isUserAdmin()) { ?>
                                 <li class="nav-item">
                                     <a class="nav-link" href="area-admin.php">Area amministrazione</a>
                                 </li>
                             <?php } ?>
                         </ul>
-                    </div>
-                </div>
 
-                <!-- Pulsante di accesso o menu utente -->
-                <div class="d-flex justify-content-end align-items-center gap-2">
-                    <?php if (!isUserLoggedIn()) { ?>
-                        <a href="login.php" class="btn btn-primary btn-sm px-4">Accedi</a>
-                    <?php } else { ?>
-                        <nav class="user-menu" aria-label="Menu utente">
-                            <button type="button" class="nav-link user-menu-btn" aria-expanded="false" aria-haspopup="true" aria-controls="user-dropdown" aria-label="Apri menu utente">
-                                <?php echo htmlspecialchars($_SESSION['username']); ?>
-                            </button>
-                            <ul id="user-dropdown" class="user-dropdown" role="menu" aria-label="Menu utente">
-                                <li role="none"><a href="profilo.php" class="user-dropdown-item" role="menuitem">Profilo</a></li>
-                                <li role="none"><a href="impostazioni.php" class="user-dropdown-item" role="menuitem">Impostazioni</a></li>
-                                <li role="none"><a href="logout.php" class="user-dropdown-item text-danger" role="menuitem">Esci</a></li>
-                            </ul>
-                        </nav>
-                    <?php } ?>
+                        <!-- Menu utente -->
+                        <?php if (!isUserLoggedIn()) { ?>
+                            <div class="d-flex justify-content-center">
+                                <a href="login.php" class="btn btn-primary">Accedi</a>
+                            </div>
+                        <?php } else { ?>
+                            <div class="dropdown user-menu">
+                                <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-person-circle me-1"></i>
+                                    <?php echo htmlspecialchars($_SESSION['username']); ?>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="profilo.php">Profilo</a></li>
+                                    <li><a class="dropdown-item" href="impostazioni.php">Impostazioni</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item text-danger" href="logout.php">Esci</a></li>
+                                </ul>
+                            </div>
+                        <?php } ?>
+                    </div>
                 </div>
             </div>
         </nav>

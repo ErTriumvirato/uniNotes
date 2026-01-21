@@ -28,7 +28,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="confirm_password" class="form-label">Ripeti password</label>
+                        <label for="confirm_password" class="form-label">Ripeti password <small class="text-muted">(lascia vuoto per non cambiare)</small></label>
                         <input type="password" class="form-control" id="confirm_password" name="confirm_password" />
                     </div>
 

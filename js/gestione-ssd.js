@@ -1,5 +1,3 @@
-"use strict";
-
 let ssdModalBS = new bootstrap.Modal(document.getElementById("ssdModal"));
 
 document.getElementById("btn-new-ssd").addEventListener("click", openSSDModal);

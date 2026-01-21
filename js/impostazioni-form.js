@@ -1,36 +1,37 @@
-"use strict";
+const serverMessage = document.getElementById("server-message"); // Messaggio dal server (di successo o errore)
 
-const serverMessage = document.getElementById("server-message");
 if (serverMessage) {
 	const message = serverMessage.dataset.message;
 	const type = serverMessage.dataset.type;
 	if (type === "success") {
-		showSuccess(message);
+		showSuccess(message); // Banner di successo
 	} else {
-		showError(message);
+		showError(message); // Banner di errore
 	}
 }
 
+// Aggiunge il listener al pulsante di eliminazione account
 const btnDeleteAccount = document.getElementById("btn-delete-account");
-if (btnDeleteAccount) {
-	btnDeleteAccount.addEventListener("click", () => handleDeleteAccount(btnDeleteAccount));
-}
+btnDeleteAccount.addEventListener("click", () => handleDeleteAccount(btnDeleteAccount));
 
+// Eliminazione account con conferma
 function handleDeleteAccount(btn) {
 	if (!btn.dataset.confirm) {
-		btn.dataset.confirm = "true";
-		btn.textContent = "Conferma eliminazione";
-		btn.classList.remove("btn-outline-danger");
-		btn.classList.add("btn-danger");
+		// Se non è ancora stato confermato (è richiesta la conferma)
+		btn.dataset.confirm = "true"; // Imposta il flag di conferma
+		btn.textContent = "Conferma eliminazione"; // Cambia il testo del pulsante
+		btn.classList.remove("btn-outline-danger"); // Rimuove lo stile precedente
+		btn.classList.add("btn-danger"); // Cambia lo stile del pulsante
 		setTimeout(() => {
+			// Dopo 3 secondi, resetta il pulsante se non è stato cliccato di nuovo
 			if (btn.dataset.confirm) {
-				delete btn.dataset.confirm;
-				btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em> Elimina account';
-				btn.classList.remove("btn-danger");
-				btn.classList.add("btn-outline-danger");
+				delete btn.dataset.confirm; // Rimuove il flag di conferma
+				btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em> Elimina account'; // Ripristina il testo originale
+				btn.classList.remove("btn-danger"); // Rimuove lo stile di conferma
+				btn.classList.add("btn-outline-danger"); // Ripristina lo stile originale
 			}
 		}, 3000);
 		return;
 	}
-	document.getElementById("deleteAccountForm").submit();
+	document.getElementById("deleteAccountForm").submit(); // Invia il modulo di eliminazione account
 }

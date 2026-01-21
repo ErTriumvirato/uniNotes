@@ -1,8 +1,4 @@
-"use strict";
-
-let userModalBS = null;
-
-userModalBS = new bootstrap.Modal(document.getElementById("userModal"));
+let userModalBS = new bootstrap.Modal(document.getElementById("userModal")); // Inizializza il modal di Bootstrap
 
 document.getElementById("btn-new-user").addEventListener("click", openUserModal);
 document.getElementById("btn-save-user").addEventListener("click", saveUser);

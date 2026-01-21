@@ -10,7 +10,7 @@ class DatabaseHelper
         try {
             $this->db = new mysqli($servername, $username, $password, $dbname, $port);
             if ($this->db->connect_error) {
-                $this->errorConnection = "Impossibile connettersi al database";
+                $this->errorConnection = "Non è stato possibile raggiungere il database";
             }
         } catch (Exception $e) {
             $this->errorConnection = "Impossibile connettersi al database";
