@@ -18,7 +18,7 @@
             <?php
             $searchId = 'searchCourse';
             $ssdId = 'filterSSD';
-            $searchCallback = 'debouncedLoadCourses()';
+            $searchCallback = 'loadCourses()';
             $ssdCallback = 'loadCourses()';
             $showFollowFilter = false;
             require 'filtri-corsi.php';

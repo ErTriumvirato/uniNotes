@@ -1,32 +1,13 @@
 "use strict";
 
-let courseModalBS = null;
-let searchTimeout = null;
+let courseModalBS = new bootstrap.Modal(document.getElementById("courseModal"));
+loadFiltersSSDs();
+loadCourses();
 
-document.addEventListener("DOMContentLoaded", function () {
-	courseModalBS = new bootstrap.Modal(document.getElementById("courseModal"));
-	loadFiltersSSDs();
-	loadCourses();
+document.getElementById("btn-new-course").addEventListener("click", openCourseModal);
+document.getElementById("btn-save-course").addEventListener("click", saveCourse);
 
-	document.getElementById("btn-new-course").addEventListener("click", openCourseModal);
-	document.getElementById("btn-save-course").addEventListener("click", saveCourse);
 
-	document.getElementById("coursesTableBody").addEventListener("click", (e) => {
-		const btn = e.target.closest("button");
-		if (!btn) return;
-
-		if (btn.classList.contains("btn-edit-course")) {
-			editCourse(btn.dataset.id);
-		} else if (btn.classList.contains("btn-delete-course")) {
-			deleteCourse(btn.dataset.id, btn);
-		}
-	});
-});
-
-function debouncedLoadCourses() {
-	clearTimeout(searchTimeout);
-	searchTimeout = setTimeout(loadCourses, 300);
-}
 
 function loadCourses() {
 	const search = document.getElementById("searchCourse").value;
@@ -37,9 +18,9 @@ function loadCourses() {
 		.then((data) => {
 			if (data.success) {
 				const tbody = document.getElementById("coursesTableBody");
-				tbody.innerHTML = "";
+				let html = "";
 				data.data.forEach((course) => {
-					tbody.innerHTML += `
+					html += `
                                 <tr>
                                     <td class="text-break">${course.nomeCorso}</td>
                                     <td class="">${course.nomeSSD}</td>
@@ -57,6 +38,19 @@ function loadCourses() {
                                     </td>
                                 </tr>
                             `;
+				});
+				tbody.innerHTML = html;
+
+				document.querySelectorAll(".btn-edit-course").forEach((btn) => {
+					btn.addEventListener("click", () => {
+						editCourse(btn.dataset.id);
+					});
+				});
+
+				document.querySelectorAll(".btn-delete-course").forEach((btn) => {
+					btn.addEventListener("click", () => {
+						deleteCourse(btn.dataset.id, btn);
+					});
 				});
 			}
 		});

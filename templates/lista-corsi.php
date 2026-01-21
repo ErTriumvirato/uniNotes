@@ -16,6 +16,8 @@ $showFollowFilter = !empty($idutente);
 require 'filtri-corsi.php';
 ?>
 
+
+<!-- Lista corsi -->
 <section id="courses-container" class="row g-4" aria-label="Lista corsi" aria-live="polite">
     <h2 class="visually-hidden">Lista corsi</h2>
     <?php foreach ($corsi as $corso):

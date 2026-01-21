@@ -7,7 +7,6 @@ $showApprovalFilter = $isAdmin; // Mostra il filtro di approvazione solo per adm
 $approvalFilter = $showApprovalFilter ? ($templateParams["approvalFilter"] ?? 'all') : 'approved'; // Filtro approvazione: 'approved', 'pending', 'all', 'refused' (default: 'approved', 'all' per admin)
 $showActions = $isAdmin; // Mostra i tasti solo per admin
 $defaultMessage = $templateParams["defaultMessage"] ?? "Nessun appunto disponibile.";
-// $notes = $dbh->getNotesWithFilters(idutente: $idutente, idcorso: $idcorso, sort: 'data_pubblicazione', order: 'DESC', search: $search, approvalFilter: $approvalFilter);
 ?>
 
 <section aria-label="Filtri appunti" class="mb-4">

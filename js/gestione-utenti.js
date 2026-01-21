@@ -1,34 +1,15 @@
 "use strict";
 
 let userModalBS = null;
-let searchTimeout = null;
 
-document.addEventListener("DOMContentLoaded", function () {
-	userModalBS = new bootstrap.Modal(document.getElementById("userModal"));
+userModalBS = new bootstrap.Modal(document.getElementById("userModal"));
 
-	document.getElementById("btn-new-user").addEventListener("click", openUserModal);
-	document.getElementById("btn-save-user").addEventListener("click", saveUser);
-	document.getElementById("searchUser").addEventListener("input", debouncedLoadUsers);
-	document.getElementById("filterRole").addEventListener("change", loadUsers);
+document.getElementById("btn-new-user").addEventListener("click", openUserModal);
+document.getElementById("btn-save-user").addEventListener("click", saveUser);
+document.getElementById("searchUser").addEventListener("input", loadUsers);
+document.getElementById("filterRole").addEventListener("change", loadUsers);
 
-	document.getElementById("usersTableBody").addEventListener("click", (e) => {
-		const btn = e.target.closest("button");
-		if (!btn) return;
-
-		if (btn.classList.contains("btn-edit-user")) {
-			editUser(btn.dataset.id);
-		} else if (btn.classList.contains("btn-delete-user")) {
-			deleteUser(btn.dataset.id, btn);
-		}
-	});
-
-	loadUsers();
-});
-
-function debouncedLoadUsers() {
-	clearTimeout(searchTimeout);
-	searchTimeout = setTimeout(loadUsers, 300);
-}
+loadUsers();
 
 function loadUsers() {
 	const search = document.getElementById("searchUser").value;
@@ -39,11 +20,11 @@ function loadUsers() {
 		.then((data) => {
 			if (data.success) {
 				const tbody = document.getElementById("usersTableBody");
-				tbody.innerHTML = "";
+				let html = "";
 				data.data.forEach((user) => {
 					const roleBadge = user.isAdmin == 1 ? "Amministratore" : "Utente";
 
-					tbody.innerHTML += `
+					html += `
                         <tr>
                             <td class="text-break">${user.username}</td>
                             <td class="col-ruolo">${roleBadge}</td>
@@ -61,6 +42,19 @@ function loadUsers() {
                             </td>
                         </tr>
                     `;
+				});
+				tbody.innerHTML = html;
+
+				document.querySelectorAll(".btn-edit-user").forEach((btn) => {
+					btn.addEventListener("click", () => {
+						editUser(btn.dataset.id);
+					});
+				});
+
+				document.querySelectorAll(".btn-delete-user").forEach((btn) => {
+					btn.addEventListener("click", () => {
+						deleteUser(btn.dataset.id, btn);
+					});
 				});
 			}
 		});

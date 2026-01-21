@@ -1,33 +1,12 @@
 "use strict";
 
-let ssdModalBS = null;
-let searchTimeout = null;
+let ssdModalBS = new bootstrap.Modal(document.getElementById("ssdModal"));
 
-document.addEventListener("DOMContentLoaded", function () {
-	ssdModalBS = new bootstrap.Modal(document.getElementById("ssdModal"));
+document.getElementById("btn-new-ssd").addEventListener("click", openSSDModal);
+document.getElementById("btn-save-ssd").addEventListener("click", saveSSD);
+document.getElementById("searchSSD").addEventListener("input", loadSSDs);
 
-	document.getElementById("btn-new-ssd").addEventListener("click", openSSDModal);
-	document.getElementById("btn-save-ssd").addEventListener("click", saveSSD);
-	document.getElementById("searchSSD").addEventListener("input", debouncedLoadSSDs);
-
-	document.getElementById("ssdTableBody").addEventListener("click", (e) => {
-		const btn = e.target.closest("button");
-		if (!btn) return;
-
-		if (btn.classList.contains("btn-edit-ssd")) {
-			editSSD(btn.dataset.id);
-		} else if (btn.classList.contains("btn-delete-ssd")) {
-			deleteSSD(btn.dataset.id, btn);
-		}
-	});
-
-	loadSSDs();
-});
-
-function debouncedLoadSSDs() {
-	clearTimeout(searchTimeout);
-	searchTimeout = setTimeout(loadSSDs, 300);
-}
+loadSSDs();
 
 function loadSSDs() {
 	const search = document.getElementById("searchSSD").value;
@@ -38,10 +17,10 @@ function loadSSDs() {
 			if (data.success) {
 				// Riempie Tabella
 				const tbody = document.getElementById("ssdTableBody");
-				tbody.innerHTML = "";
+				let html = '';
 
 				data.data.forEach((ssd) => {
-					tbody.innerHTML += `
+					html += `
                                 <tr>
                                     <td class="text-nowrap">${ssd.nome}</td>
                                     <td class="text-break">${ssd.descrizione}</td>
@@ -59,6 +38,19 @@ function loadSSDs() {
                                     </td>
                                 </tr>
                             `;
+				});
+				tbody.innerHTML = html;
+
+				document.querySelectorAll(".btn-edit-ssd").forEach((btn) => {
+					btn.addEventListener("click", () => {
+						editSSD(btn.dataset.id);
+					});
+				});
+
+				document.querySelectorAll(".btn-delete-ssd").forEach((btn) => {
+					btn.addEventListener("click", () => {
+						deleteSSD(btn.dataset.id, btn);
+					});
 				});
 			}
 		});

@@ -1,12 +1,5 @@
 "use strict";
 
-document.addEventListener("DOMContentLoaded", () => {
-	const followBtn = document.getElementById("followBtn");
-	if (followBtn) {
-		followBtn.addEventListener("click", () => handleFollowClick(followBtn));
-	}
-});
-
 function handleFollowClick(button) {
 	handleButtonAction(
 		button,
@@ -20,4 +13,9 @@ function handleFollowClick(button) {
 			);
 		},
 	);
+}
+
+const followBtn = document.getElementById("followBtn");
+if (followBtn) {
+	followBtn.addEventListener("click", () => handleFollowClick(followBtn));
 }

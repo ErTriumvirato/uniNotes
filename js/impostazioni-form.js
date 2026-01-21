@@ -1,22 +1,20 @@
 "use strict";
 
-document.addEventListener("DOMContentLoaded", function () {
-	const serverMessage = document.getElementById("server-message");
-	if (serverMessage) {
-		const message = serverMessage.dataset.message;
-		const type = serverMessage.dataset.type;
-		if (type === "success") {
-			showSuccess(message);
-		} else {
-			showError(message);
-		}
+const serverMessage = document.getElementById("server-message");
+if (serverMessage) {
+	const message = serverMessage.dataset.message;
+	const type = serverMessage.dataset.type;
+	if (type === "success") {
+		showSuccess(message);
+	} else {
+		showError(message);
 	}
+}
 
-	const btnDeleteAccount = document.getElementById("btn-delete-account");
-	if (btnDeleteAccount) {
-		btnDeleteAccount.addEventListener("click", () => handleDeleteAccount(btnDeleteAccount));
-	}
-});
+const btnDeleteAccount = document.getElementById("btn-delete-account");
+if (btnDeleteAccount) {
+	btnDeleteAccount.addEventListener("click", () => handleDeleteAccount(btnDeleteAccount));
+}
 
 function handleDeleteAccount(btn) {
 	if (!btn.dataset.confirm) {

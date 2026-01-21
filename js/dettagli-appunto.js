@@ -1,46 +1,31 @@
 "use strict";
 
-document.addEventListener("DOMContentLoaded", () => {
-	// Event Delegation
-	document.body.addEventListener("submit", (e) => {
-		if (e.target.id === "review-form") {
-			handleReviewFormSubmit(e);
-		}
+const reviewForm = document.getElementById("review-form");
+if (reviewForm) {
+	reviewForm.addEventListener("submit", handleReviewFormSubmit);
+}
+
+// Listener diretti
+document.querySelectorAll(".delete-review-btn").forEach((btn) => {
+	btn.addEventListener("click", () => handleDeleteReview(btn));
+});
+
+document.querySelectorAll(".btn-approve").forEach((btn) => {
+	btn.addEventListener("click", () => {
+		const id = btn.dataset.id;
+		if (id) handleApprove(id);
 	});
+});
 
-	document.body.addEventListener("click", (e) => {
-		const target = e.target;
-
-		// Delete Review Button
-		const deleteReviewBtn = target.closest(".delete-review-btn");
-		if (deleteReviewBtn) {
-			handleDeleteReview(deleteReviewBtn);
-			return;
-		}
-
-		// Approve Button
-		const approveBtn = target.closest(".btn-approve");
-		if (approveBtn) {
-			const id = approveBtn.dataset.id;
-			if (id) handleApprove(id);
-			return;
-		}
-
-		// Reject Button
-		const rejectBtn = target.closest(".btn-reject");
-		if (rejectBtn) {
-			const id = rejectBtn.dataset.id;
-			if (id) handleReject(id);
-			return;
-		}
-
-		// Delete Note Button
-		const deleteNoteBtn = target.closest(".btn-delete-note");
-		if (deleteNoteBtn) {
-			handleDeleteNote(deleteNoteBtn);
-			return;
-		}
+document.querySelectorAll(".btn-reject").forEach((btn) => {
+	btn.addEventListener("click", () => {
+		const id = btn.dataset.id;
+		if (id) handleReject(id);
 	});
+});
+
+document.querySelectorAll(".btn-delete-note").forEach((btn) => {
+	btn.addEventListener("click", () => handleDeleteNote(btn));
 });
 
 // Funzione per gestire il submit del form di recensione
@@ -60,6 +45,7 @@ function handleReviewFormSubmit(e) {
 	submitBtn.disabled = true;
 
 	fetch("appunto.php?id=" + idappunto, {
+		// TODO: outer html ????
 		method: "POST",
 		headers: {
 			"Content-Type": "application/x-www-form-urlencoded",
@@ -84,6 +70,11 @@ function handleReviewFormSubmit(e) {
                             </button>
                         </div>
                     `;
+
+					const newDeleteBtn = document.querySelector("#already-reviewed-container .delete-review-btn");
+					if (newDeleteBtn) {
+						newDeleteBtn.addEventListener("click", () => handleDeleteReview(newDeleteBtn));
+					}
 				}
 
 				// Aggiorna la media delle recensioni
@@ -102,7 +93,7 @@ function handleReviewFormSubmit(e) {
 // Gestione eliminazione recensioni
 function handleDeleteReview(btn) {
 	const idrecensione = btn.dataset.reviewId;
-	const reviewCard = btn.closest("#already-reviewed-container");
+	const reviewCard = document.getElementById("already-reviewed-container");
 
 	if (!btn.dataset.confirm) {
 		btn.dataset.confirm = "true";
@@ -129,6 +120,7 @@ function handleDeleteReview(btn) {
 	btn.disabled = true;
 
 	fetch("appunto.php?id=" + idappunto, {
+		// TODO: outer html ????
 		method: "POST",
 		headers: {
 			"Content-Type": "application/x-www-form-urlencoded",
@@ -162,6 +154,11 @@ function handleDeleteReview(btn) {
                             </form>
                         </div>
                     `;
+
+					const newForm = document.getElementById("review-form");
+					if (newForm) {
+						newForm.addEventListener("submit", handleReviewFormSubmit);
+					}
 
 					// Aggiorna la media delle recensioni
 					const avgBadge = document.getElementById("avg-rating-badge");

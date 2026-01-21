@@ -11,11 +11,7 @@ const defaultApprovalFilter = approvalSelect ? approvalSelect.value : "approved"
 const defaultMessage = container.dataset.defaultMessage || "Nessun appunto disponibile.";
 const showActions = approvalSelect;
 
-let searchTimeout;
-searchInput.addEventListener("input", () => {
-	clearTimeout(searchTimeout);
-	searchTimeout = setTimeout(updateNotes, 300);
-});
+searchInput.addEventListener("input", updateNotes);
 
 // Aggiunge i listener per i bottoni di azione
 function attachActionListeners() {
@@ -96,6 +92,7 @@ function updateNotes() {
 			}
 
 			container.insertAdjacentHTML(
+				// TODO: nooooooo adjacent nooooooo
 				"beforeend",
 				`
                 <article class="card shadow-sm border-0 note-card" id="note-${el.idappunto}">

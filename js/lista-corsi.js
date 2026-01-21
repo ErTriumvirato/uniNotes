@@ -17,11 +17,10 @@ const filterTypeSelect = document.getElementById("filterType");
 const coursesContainer = document.getElementById("courses-container");
 
 if (coursesContainer) {
-	coursesContainer.addEventListener("click", (event) => {
-		const button = event.target.closest(".btn-follow");
-		if (button) {
+	document.querySelectorAll(".btn-follow").forEach((button) => {
+		button.addEventListener("click", () => {
 			handleFollowClick(button);
-		}
+		});
 	});
 }
 
@@ -63,6 +62,12 @@ function filterCourses() {
                         </div>
                     </div>
                 `;
+			const btn = col.querySelector(".btn-follow");
+			if (btn) {
+				btn.addEventListener("click", () => {
+					handleFollowClick(btn);
+				});
+			}
 			coursesContainer.appendChild(col);
 		});
 	});
