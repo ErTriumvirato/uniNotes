@@ -4,6 +4,7 @@ require_once 'config.php';
 // Gestione della chiusura del banner dei cookie
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'closeCookieBanner') {
     $_SESSION['cookieBannerClosed'] = true;
+    echo json_encode(["status" => "success"]);
     exit;
 }
 
