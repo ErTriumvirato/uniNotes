@@ -112,20 +112,18 @@ function handleDeleteReview(btn) {
 	// Invia la richiesta AJAX per eliminare la recensione (definita in base.js)
 	handleButtonAction(btn, `appunto.php?id=${idappunto}`, `deleteReview=${encodeURIComponent(idrecensione)}&ajax=1`, (data) => {
 		if (data.success) {
-			setTimeout(() => {
-				reviewCard.outerHTML = getReviewFormHTML(idappunto); // Sostituisce la recensione con il form di recensione
+			reviewCard.outerHTML = getReviewFormHTML(idappunto); // Sostituisce la recensione con il form di recensione
 
-				const avgBadge = document.getElementById("avg-rating-badge");
-				if (avgBadge) avgBadge.textContent = "★ " + data.new_avg + " (" + data.new_count + ")";
+			const avgBadge = document.getElementById("avg-rating-badge");
+			avgBadge.textContent = "★ " + data.new_avg + " (" + data.new_count + ")";
 
-				const reviewsList = document.getElementById("reviews-list");
-				if (reviewsList) reviewsList.innerHTML = '<div class="d-flex flex-column gap-3"></div>';
+			const reviewsList = document.getElementById("reviews-list");
+			if (reviewsList) {
+				reviewsList.innerHTML = '<div class="d-flex flex-column gap-3"></div>';
+			}
 
-				const newForm = document.getElementById("review-form");
-				if (newForm) {
-					newForm.addEventListener("submit", handleReviewFormSubmit);
-				}
-			}, 300);
+			const newForm = document.getElementById("review-form");
+			newForm.addEventListener("submit", handleReviewFormSubmit);
 		} else {
 			// Se c'è stato un errore durante l'eliminazione
 			showError(data.message || "Errore durante l'eliminazione della recensione."); // Mostra un messaggio di errore

@@ -47,7 +47,7 @@ function loadCourses() {
 	});
 }
 
-// Course Operations
+// Apre il modal per la creazione di un nuovo corso
 function openCourseModal() {
 	document.getElementById("courseForm").reset();
 	document.getElementById("courseId").value = "";
@@ -55,6 +55,7 @@ function openCourseModal() {
 	courseModalBS.show();
 }
 
+// Apre il modal per la modifica di un corso esistente
 function editCourse(id) {
 	handleButtonAction(null, `gestione-corsi.php?action=get_course&id=${id}`, null, (data) => {
 		if (!data.success) return;
@@ -69,6 +70,7 @@ function editCourse(id) {
 	});
 }
 
+// Salva il corso (creazione o modifica)
 function saveCourse() {
 	const formData = new FormData(document.getElementById("courseForm"));
 	formData.append("action", "save_course");
@@ -84,12 +86,14 @@ function saveCourse() {
 	});
 }
 
+// Gestisce l'eliminazione di un corso con conferma
 function resetDeleteCourseButton(btn) {
 	delete btn.dataset.confirm;
 	btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em><span class="visually-hidden">Elimina</span>';
 	btn.classList.replace("btn-danger", "btn-outline-danger");
 }
 
+// Eliminazione di un corso
 function deleteCourse(id, btn) {
 	if (!btn.dataset.confirm) {
 		btn.dataset.confirm = "true";
@@ -113,6 +117,7 @@ function deleteCourse(id, btn) {
 	});
 }
 
+// Carica gli SSD per i filtri e il modulo corso
 function loadFiltersSSDs() {
 	handleButtonAction(null, "gestione-ssd.php?action=get_ssds", null, (data) => {
 		if (!data.success) return;

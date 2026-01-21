@@ -6,6 +6,7 @@ document.getElementById("searchSSD").addEventListener("input", loadSSDs);
 
 loadSSDs();
 
+// Gestisce la creazione di un nuovo SSD
 function createSSDRow(ssd) {
 	return `
 		<tr>
@@ -26,6 +27,7 @@ function createSSDRow(ssd) {
 		</tr>`;
 }
 
+// Carica gli SSD
 function loadSSDs() {
 	const search = document.getElementById("searchSSD").value;
 	const url = `gestione-ssd.php?action=get_ssds&search=${encodeURIComponent(search)}`;
@@ -83,6 +85,7 @@ function saveSSD() {
 	});
 }
 
+// Resetta il pulsante di eliminazione SSD
 function resetDeleteSSDButton(btn) {
 	delete btn.dataset.confirm;
 	btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em><span class="visually-hidden">Elimina</span>';
