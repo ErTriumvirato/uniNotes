@@ -102,25 +102,36 @@
     <?php endif; ?>
 
     <main class="container flex-grow-1 mt-5 pt-5" tabindex="-1">
-        <!-- Pulsante indietro solamente per alcune pagine specifiche -->
+        <!-- Pulsante indietro solamente per alcune pagine -->
         <?php
-        if (($templateParams["nome"] === "templates/dettagli-corso.php")
-            || ($templateParams["nome"] === "templates/gestione-corsi-template.php")
-            || ($templateParams["nome"] === "templates/gestione-ssd-template.php")
-            || ($templateParams["nome"] === "templates/gestione-utenti.php")
-            || ($templateParams["nome"] === "templates/appunti-da-approvare.php")
-            || ($templateParams["nome"] === "templates/appunti-da-gestire.php")
-            || ($templateParams["nome"] === "templates/menu-appunti.php")
-            || ($templateParams["nome"] === "templates/dettagli-appunto.php")
-        ) { ?>
+        $backButtonPages = [
+            "templates/dettagli-corso.php",
+            "templates/gestione-corsi-template.php",
+            "templates/gestione-ssd-template.php",
+            "templates/gestione-utenti.php",
+            "templates/appunti-da-approvare.php",
+            "templates/appunti-da-gestire.php",
+            "templates/menu-appunti.php",
+            "templates/dettagli-appunto.php"
+        ];
+
+        if (isset($templateParams["nome"]) && in_array($templateParams["nome"], $backButtonPages)):
+        ?>
             <button class="btn btn-outline-secondary mb-3" id="btn-back">← Indietro</button>
         <?php
-        } ?>
+        endif;
+        ?>
 
         <!-- Contenuto principale della pagina -->
         <div class="py-4">
             <!-- Include il template specifico della pagina -->
-            <?php if (isset($templateParams["nome"])) require($templateParams["nome"]); ?>
+            <?php
+            if (isset($dbh) && $dbh->errorConnection) {
+                // Non caricare il template se c'è un errore di connessione
+            } elseif (isset($templateParams["nome"])) {
+                require($templateParams["nome"]);
+            }
+            ?>
         </div>
     </main>
 
@@ -146,5 +157,11 @@ if (isset($templateParams["script"])) {
     }
 }
 ?>
+
+<?php if (isset($dbh) && $dbh->errorConnection): ?>
+    <script>
+        showError("<?php echo $dbh->errorConnection; ?>");
+    </script>
+<?php endif; ?>
 
 </html>
