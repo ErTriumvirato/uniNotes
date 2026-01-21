@@ -43,12 +43,12 @@
                             </li>
                             <?php if (isUserLoggedIn()) { ?>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="creazione-appunti.php">Carica</a>
+                                    <a class="nav-link" href="creazione-appunto.php">Carica</a>
                                 </li>
                             <?php } ?>
                             <?php if (isUserAdmin()) { ?>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="area-admin.php">Area amministrazione</a>
+                                    <a class="nav-link" href="menu-gestione.php">Area amministrazione</a>
                                 </li>
                             <?php } ?>
                         </ul>
@@ -65,7 +65,7 @@
                                     <?php echo htmlspecialchars($_SESSION['username']); ?>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><a class="dropdown-item" href="profilo.php">Profilo</a></li>
+                                    <li><a class="dropdown-item" href="profilo-utente.php">Profilo</a></li>
                                     <li><a class="dropdown-item" href="impostazioni.php">Impostazioni</a></li>
                                     <li>
                                         <hr class="dropdown-divider">
@@ -105,14 +105,14 @@
         <!-- Pulsante indietro solamente per alcune pagine -->
         <?php
         $backButtonPages = [
-            "templates/dettagli-corso.php",
+            "templates/dettagli-corso-template.php",
             "templates/gestione-corsi-template.php",
             "templates/gestione-ssd-template.php",
-            "templates/gestione-utenti.php",
+            "templates/gestione-utenti-template.php",
             "templates/appunti-da-approvare.php",
-            "templates/appunti-da-gestire.php",
+            "templates/gestione-appunti-template.php",
             "templates/menu-appunti.php",
-            "templates/dettagli-appunto.php"
+            "templates/dettagli-appunto-template.php"
         ];
 
         if (isset($templateParams["nome"]) && in_array($templateParams["nome"], $backButtonPages)):

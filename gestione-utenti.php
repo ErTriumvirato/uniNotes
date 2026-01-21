@@ -76,13 +76,13 @@ if (!empty($action)) {
                 break;
         }
     } catch (Exception $e) {
-        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+        echo json_encode(['success' => false, 'message' => "Errore durante il salvataggio (username o email potrebbero essere già in uso)"]);
     }
     exit();
 }
 
 $templateParams["titolo"] = "Gestione Utenti";
-$templateParams["nome"] = "templates/gestione-utenti.php";
+$templateParams["nome"] = "templates/gestione-utenti-template.php";
 array_push($templateParams["script"], "js/gestione-utenti.js");
 
 require_once 'templates/base.php';

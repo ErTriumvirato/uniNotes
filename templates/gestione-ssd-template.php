@@ -6,10 +6,9 @@
     </header>
 
     <!-- Sezione SSD -->
-    <section aria-labelledby="sezione-ssd" class="card shadow-sm border-0 mb-5">
+    <section aria-labelledby="titolo-gestione-ssd" class="card shadow-sm border-0 mb-5">
         <div class="card-body p-3 p-md-4">
             <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-                <h2 id="sezione-ssd" class="card-title mb-0 h3">SSD (Settori Scientifico Disciplinari)</h2>
                 <button type="button" class="btn btn-outline-primary" id="btn-new-ssd">
                     Nuovo SSD
                 </button>

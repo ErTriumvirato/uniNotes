@@ -38,7 +38,7 @@ function isValidRedirect($url) // Funzione per validare l'URL di redirect
 }
 
 $templateParams["titolo"] = "Login";
-$templateParams["nome"] = "templates/login-form.php";
-array_push($templateParams["script"], "js/login-form.js");
+$templateParams["nome"] = "templates/login-template.php";
+array_push($templateParams["script"], "js/login.js");
 
 require 'templates/base.php';

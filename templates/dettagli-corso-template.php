@@ -17,7 +17,7 @@ $isFollowing = $idutente ? $dbh->isFollowingCourse($idutente, $idCorso) : false;
                     <button type="button" id="followBtn" class="btn <?php echo $isFollowing ? 'btn-outline-danger' : 'btn-outline-primary'; ?>" data-idcorso="<?php echo htmlspecialchars($idCorso); ?>">
                         <?php echo htmlspecialchars($isFollowing ? 'Smetti di seguire' : 'Segui corso'); ?>
                     </button>
-                    <a href="creazione-appunti.php?idcorso=<?php echo htmlspecialchars($idCorso); ?>" class="btn btn-outline-secondary">Carica appunti</a>
+                    <a href="creazione-appunto.php?idcorso=<?php echo htmlspecialchars($idCorso); ?>" class="btn btn-outline-secondary">Carica appunti</a>
                 </div>
                 <p class="lead mt-3"><?php echo nl2br(htmlspecialchars($corso['descrizione'])); ?></p>
             </div>
@@ -25,7 +25,6 @@ $isFollowing = $idutente ? $dbh->isFollowingCourse($idutente, $idCorso) : false;
 
         <?php
         $templateParams["titoloFiltri"] = "Appunti disponibili";
-        $templateParams["ajaxUrl"] = "corso.php?id=" . $idCorso;
         $templateParams["idcorso"] = $idCorso;
         $templateParams["defaultMessage"] = "Nessun appunto disponibile per questo corso.";
         include 'templates/appunti-template.php';

@@ -128,7 +128,7 @@ if (isset($_POST['deleteReview'])) {
 // L'appunto esiste ed è stato approvato (o l'utente è admin)
 $templateParams["appunto"] = $note; // Passa i dettagli dell'appunto al template
 $templateParams["titolo"] = $note ? $note['titolo'] : "Appunto non trovato";
-$templateParams["nome"] = "templates/dettagli-appunto.php";
+$templateParams["nome"] = "templates/dettagli-appunto-template.php";
 array_push($templateParams["script"], "js/dettagli-appunto.js");
 
 require_once 'templates/base.php';

@@ -29,7 +29,7 @@
                 </form>
 
                 <div class="text-center mt-3">
-                    <p class="text-muted">Non hai un account? <a href="registrazione-utente.php" class="text-decoration-none">Registrati</a></p>
+                    <p class="text-muted">Non hai un account? <a href="registrazione.php" class="text-decoration-none">Registrati</a></p>
                 </div>
             </div>
         </section>

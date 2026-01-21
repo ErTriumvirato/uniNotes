@@ -67,7 +67,7 @@ if (isset($_POST['delete_account'])) {
 
 $templateParams["currentUser"] = $currentUser;
 $templateParams["titolo"] = "Impostazioni";
-$templateParams["nome"] = "templates/impostazioni-form.php";
-array_push($templateParams["script"], "js/impostazioni-form.js");
+$templateParams["nome"] = "templates/impostazioni-template.php";
+array_push($templateParams["script"], "js/impostazioni.js");
 
 require_once 'templates/base.php';

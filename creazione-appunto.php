@@ -8,7 +8,7 @@ if (isset($_POST["invia"]) && isset($_POST["course"]) && isset($_POST["title"]) 
 }
 
 $templateParams["titolo"] = "Creazione appunti";
-$templateParams["nome"] = "templates/upload-form.php";
+$templateParams["nome"] = "templates/creazione-appunto-template.php";
 $allNotes = $dbh->getNotesWithFilters(idutente: $_SESSION["idutente"], approvalFilter: 'all');
 $templateParams["unapprovedNotes"] = array_filter($allNotes, function ($note) {
     return $note['stato'] !== 'approvato';

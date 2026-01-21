@@ -45,7 +45,7 @@ if (!empty($note)) {
                         </div>
                         <div class="d-flex flex-wrap gap-3 text-muted align-items-center">
                             <div class="d-flex align-items-center gap-2">
-                                <span>Autore: <a href="profilo.php?id=<?php echo $note['idutente']; ?>" class="text-decoration-none fw-bold"><?php echo htmlspecialchars($note['autore']); ?></a></span>
+                                <span>Autore: <a href="profilo-utente.php?id=<?php echo $note['idutente']; ?>" class="text-decoration-none fw-bold"><?php echo htmlspecialchars($note['autore']); ?></a></span>
                             </div>
                             <div class="vr d-none d-md-block"></div>
                             <div class="d-flex align-items-center gap-2">

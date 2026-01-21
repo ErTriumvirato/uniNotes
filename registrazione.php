@@ -36,6 +36,6 @@ if (isset($_POST['registrazione'])) {
 }
 
 $templateParams["titolo"] = "Registrazione";
-$templateParams["nome"] = "templates/registrazione-utente-form.php";
+$templateParams["nome"] = "templates/registrazione-template.php";
 
 require 'templates/base.php';

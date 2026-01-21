@@ -12,7 +12,7 @@ $selectedCourseId = isset($_GET['idcorso']) ? $_GET['idcorso'] : null;
                 <h1 class="text-center mb-4 h2">Carica appunti</h1>
 
                 <!-- Form di caricamento appunti -->
-                <form action="creazione-appunti.php" method="post">
+                <form action="creazione-appunto.php" method="post">
                     <div class="mb-3">
                         <label for="course" class="form-label">Corso</label>
                         <select id="course" name="course" class="form-select" required>
@@ -66,7 +66,7 @@ $selectedCourseId = isset($_GET['idcorso']) ? $_GET['idcorso'] : null;
                                 <div class="d-flex flex-column align-items-end gap-2">
                                     <span class="text-muted small"><?php echo date('d/m/Y', strtotime($note['data_pubblicazione'])); ?></span>
                                     <?php if ($note['stato'] === 'rifiutato'): ?>
-                                        <a href="modifica-appunti.php?id=<?php echo $note['idappunto']; ?>" class="btn btn-sm btn-outline-danger" title="Modifica">
+                                        <a href="modifica-appunto.php?id=<?php echo $note['idappunto']; ?>" class="btn btn-sm btn-outline-danger" title="Modifica">
                                             <em class="bi bi-pencil" aria-hidden="true"></em>
                                             <span class="visually-hidden">Modifica</span>
                                         </a>

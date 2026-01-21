@@ -10,7 +10,7 @@
                     </div>
                 <?php endif; ?>
 
-                <form action="registrazione-utente.php" method="POST">
+                <form action="registrazione.php" method="POST">
                     <div class="mb-3">
                         <label for="username" class="form-label">Username</label>
                         <input type="text" class="form-control" id="username" name="username" required />

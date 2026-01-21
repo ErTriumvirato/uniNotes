@@ -221,7 +221,7 @@ const container = document.getElementById("user-review-interaction"); // Conteni
 if (container && container.dataset.config) {
 	// Se il contenitore esiste e ha una configurazione
 	try {
-		const config = JSON.parse(container.dataset.config); // Configurazione passata dal server (dettagli-appunto.php)
+		const config = JSON.parse(container.dataset.config); // Configurazione passata dal server (dettagli-appunto-template.php)
 
 		if (!config.isLoggedIn) {
 			// Se l'utente non è loggato

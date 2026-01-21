@@ -45,8 +45,8 @@ if (isset($_POST["toggleFollow"])) {
 
 // templateParams
 $templateParams["titolo"] = "Corsi";
-$templateParams["nome"] = "templates/lista-corsi.php";
+$templateParams["nome"] = "templates/corsi-template.php";
 $templateParams["ssds"] = $dbh->getAllSSD();
-array_push($templateParams["script"], "js/lista-corsi.js");
+array_push($templateParams["script"], "js/corsi.js");
 
 require_once 'templates/base.php';

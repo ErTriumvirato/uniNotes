@@ -1,11 +1,10 @@
 <?php
 // Statistiche utente
 $statistiche = [
-    "corsi_seguiti" => $dbh->getFollowedCoursesCount($idProfilo),
-    "appunti_scritti" => $dbh->getNotesCountByAuthor($idProfilo, true),
-    "media_recensioni" => $dbh->getAuthorAverageRating($idProfilo)
+    "corsi_seguiti" => $dbh->getFollowedCoursesCount($templateParams['profiloUtente']['idutente']),
+    "appunti_scritti" => $dbh->getNotesCountByAuthor($templateParams['profiloUtente']['idutente'], true),
+    "media_recensioni" => $dbh->getAuthorAverageRating($templateParams['profiloUtente']['idutente'])
 ];
-$appunti = $dbh->getNotesWithFilters(idutente: $templateParams['profiloUtente']['idutente'], sort: 'data_pubblicazione', order: 'DESC');
 ?>
 
 <h1 class="mb-4 h2">Profilo di <?php echo htmlspecialchars($templateParams['profiloUtente']['username']); ?></h1>
@@ -40,7 +39,6 @@ $appunti = $dbh->getNotesWithFilters(idutente: $templateParams['profiloUtente'][
 
 <?php
 $templateParams["titoloFiltri"] = "Appunti di " . htmlspecialchars($templateParams['profiloUtente']['username']);
-$templateParams["ajaxUrl"] = "profilo.php?id=" . $templateParams['profiloUtente']['idutente'];
-$templateParams["nomeutente"] = $templateParams['profiloUtente']['username'];
+$templateParams["idutente"] = $templateParams['profiloUtente']['idutente'];
 include 'templates/appunti-template.php';
 ?>

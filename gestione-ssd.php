@@ -57,7 +57,7 @@ if (!empty($action)) {
                 break;
         }
     } catch (Exception $e) {
-        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+        echo json_encode(['success' => false, 'message' => "Errore durante il salvataggio del SSD"]);
     }
     exit();
 }

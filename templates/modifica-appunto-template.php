@@ -15,7 +15,7 @@ $note = $templateParams["appunto"];
                     </div>
                 <?php endif; ?>
 
-                <form action="modifica-appunti.php" method="post">
+                <form action="modifica-appunto.php" method="post">
                     <input type="hidden" name="idappunto" value="<?php echo $note['idappunto']; ?>" />
 
                     <div class="mb-3">
