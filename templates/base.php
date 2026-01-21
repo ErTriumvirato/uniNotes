@@ -66,7 +66,7 @@
                     <?php } else { ?>
                         <nav class="user-menu" aria-label="Menu utente">
                             <button type="button" class="nav-link user-menu-btn" aria-expanded="false" aria-haspopup="true" aria-controls="user-dropdown" aria-label="Apri menu utente">
-                                <?php echo htmlspecialchars($_SESSION['username']); ?> ▾
+                                <?php echo htmlspecialchars($_SESSION['username']); ?>
                             </button>
                             <ul id="user-dropdown" class="user-dropdown" role="menu" aria-label="Menu utente">
                                 <li role="none"><a href="profilo.php" class="user-dropdown-item" role="menuitem">Profilo</a></li>

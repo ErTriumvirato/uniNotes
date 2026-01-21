@@ -59,13 +59,7 @@ function toggleUserMenu() {
 }
 
 function closeCookieBanner() {
-	fetch("index.php", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/x-www-form-urlencoded",
-		},
-		body: "action=closeCookieBanner",
-	}).then(() => {
+	handleButtonAction(null, "index.php", "action=closeCookieBanner", () => {
 		document.getElementById("cookie-banner").classList.add("is-hidden");
 	});
 }

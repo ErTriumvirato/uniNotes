@@ -29,7 +29,7 @@ function createCourseCard(corso) {
 			<div class="card h-100 shadow-sm border-0 course-card">
 				<div class="card-body d-flex flex-column">
 					<h3 class="card-title h5">
-						<a href="corso.php?id=${corso.idcorso}" class="text-decoration-none text-dark stretched-link">
+						<a href="corso.php?id=${corso.idcorso}" class="text-decoration-none course-title-link stretched-link">
 							${corso.nomeCorso}
 						</a>
 					</h3>

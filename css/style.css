@@ -85,7 +85,10 @@ textarea:focus-visible {
 
 .navbar-nav .nav-link:hover,
 .navbar-nav .nav-link.active,
-.note-card:hover .note-title-link {
+.note-card:hover .note-title-link,
+.course-card:hover .course-title-link,
+.admin-card:hover .card-title,
+a:hover .admin-card .card-title {
 	color: var(--primary-color);
 }
 
@@ -129,7 +132,9 @@ textarea:focus-visible {
 	box-shadow: 8px 16px rgba(0, 0, 0, 0.15);
 }
 
-.note-title-link {
+.note-title-link,
+.course-title-link,
+.admin-card .card-title {
 	color: var(--bs-body-color);
 	transition: color 0.3s ease;
 }
@@ -234,14 +239,4 @@ textarea:focus-visible {
 /* Colonna azioni compatta */
 .col-actions-compact {
 	width: 1%;
-}
-
-/* Applicato a telefoni e tablet */
-@media (max-width: 991.98px) {
-	.navbar-collapse {
-		padding: 16px;
-		border-radius: 8px;
-		margin-top: 8px;
-		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-	}
 }

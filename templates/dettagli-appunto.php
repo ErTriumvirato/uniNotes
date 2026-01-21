@@ -53,15 +53,15 @@ if (!empty($note)) {
                             </div>
 
                             <div class="vr d-none d-md-block"></div>
-                            <div>
-                                <span><?php echo date_format(date_create($note['data_pubblicazione']), 'd/m/Y H:i'); ?></span>
-                            </div>
-                            <div class="vr d-none d-md-block"></div>
-                            <div class="d-flex gap-2">
-                                <span class="badge bg-light text-dark border p-2">
+                            
+                            <div class="d-flex flex-wrap gap-2 align-items-center">
+                                <span class="badge bg-light text-dark border p-2" title="Data pubblicazione">
+                                    <?php echo date_format(date_create($note['data_pubblicazione']), 'd/m/Y'); ?>
+                                </span>
+                                <span class="badge bg-light text-dark border p-2" title="Visualizzazioni">
                                     <?php echo $note['numero_visualizzazioni']; ?> Visualizzazioni
                                 </span>
-                                <span id="avg-rating-badge" class="badge bg-light text-dark border p-2">
+                                <span id="avg-rating-badge" class="badge bg-light text-dark border p-2" title="Media recensioni">
                                     ★ <?php echo $note['media_recensioni'] ?: 'N/A'; ?> (<?php echo ($note['numero_recensioni'] ?? 0); ?>)
                                 </span>
                             </div>
@@ -80,53 +80,17 @@ if (!empty($note)) {
                             <h2 class="visually-hidden">Recensioni</h2>
                             <?php
                             $userReview = (isUserLoggedIn() && !$isAuthor) ? $dbh->getReviewsByNote($note['idappunto'], $_SESSION['idutente']) : null;
-
-                            // Mostra il form di recensione solo se l'utente è loggato, non è l'autore e non ha già recensito
-                            if (isUserLoggedIn() && !$isAuthor && !$userReview && ($note['stato'] === 'approvato' || isUserAdmin())):
+                            $jsReviewConfig = [
+                                'isLoggedIn' => isUserLoggedIn(),
+                                'userReview' => $userReview ? [
+                                    'idrecensione' => $userReview['idrecensione'],
+                                    'valutazione' => $userReview['valutazione']
+                                ] : null,
+                                'idappunto' => $note['idappunto'],
+                                'loginUrl' => 'login.php?redirect=' . urlencode(getCurrentURI())
+                            ];
                             ?>
-                                <div id="review-form-container">
-                                    <h3 class="mb-3 h5">Lascia una recensione</h3>
-                                    <form id="review-form" data-idappunto="<?php echo htmlspecialchars($note['idappunto']); ?>">
-                                        <div class="row g-2 align-items-end">
-                                            <div class="col-8 col-sm-6 col-md-4">
-                                                <label for="valutazione" class="form-label visually-hidden">Valutazione</label>
-                                                <select name="valutazione" id="valutazione" class="form-select text-center" required>
-                                                    <option value="" selected disabled>Vota...</option>
-                                                    <option value="5">5 - Eccellente</option>
-                                                    <option value="4">4 - Molto Buono</option>
-                                                    <option value="3">3 - Buono</option>
-                                                    <option value="2">2 - Sufficiente</option>
-                                                    <option value="1">1 - Insufficiente</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-auto">
-                                                <button type="submit" class="btn btn-primary">Invia</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            <?php elseif (isUserLoggedIn() && !$isAuthor && $userReview): // Utente ha già recensito 
-                            ?>
-                                <div id="already-reviewed-container" class="d-flex justify-content-between align-items-center bg-light p-3 rounded" data-review-id="<?php echo $userReview['idrecensione']; ?>" data-idappunto="<?php echo $note['idappunto']; ?>">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <span class="fw-bold">La tua recensione:</span>
-                                        <span class="text-warning" role="img" aria-label="Valutazione: <?php echo $userReview['valutazione']; ?> su 5 stelle">
-                                            <span aria-hidden="true">
-                                                <?php for ($i = 0; $i < $userReview['valutazione']; $i++) echo "★";
-                                                for ($i = $userReview['valutazione']; $i < 5; $i++) echo "☆"; ?>
-                                            </span>
-                                        </span>
-                                    </div>
-                                    <button class="btn btn-sm btn-outline-danger delete-review-btn" data-review-id="<?php echo $userReview['idrecensione']; ?>" aria-label="Elimina recensione" title="Elimina">
-                                        <em class="bi bi-trash" aria-hidden="true"></em>
-                                    </button>
-                                </div>
-                            <?php elseif (!isUserLoggedIn()): // Utente non loggato
-                            ?>
-                                <p class="mb-0 text-muted">
-                                    <a href="login.php?redirect=<?= getCurrentURI(); ?>">Accedi</a> per lasciare una recensione.
-                                </p>
-                            <?php endif; ?>
+                            <div id="user-review-interaction" data-config='<?php echo htmlspecialchars(json_encode($jsReviewConfig, JSON_HEX_APOS | JSON_HEX_QUOT), ENT_QUOTES, 'UTF-8'); ?>'></div>
                         </section>
                     <?php endif; ?>
                 </div>

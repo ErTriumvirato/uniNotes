@@ -100,7 +100,7 @@ function updateNotes() {
                         <div class="row align-items-center">
                             <div class="col-12">
                                 <h3 class="card-title mb-1 h5">
-                                    <a href="appunto.php?id=${el.idappunto}" class="text-decoration-none text-dark ${showActions ? "" : "stretched-link"}">${el.titolo}</a>
+                                    <a href="appunto.php?id=${el.idappunto}" class="text-decoration-none note-title-link ${showActions ? "" : "stretched-link"}">${el.titolo}</a>
                                 </h3>
                                 <p class="card-text text-muted small mb-2">di ${el.autore}</p>
                                 <div class="d-flex gap-2 row-gap-2 align-items-center flex-wrap mt-2">
@@ -133,78 +133,45 @@ function handleApprove(id) {
 
 // Handler per rifiuto appunto
 function handleReject(id) {
-	const formData = new FormData();
-	formData.append("action", "reject");
-	formData.append("idappunto", id);
+	handleButtonAction(null, "appunti.php", `action=reject&idappunto=${id}`, (data) => {
+		if (data.success) {
+			updateNotes();
+		} else {
+			showError("Errore durante il rifiuto");
+		}
+	});
+}
 
-	fetch("appunti.php", {
-		method: "POST",
-		body: formData,
-	})
-		.then((res) => res.json())
-		.then((data) => {
-			if (data.success) {
-				updateNotes();
-			} else {
-				showError("Errore durante il rifiuto");
-			}
-		})
-		.catch(() => showError("Errore di connessione"));
+// Resetta il bottone elimina allo stato iniziale
+function resetDeleteButton(btn) {
+	delete btn.dataset.confirm;
+	btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em> Elimina';
+	btn.classList.replace("btn-danger", "btn-outline-danger");
 }
 
 // Handler per eliminazione appunto
 function handleDelete(btn) {
 	const id = btn.dataset.id;
-	const card = document.getElementById(`note-${id}`);
 
 	if (!btn.dataset.confirm) {
 		btn.dataset.confirm = "true";
 		btn.innerHTML =
 			'<em class="bi bi-check-lg" aria-hidden="true"></em><span class="visually-hidden">Conferma eliminazione</span>';
-		btn.classList.remove("btn-outline-danger");
-		btn.classList.add("btn-danger");
+		btn.classList.replace("btn-outline-danger", "btn-danger");
 		setTimeout(() => {
-			if (btn.dataset.confirm) {
-				delete btn.dataset.confirm;
-				btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em> Elimina';
-				btn.classList.remove("btn-danger");
-				btn.classList.add("btn-outline-danger");
-			}
+			if (btn.dataset.confirm) resetDeleteButton(btn);
 		}, 3000);
 		return;
 	}
 
-	btn.disabled = true;
-
-	const formData = new FormData();
-	formData.append("action", "delete");
-	formData.append("idappunto", id);
-
-	fetch("appunti.php", {
-		method: "POST",
-		body: formData,
-	})
-		.then((res) => res.json())
-		.then((data) => {
-			if (data.success) {
-				updateNotes();
-			} else {
-				showError("Errore durante l'eliminazione");
-				btn.disabled = false;
-				btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em> Elimina';
-				delete btn.dataset.confirm;
-				btn.classList.remove("btn-danger");
-				btn.classList.add("btn-outline-danger");
-			}
-		})
-		.catch(() => {
-			showError("Errore di connessione");
-			btn.disabled = false;
-			btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em> Elimina';
-			delete btn.dataset.confirm;
-			btn.classList.remove("btn-danger");
-			btn.classList.add("btn-outline-danger");
-		});
+	handleButtonAction(btn, "appunti.php", `action=delete&idappunto=${id}`, (data) => {
+		if (data.success) {
+			updateNotes();
+		} else {
+			showError("Errore durante l'eliminazione");
+			resetDeleteButton(btn);
+		}
+	});
 }
 
 // Aggiorna gli articoli quando si torna alla pagina dal back/forward

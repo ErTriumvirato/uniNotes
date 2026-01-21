@@ -10,7 +10,7 @@
             <a href="gestione-corsi.php" class="text-decoration-none">
                 <div class="card h-100 shadow-sm border-0 admin-card text-center p-4">
                     <div class="card-body">
-                        <h2 class="card-title h4 text-dark">Gestione corsi</h2>
+                        <h2 class="card-title h4">Gestione corsi</h2>
                         <p class="card-text text-muted small">Aggiungi, modifica o rimuovi i corsi</p>
                     </div>
                 </div>
@@ -20,7 +20,7 @@
             <a href="gestione-ssd.php" class="text-decoration-none">
                 <div class="card h-100 shadow-sm border-0 admin-card text-center p-4">
                     <div class="card-body">
-                        <h2 class="card-title h4 text-dark">Gestione SSD</h2>
+                        <h2 class="card-title h4">Gestione SSD</h2>
                         <p class="card-text text-muted small">Aggiungi, modifica o rimuovi gli SSD</p>
                     </div>
                 </div>
@@ -30,7 +30,7 @@
             <a href="gestione-utenti.php" class="text-decoration-none">
                 <div class="card h-100 shadow-sm border-0 admin-card text-center p-4">
                     <div class="card-body">
-                        <h2 class="card-title h4 text-dark">Gestione utenti</h2>
+                        <h2 class="card-title h4">Gestione utenti</h2>
                         <p class="card-text text-muted small">Visualizza e gestisci gli utenti registrati</p>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
             <a href="gestione-appunti.php" class="text-decoration-none">
                 <div class="card h-100 shadow-sm border-0 admin-card text-center p-4">
                     <div class="card-body">
-                        <h2 class="card-title h4 text-dark">Gestione appunti</h2>
+                        <h2 class="card-title h4">Gestione appunti</h2>
                         <p class="card-text text-muted small">Approva o rimuovi gli appunti caricati</p>
                     </div>
                 </div>

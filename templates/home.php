@@ -38,14 +38,17 @@ $seguendoCorsi = $userId ? $dbh->getFollowedCoursesCount($userId) : false;
                                 <small class="text-muted mb-2 d-block"><?php echo htmlspecialchars($note['nome_corso']); ?></small>
                                 <p class="mb-2 small">
                                     di <strong><?php echo htmlspecialchars($note['autore']); ?></strong>
-                                    <br />
-                                    <?php echo date('d/m/Y', strtotime($note['data_pubblicazione'])); ?>
                                 </p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="badge border badge-vote" role="img" aria-label="Valutazione: <?php echo $note['media_recensioni'] ? htmlspecialchars($note['media_recensioni']) : 'Non disponibile'; ?> su 5">
-                                        <span aria-hidden="true">★ <?php echo $note['media_recensioni'] ? htmlspecialchars($note['media_recensioni']) : 'N/A'; ?></span>
+                                <div class="d-flex flex-wrap gap-2 align-items-center">
+                                    <span class="badge bg-light text-dark border p-2" title="Data pubblicazione">
+                                        <?php echo date('d/m/Y', strtotime($note['data_pubblicazione'])); ?>
                                     </span>
-                                    <small><?php echo $note['numero_visualizzazioni']; ?> visualizzazioni</small>
+                                    <span class="badge bg-light text-dark border p-2" title="Visualizzazioni">
+                                        <?php echo $note['numero_visualizzazioni']; ?> Visualizzazioni
+                                    </span>
+                                    <span class="badge bg-light text-dark border p-2" title="Media recensioni">
+                                        ★ <?php echo $note['media_recensioni'] ? htmlspecialchars($note['media_recensioni']) : 'N/A'; ?>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -75,14 +78,17 @@ $seguendoCorsi = $userId ? $dbh->getFollowedCoursesCount($userId) : false;
                                 <small class="text-muted mb-2 d-block"><?php echo htmlspecialchars($note['nome_corso']); ?></small>
                                 <p class="mb-2 small">
                                     di <strong><?php echo htmlspecialchars($note['autore']); ?></strong>
-                                    <br />
-                                    <?php echo date('d/m/Y', strtotime($note['data_pubblicazione'])); ?>
                                 </p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="badge border badge-vote" role="img" aria-label="Valutazione: <?php echo $note['media_recensioni'] ? htmlspecialchars($note['media_recensioni']) : 'Non disponibile'; ?> su 5">
-                                        <span aria-hidden="true">★ <?php echo $note['media_recensioni'] ? htmlspecialchars($note['media_recensioni']) : 'N/A'; ?></span>
+                                <div class="d-flex flex-wrap gap-2 align-items-center">
+                                    <span class="badge bg-light text-dark border p-2" title="Data pubblicazione">
+                                        <?php echo date('d/m/Y', strtotime($note['data_pubblicazione'])); ?>
                                     </span>
-                                    <small><?php echo $note['numero_visualizzazioni']; ?> visualizzazioni</small>
+                                    <span class="badge bg-light text-dark border p-2" title="Visualizzazioni">
+                                        <?php echo $note['numero_visualizzazioni']; ?> Visualizzazioni
+                                    </span>
+                                    <span class="badge bg-light text-dark border p-2" title="Media recensioni">
+                                        ★ <?php echo $note['media_recensioni'] ? htmlspecialchars($note['media_recensioni']) : 'N/A'; ?>
+                                    </span>
                                 </div>
                             </div>
                         </div>

@@ -1,32 +1,54 @@
 "use strict";
 
-const reviewForm = document.getElementById("review-form");
-if (reviewForm) {
-	reviewForm.addEventListener("submit", handleReviewFormSubmit);
+// Helper functions (Templates)
+function getReviewFormHTML(idappunto) {
+	return `
+        <div id="review-form-container">
+            <h3 class="mb-3 h5">Lascia una recensione</h3>
+            <form id="review-form" data-idappunto="${idappunto}">
+                <div class="row g-2 align-items-end">
+                    <div class="col-8 col-sm-6 col-md-4">
+                        <label for="valutazione" class="form-label visually-hidden">Valutazione</label>
+                        <select name="valutazione" id="valutazione" class="form-select text-center" required>
+                            <option value="" selected disabled>Vota...</option>
+                            <option value="5">5 - Eccellente</option>
+                            <option value="4">4 - Molto Buono</option>
+                            <option value="3">3 - Buono</option>
+                            <option value="2">2 - Sufficiente</option>
+                            <option value="1">1 - Insufficiente</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary">Invia</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    `;
 }
 
-// Listener diretti
-document.querySelectorAll(".delete-review-btn").forEach((btn) => {
-	btn.addEventListener("click", () => handleDeleteReview(btn));
-});
+function getReviewDisplayHTML(review, idappunto) {
+	const stars = "★".repeat(review.valutazione) + "☆".repeat(5 - review.valutazione);
+	return `
+        <div id="already-reviewed-container" class="d-flex justify-content-between align-items-center bg-light p-3 rounded" data-review-id="${review.idrecensione}" data-idappunto="${idappunto}">
+            <div class="d-flex align-items-center gap-2">
+                <span class="fw-bold">La tua recensione:</span>
+                <span class="text-warning">${stars}</span>
+            </div>
+            <button class="btn btn-sm btn-outline-danger delete-review-btn" data-review-id="${review.idrecensione}" aria-label="Elimina recensione" title="Elimina">
+                <em class="bi bi-trash" aria-hidden="true"></em>
+            </button>
+        </div>
+    `;
+}
 
-document.querySelectorAll(".btn-approve").forEach((btn) => {
-	btn.addEventListener("click", () => {
-		const id = btn.dataset.id;
-		if (id) handleApprove(id);
-	});
-});
-
-document.querySelectorAll(".btn-reject").forEach((btn) => {
-	btn.addEventListener("click", () => {
-		const id = btn.dataset.id;
-		if (id) handleReject(id);
-	});
-});
-
-document.querySelectorAll(".btn-delete-note").forEach((btn) => {
-	btn.addEventListener("click", () => handleDeleteNote(btn));
-});
+function getLoginPromptHTML(loginUrl) {
+	return `
+        <p class="mb-0 text-muted">
+            <a href="${loginUrl}">Accedi</a> per lasciare una recensione.
+        </p>
+    `;
+}
 
 // Funzione per gestire il submit del form di recensione
 function handleReviewFormSubmit(e) {
@@ -42,52 +64,15 @@ function handleReviewFormSubmit(e) {
 		return;
 	}
 
-	submitBtn.disabled = true;
+	handleButtonAction(submitBtn, `appunto.php?id=${idappunto}`, `valutazione=${encodeURIComponent(valutazione)}&ajax=1`, (data) => {
+		if (data.success) {
+			const container = document.getElementById("review-form-container");
+			if (container) container.outerHTML = getReviewDisplayHTML(data.review, idappunto);
 
-	fetch("appunto.php?id=" + idappunto, {
-		// TODO: outer html ????
-		method: "POST",
-		headers: {
-			"Content-Type": "application/x-www-form-urlencoded",
-		},
-		body: "valutazione=" + encodeURIComponent(valutazione) + "&ajax=1",
-	})
-		.then((res) => res.json())
-		.then((data) => {
-			if (data.success) {
-				// Nascondi il form e mostra il messaggio
-				const container = document.getElementById("review-form-container");
-				if (container) {
-					const stars = "★".repeat(data.review.valutazione) + "☆".repeat(5 - data.review.valutazione);
-					container.outerHTML = `
-                        <div id="already-reviewed-container" class="d-flex justify-content-between align-items-center bg-light p-3 rounded" data-review-id="${data.review.idrecensione}" data-idappunto="${idappunto}">
-                            <div class="d-flex align-items-center gap-2">
-                                <span class="fw-bold">La tua recensione:</span>
-                                <span class="text-warning">${stars}</span>
-                            </div>
-                            <button class="btn btn-sm btn-outline-danger delete-review-btn" data-review-id="${data.review.idrecensione}" aria-label="Elimina recensione" title="Elimina">
-                                <em class="bi bi-trash" aria-hidden="true"></em>
-                            </button>
-                        </div>
-                    `;
-
-					const newDeleteBtn = document.querySelector("#already-reviewed-container .delete-review-btn");
-					if (newDeleteBtn) {
-						newDeleteBtn.addEventListener("click", () => handleDeleteReview(newDeleteBtn));
-					}
-				}
-
-				// Aggiorna la media delle recensioni
-				const avgBadge = document.getElementById("avg-rating-badge");
-				if (avgBadge) avgBadge.textContent = "★ " + data.new_avg + " (" + data.new_count + ")";
-			}
-		})
-		.catch(() => {
-			submitBtn.disabled = false;
-			submitBtn.textContent = "Invia";
-			if (typeof showError === "function") showError("Si è verificato un errore. Riprova.");
-			else alert("Si è verificato un errore. Riprova.");
-		});
+			const avgBadge = document.getElementById("avg-rating-badge");
+			if (avgBadge) avgBadge.textContent = "★ " + data.new_avg + " (" + data.new_count + ")";
+		}
+	});
 }
 
 // Gestione eliminazione recensioni
@@ -117,154 +102,82 @@ function handleDeleteReview(btn) {
 	}
 
 	const idappunto = reviewCard.dataset.idappunto;
-	btn.disabled = true;
 
-	fetch("appunto.php?id=" + idappunto, {
-		// TODO: outer html ????
-		method: "POST",
-		headers: {
-			"Content-Type": "application/x-www-form-urlencoded",
-		},
-		body: "deleteReview=" + encodeURIComponent(idrecensione) + "&ajax=1",
-	})
-		.then((res) => res.json())
-		.then((data) => {
-			if (data.success) {
-				setTimeout(() => {
-					reviewCard.outerHTML = `
-                        <div id="review-form-container">
-                            <h3 class="mb-3 h5">Lascia una recensione</h3>
-                            <form id="review-form" data-idappunto="${idappunto}">
-                                <div class="row g-2 align-items-end">
-                                    <div class="col-8 col-sm-6 col-md-4">
-                                        <label for="valutazione" class="form-label visually-hidden">Valutazione</label>
-                                        <select name="valutazione" id="valutazione" class="form-select text-center" required>
-                                            <option value="" selected disabled>Vota...</option>
-                                            <option value="5">5 ★★★★★</option>
-                                            <option value="4">4 ★★★★</option>
-                                            <option value="3">3 ★★★</option>
-                                            <option value="2">2 ★★</option>
-                                            <option value="1">1 ★</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-auto">
-                                        <button type="submit" class="btn btn-primary">Invia</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    `;
+	handleButtonAction(btn, `appunto.php?id=${idappunto}`, `deleteReview=${encodeURIComponent(idrecensione)}&ajax=1`, (data) => {
+		if (data.success) {
+			setTimeout(() => {
+				reviewCard.outerHTML = getReviewFormHTML(idappunto);
 
-					const newForm = document.getElementById("review-form");
-					if (newForm) {
-						newForm.addEventListener("submit", handleReviewFormSubmit);
-					}
+				const avgBadge = document.getElementById("avg-rating-badge");
+				if (avgBadge) avgBadge.textContent = "★ " + data.new_avg + " (" + data.new_count + ")";
 
-					// Aggiorna la media delle recensioni
-					const avgBadge = document.getElementById("avg-rating-badge");
-					if (avgBadge) avgBadge.textContent = "★ " + data.new_avg + " (" + data.new_count + ")";
-
-					// Puliamo la lista recensioni visuale in ogni caso
-					const reviewsList = document.getElementById("reviews-list");
-					if (reviewsList) {
-						reviewsList.innerHTML = '<div class="d-flex flex-column gap-3"></div>';
-					}
-				}, 300);
-			} else {
-				if (typeof showError === "function") showError(data.message || "Errore durante l'eliminazione della recensione.");
-				else alert(data.message || "Errore durante l'eliminazione della recensione.");
-				btn.disabled = false;
-				btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em>';
-			}
-		})
-		.catch(() => {
-			btn.disabled = false;
+				const reviewsList = document.getElementById("reviews-list");
+				if (reviewsList) reviewsList.innerHTML = '<div class="d-flex flex-column gap-3"></div>';
+			}, 300);
+		} else {
+			showError(data.message || "Errore durante l'eliminazione della recensione.");
 			btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em>';
-			if (typeof showError === "function") showError("Si è verificato un errore. Riprova.");
-			else alert("Si è verificato un errore. Riprova.");
-		});
+		}
+	});
 }
 
 // Handler per approvazione articolo
 function handleApprove(id) {
-	const formData = new FormData();
-	formData.append("action", "approve");
-	formData.append("idappunto", id);
-
-	fetch("appunti.php", {
-		method: "POST",
-		body: formData,
-	})
-		.then((res) => res.json())
-		.then((data) => {
-			if (data.success) {
-				// Aggiorna il badge
-				const badge = document.getElementById("status-badge");
-				if (badge) {
-					badge.className = "badge bg-success";
-					badge.textContent = "Approvato";
-				}
-				// Rimuovi i pulsanti approva/rifiuta
-				const adminActions = document.getElementById("admin-actions");
-				if (adminActions) {
-					const approveBtn = adminActions.querySelector(".btn-approve");
-					const rejectBtn = adminActions.querySelector(".btn-reject");
-					if (approveBtn) approveBtn.remove();
-					if (rejectBtn) rejectBtn.remove();
-				}
-
-				// Mostra la sezione recensioni
-				const reviewsSection = document.getElementById("reviews-section");
-				if (reviewsSection) {
-					reviewsSection.classList.remove("d-none");
-					reviewsSection.style.display = "block";
-				}
-
-				if (typeof showSuccess === "function") showSuccess("Appunto approvato con successo");
-			} else {
-				if (typeof showError === "function") showError("Errore durante l'approvazione");
+	handleButtonAction(null, "appunti.php", `action=approve&idappunto=${id}`, (data) => {
+		if (data.success) {
+			const badge = document.getElementById("status-badge");
+			if (badge) {
+				badge.className = "badge bg-success";
+				badge.textContent = "Approvato";
 			}
-		})
-		.catch(() => {
-			if (typeof showError === "function") showError("Errore di connessione");
-		});
+
+			const adminActions = document.getElementById("admin-actions");
+			if (adminActions) {
+				adminActions.querySelector(".btn-approve")?.remove();
+				adminActions.querySelector(".btn-reject")?.remove();
+			}
+
+			const reviewsSection = document.getElementById("reviews-section");
+			if (reviewsSection) {
+				reviewsSection.classList.remove("d-none");
+				reviewsSection.style.display = "block";
+			}
+
+			showSuccess("Appunto approvato con successo");
+		} else {
+			showError("Errore durante l'approvazione");
+		}
+	});
 }
 
 // Handler per rifiuto articolo
 function handleReject(id) {
-	const formData = new FormData();
-	formData.append("action", "reject");
-	formData.append("idappunto", id);
-
-	fetch("appunti.php", {
-		method: "POST",
-		body: formData,
-	})
-		.then((res) => res.json())
-		.then((data) => {
-			if (data.success) {
-				// Aggiorna il badge
-				const badge = document.getElementById("status-badge");
-				if (badge) {
-					badge.className = "badge bg-danger";
-					badge.textContent = "Rifiutato";
-				}
-				// Rimuovi i pulsanti approva/rifiuta
-				const adminActions = document.getElementById("admin-actions");
-				if (adminActions) {
-					const approveBtn = adminActions.querySelector(".btn-approve");
-					const rejectBtn = adminActions.querySelector(".btn-reject");
-					if (approveBtn) approveBtn.remove();
-					if (rejectBtn) rejectBtn.remove();
-				}
-				if (typeof showSuccess === "function") showSuccess("Appunto rifiutato con successo");
-			} else {
-				if (typeof showError === "function") showError("Errore durante il rifiuto");
+	handleButtonAction(null, "appunti.php", `action=reject&idappunto=${id}`, (data) => {
+		if (data.success) {
+			const badge = document.getElementById("status-badge");
+			if (badge) {
+				badge.className = "badge bg-danger";
+				badge.textContent = "Rifiutato";
 			}
-		})
-		.catch(() => {
-			if (typeof showError === "function") showError("Errore di connessione");
-		});
+
+			const adminActions = document.getElementById("admin-actions");
+			if (adminActions) {
+				adminActions.querySelector(".btn-approve")?.remove();
+				adminActions.querySelector(".btn-reject")?.remove();
+			}
+
+			showSuccess("Appunto rifiutato con successo");
+		} else {
+			showError("Errore durante il rifiuto");
+		}
+	});
+}
+
+// Resetta il bottone elimina allo stato iniziale
+function resetDeleteNoteButton(btn) {
+	delete btn.dataset.confirm;
+	btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em>';
+	btn.classList.replace("btn-danger", "btn-outline-danger");
 }
 
 // Handler per eliminazione articolo
@@ -274,48 +187,71 @@ function handleDeleteNote(btn) {
 	if (!btn.dataset.confirm) {
 		btn.dataset.confirm = "true";
 		btn.innerHTML = '<em class="bi bi-check-lg"></em>';
-		btn.classList.remove("btn-outline-danger");
-		btn.classList.add("btn-danger");
+		btn.classList.replace("btn-outline-danger", "btn-danger");
 		setTimeout(() => {
-			if (btn && btn.dataset.confirm) {
-				delete btn.dataset.confirm;
-				btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em>';
-				btn.classList.remove("btn-danger");
-				btn.classList.add("btn-outline-danger");
-			}
+			if (btn?.dataset.confirm) resetDeleteNoteButton(btn);
 		}, 3000);
 		return;
 	}
 
-	btn.disabled = true;
-
-	const formData = new FormData();
-	formData.append("action", "delete");
-	formData.append("idappunto", id);
-
-	fetch("appunti.php", {
-		method: "POST",
-		body: formData,
-	})
-		.then((res) => res.json())
-		.then((data) => {
-			if (data.success) {
-				window.location.href = "gestione-appunti.php";
-			} else {
-				if (typeof showError === "function") showError("Errore durante l'eliminazione");
-				btn.disabled = false;
-				btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em>';
-				delete btn.dataset.confirm;
-				btn.classList.remove("btn-danger");
-				btn.classList.add("btn-outline-danger");
-			}
-		})
-		.catch(() => {
-			if (typeof showError === "function") showError("Errore di connessione");
-			btn.disabled = false;
-			btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em>';
-			delete btn.dataset.confirm;
-			btn.classList.remove("btn-danger");
-			btn.classList.add("btn-outline-danger");
-		});
+	handleButtonAction(btn, "appunti.php", `action=delete&idappunto=${id}`, (data) => {
+		if (data.success) {
+			window.location.href = "gestione-appunti.php";
+		} else {
+			showError("Errore durante l'eliminazione");
+			resetDeleteNoteButton(btn);
+		}
+	});
 }
+
+// Initialize User Review Section
+	const container = document.getElementById("user-review-interaction");
+	if (container && container.dataset.config) {
+		try {
+			const config = JSON.parse(container.dataset.config);
+
+			if (!config.isLoggedIn) {
+				container.innerHTML = getLoginPromptHTML(config.loginUrl);
+			} else if (config.userReview) {
+				container.innerHTML = getReviewDisplayHTML(config.userReview, config.idappunto);
+			} else {
+				container.innerHTML = getReviewFormHTML(config.idappunto);
+			}
+
+			// Event Delegation for dynamic elements
+			container.addEventListener("submit", (e) => {
+				if (e.target && e.target.id === "review-form") {
+					handleReviewFormSubmit(e);
+				}
+			});
+
+			container.addEventListener("click", (e) => {
+				const btn = e.target.closest(".delete-review-btn");
+				if (btn) {
+					handleDeleteReview(btn);
+				}
+			});
+
+		} catch (e) {
+			console.error("Error parsing review config", e);
+		}
+	}
+
+	// Listener diretti only for static elements (Note Admin Actions)
+	document.querySelectorAll(".btn-approve").forEach((btn) => {
+		btn.addEventListener("click", () => {
+			const id = btn.dataset.id;
+			if (id) handleApprove(id);
+		});
+	});
+
+	document.querySelectorAll(".btn-reject").forEach((btn) => {
+		btn.addEventListener("click", () => {
+			const id = btn.dataset.id;
+			if (id) handleReject(id);
+		});
+	});
+
+	document.querySelectorAll(".btn-delete-note").forEach((btn) => {
+		btn.addEventListener("click", () => handleDeleteNote(btn));
+	});
