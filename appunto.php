@@ -78,7 +78,7 @@ if (isset($_POST['valutazione'])) {
                         'valutazione' => $valutazione
                     ],
                     'new_avg' => $updatedNote['media_recensioni'] ?: 'N/A',
-                    'new_count' => (int)$updatedNote['numero_recensioni']
+                    'new_count' => $updatedNote['numero_recensioni']
                 ]);
                 exit();
             }
@@ -109,7 +109,7 @@ if (isset($_POST['deleteReview'])) {
                 echo json_encode([
                     'success' => true,
                     'new_avg' => $updatedNote['media_recensioni'] ?: 'N/A',
-                    'new_count' => (int)$updatedNote['numero_recensioni']
+                    'new_count' => $updatedNote['numero_recensioni']
                 ]);
             } else {
                 echo json_encode([

@@ -59,10 +59,10 @@ if (!empty($note)) {
                             <div class="vr d-none d-md-block"></div>
                             <div class="d-flex gap-2">
                                 <span class="badge bg-light text-dark border p-2">
-                                    <?php echo (int)$note['numero_visualizzazioni']; ?> Visualizzazioni
+                                    <?php echo $note['numero_visualizzazioni']; ?> Visualizzazioni
                                 </span>
                                 <span id="avg-rating-badge" class="badge bg-light text-dark border p-2">
-                                    ★ <?php echo $note['media_recensioni'] ?: 'N/A'; ?> (<?php echo (int)($note['numero_recensioni'] ?? 0); ?>)
+                                    ★ <?php echo $note['media_recensioni'] ?: 'N/A'; ?> (<?php echo ($note['numero_recensioni'] ?? 0); ?>)
                                 </span>
                             </div>
                         </div>

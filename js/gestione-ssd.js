@@ -21,23 +21,23 @@ function loadSSDs() {
 
 				data.data.forEach((ssd) => {
 					html += `
-                                <tr>
-                                    <td class="text-nowrap">${ssd.nome}</td>
-                                    <td class="text-break">${ssd.descrizione}</td>
-                                    <td class="text-end col-actions-compact">
-                                        <div class="d-flex gap-1 flex-column flex-md-row justify-content-end align-items-end">
-                                            <button type="button" class="btn btn-sm btn-outline-secondary btn-edit-ssd" data-id="${ssd.idssd}" title="Modifica">
-                                                <em class="bi bi-pencil" aria-hidden="true"></em>
-                                                <span class="visually-hidden">Modifica</span>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-outline-danger btn-delete-ssd" data-id="${ssd.idssd}" title="Elimina">
-                                                <em class="bi bi-trash" aria-hidden="true"></em>
-                                                <span class="visually-hidden">Elimina</span>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            `;
+							<tr>
+								<td class="text-nowrap">${ssd.nome}</td>
+								<td class="text-break">${ssd.descrizione}</td>
+								<td class="text-end col-actions-compact">
+									<div class="d-flex gap-1 flex-column flex-md-row justify-content-end align-items-end">
+										<button type="button" class="btn btn-sm btn-outline-secondary btn-edit-ssd" data-id="${ssd.idssd}" title="Modifica">
+											<em class="bi bi-pencil" aria-hidden="true"></em>
+											<span class="visually-hidden">Modifica</span>
+										</button>
+										<button type="button" class="btn btn-sm btn-outline-danger btn-delete-ssd" data-id="${ssd.idssd}" title="Elimina">
+											<em class="bi bi-trash" aria-hidden="true"></em>
+											<span class="visually-hidden">Elimina</span>
+										</button>
+									</div>
+								</td>
+							</tr>
+						`;
 				});
 				tbody.innerHTML = html;
 

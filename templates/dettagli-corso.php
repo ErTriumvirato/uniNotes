@@ -1,9 +1,8 @@
 <?php
-$idCorso = (int)$_GET['id'];
+$idCorso = $_GET['id'];
 $corso = $dbh->getCourseById($idCorso);
 $idutente = $_SESSION["idutente"] ?? null;
 $isFollowing = $idutente ? $dbh->isFollowingCourse($idutente, $idCorso) : false;
-//$appunti = $dbh->getNotesWithFilters(idcorso: $idCorso, sort: 'data_pubblicazione', order: 'DESC');
 ?>
 
 <div class="row justify-content-center">

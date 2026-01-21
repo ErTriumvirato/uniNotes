@@ -122,23 +122,13 @@ function updateNotes() {
 
 // Handler per approvazione appunto
 function handleApprove(id) {
-	const formData = new FormData();
-	formData.append("action", "approve");
-	formData.append("idappunto", id);
-
-	fetch("appunti.php", {
-		method: "POST",
-		body: formData,
-	})
-		.then((res) => res.json())
-		.then((data) => {
-			if (data.success) {
-				updateNotes();
-			} else {
-				showError("Errore durante l'approvazione");
-			}
-		})
-		.catch(() => showError("Errore di connessione"));
+	handleButtonAction(null, "appunti.php", `action=approve&idappunto=${id}`, (data) => {
+		if (data.success) {
+			updateNotes();
+		} else {
+			showError("Errore durante l'approvazione");
+		}
+	});
 }
 
 // Handler per rifiuto appunto

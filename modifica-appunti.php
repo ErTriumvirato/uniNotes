@@ -3,9 +3,9 @@ require_once 'config.php';
 
 requireLogin();
 
-$noteId = isset($_GET['id']) ? (int)$_GET['id'] : 0; // Ottiene l'ID dell'appunto da modificare
+$noteId = isset($_GET['id']) ? $_GET['id'] : 0; // Ottiene l'ID dell'appunto da modificare
 if ($noteId === 0 && isset($_POST['idappunto'])) {
-    $noteId = (int)$_POST['idappunto'];
+    $noteId = $_POST['idappunto'];
 }
 
 $note = $dbh->getNoteById($noteId); // Ottiene l'appunto dal database

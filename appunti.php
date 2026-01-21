@@ -28,7 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'], $_POST['ida
     exit;
 }
 
-
 // Handle GET request for filtering notes
 if (isset($_GET['action']) && $_GET['action'] === 'filter') {
     $sort = $_GET['sort'] ?? 'data_pubblicazione';
@@ -41,10 +40,10 @@ if (isset($_GET['action']) && $_GET['action'] === 'filter') {
     $appunti = $dbh->getNotesWithFilters(idutente: $idutente, idcorso: $idcorso, sort: $sort, order: $order, search: $search, approvalFilter: $approvalFilter);
 
     $response = array_map(function ($res) {
-        $res['numero_visualizzazioni'] = (int)$res['numero_visualizzazioni'];
+        $res['numero_visualizzazioni'] = $res['numero_visualizzazioni'];
         $res['data_formattata'] = date('d/m/y', strtotime($res['data_pubblicazione']));
         $res['media_recensioni'] = $res['media_recensioni'] ?: 'N/A';
-        $res['numero_recensioni'] = (int)$res['numero_recensioni'];
+        $res['numero_recensioni'] = $res['numero_recensioni'];
         return $res;
     }, $appunti);
 

@@ -2,7 +2,7 @@
 $courses = $dbh->getCoursesWithFilters();
 
 // Ottieni l'ID del corso selezionato della GET, se presente (se l'utente è stato reindirizzato dalla pagina del corso)
-$selectedCourseId = isset($_GET['idcorso']) ? (int)$_GET['idcorso'] : null;
+$selectedCourseId = isset($_GET['idcorso']) ? $_GET['idcorso'] : null;
 ?>
 
 <div class="row justify-content-center">

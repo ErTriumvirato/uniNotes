@@ -71,7 +71,7 @@ function closeCookieBanner() {
 }
 
 // Gestione delle azioni dei bottoni
-function handleButtonAction(button = null, path = "", bodyText = "", onSuccess = null) {
+function handleButtonAction(button = null, path = "", bodyText = null, onSuccess = null) {
 	if (button) button.disabled = true;
 
 	const options = bodyText
