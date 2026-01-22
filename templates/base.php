@@ -112,7 +112,12 @@
             "templates/appunti-da-approvare.php",
             "templates/gestione-appunti-template.php",
             "templates/menu-appunti.php",
-            "templates/dettagli-appunto-template.php"
+            "templates/dettagli-appunto-template.php",
+            "templates/login-template.php",
+            "templates/registrazione-template.php",
+            "templates/profilo-utente-template.php",
+            "templates/impostazioni-template.php",
+            "templates/modifica-appunto-template.php"
         ];
 
         if (isset($templateParams["nome"]) && in_array($templateParams["nome"], $backButtonPages)):

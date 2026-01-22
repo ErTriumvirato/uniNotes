@@ -19,82 +19,86 @@ $seguendoCorsi = $userId ? $dbh->getFollowedCoursesCount($userId) : false;
     </div>
 <?php endif; ?>
 
-<section class="mb-5">
-    <h2 class="mb-4">Appunti recenti</h2>
-    <?php if (empty($lastNotes)): ?>
-        <p>Nessun appunto trovato.</p>
-    <?php else: ?>
-        <div class="row g-4">
-            <?php foreach ($lastNotes as $note): ?>
-                <div class="col-12 col-md-6 col-lg-4">
-                    <article class="card h-100 border-0 shadow-sm note-card">
-                        <div class="card-body d-flex flex-column">
-                            <h3 class="h5 card-title mb-3">
-                                <a href="appunto.php?id=<?php echo $note['idappunto']; ?>" class="text-decoration-none stretched-link note-title-link">
-                                    <?php echo htmlspecialchars($note['titolo']); ?>
-                                </a>
-                            </h3>
-                            <div class="mt-auto">
-                                <small class="text-muted mb-2 d-block"><?php echo htmlspecialchars($note['nome_corso']); ?></small>
-                                <p class="mb-2 small">
-                                    di <strong><?php echo htmlspecialchars($note['autore']); ?></strong>
-                                </p>
-                                <div class="d-flex flex-wrap gap-2 align-items-center">
-                                    <span class="badge bg-light text-dark border p-2" title="Data pubblicazione">
-                                        <?php echo date('d/m/Y', strtotime($note['data_pubblicazione'])); ?>
-                                    </span>
-                                    <span class="badge bg-light text-dark border p-2" title="Visualizzazioni">
-                                        <?php echo $note['numero_visualizzazioni']; ?> Visualizzazioni
-                                    </span>
-                                    <span class="badge bg-light text-dark border p-2" title="Media recensioni">
-                                        ★ <?php echo $note['media_recensioni'] ? htmlspecialchars($note['media_recensioni']) : 'N/A'; ?>
-                                    </span>
+<section aria-label="Lista appunti recenti" class="card shadow-sm border-0 mb-5">
+    <div class="card-body p-3 p-md-4">
+        <h2 class="mb-4">Appunti recenti</h2>
+        <?php if (empty($lastNotes)): ?>
+            <p>Nessun appunto trovato.</p>
+        <?php else: ?>
+            <div class="row g-4">
+                <?php foreach ($lastNotes as $note): ?>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <article class="card h-100 border-0 shadow-sm note-card">
+                            <div class="card-body d-flex flex-column">
+                                <h3 class="h5 card-title mb-3">
+                                    <a href="appunto.php?id=<?php echo $note['idappunto']; ?>" class="text-decoration-none stretched-link note-title-link">
+                                        <?php echo htmlspecialchars($note['titolo']); ?>
+                                    </a>
+                                </h3>
+                                <div class="mt-auto">
+                                    <small class="text-muted mb-2 d-block"><?php echo htmlspecialchars($note['nome_corso']); ?></small>
+                                    <p class="mb-2 small">
+                                        di <strong><?php echo htmlspecialchars($note['autore']); ?></strong>
+                                    </p>
+                                    <div class="d-flex flex-wrap gap-2 align-items-center">
+                                        <span class="badge bg-light text-dark border p-2" title="Data pubblicazione">
+                                            <?php echo date('d/m/Y', strtotime($note['data_pubblicazione'])); ?>
+                                        </span>
+                                        <span class="badge bg-light text-dark border p-2" title="Visualizzazioni">
+                                            <?php echo $note['numero_visualizzazioni']; ?> Visualizzazioni
+                                        </span>
+                                        <span class="badge bg-light text-dark border p-2" title="Media recensioni">
+                                            ★ <?php echo $note['media_recensioni'] ? htmlspecialchars($note['media_recensioni']) : 'N/A'; ?>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </article>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
+                        </article>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    </div>
 </section>
 
-<section>
-    <h2 class="mb-4">Appunti più visualizzati</h2>
-    <?php if (empty($mostViewedNotes)): ?>
-        <p>Nessun appunto visualizzato.</p>
-    <?php else: ?>
-        <div class="row g-4">
-            <?php foreach ($mostViewedNotes as $note): ?>
-                <div class="col-12 col-md-6 col-lg-4">
-                    <article class="card h-100 border-0 shadow-sm note-card">
-                        <div class="card-body d-flex flex-column">
-                            <h3 class="h5 card-title mb-3">
-                                <a href="appunto.php?id=<?php echo $note['idappunto']; ?>" class="text-decoration-none stretched-link note-title-link">
-                                    <?php echo htmlspecialchars($note['titolo']); ?>
-                                </a>
-                            </h3>
-                            <div class="mt-auto">
-                                <small class="text-muted mb-2 d-block"><?php echo htmlspecialchars($note['nome_corso']); ?></small>
-                                <p class="mb-2 small">
-                                    di <strong><?php echo htmlspecialchars($note['autore']); ?></strong>
-                                </p>
-                                <div class="d-flex flex-wrap gap-2 align-items-center">
-                                    <span class="badge bg-light text-dark border p-2" title="Data pubblicazione">
-                                        <?php echo date('d/m/Y', strtotime($note['data_pubblicazione'])); ?>
-                                    </span>
-                                    <span class="badge bg-light text-dark border p-2" title="Visualizzazioni">
-                                        <?php echo $note['numero_visualizzazioni']; ?> Visualizzazioni
-                                    </span>
-                                    <span class="badge bg-light text-dark border p-2" title="Media recensioni">
-                                        ★ <?php echo $note['media_recensioni'] ? htmlspecialchars($note['media_recensioni']) : 'N/A'; ?>
-                                    </span>
+<section aria-label="Lista appunti più visualizzati" class="card shadow-sm border-0 mb-5">
+    <div class="card-body p-3 p-md-4">
+        <h2 class="mb-4">Appunti più visualizzati</h2>
+        <?php if (empty($mostViewedNotes)): ?>
+            <p>Nessun appunto visualizzato.</p>
+        <?php else: ?>
+            <div class="row g-4">
+                <?php foreach ($mostViewedNotes as $note): ?>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <article class="card h-100 border-0 shadow-sm note-card">
+                            <div class="card-body d-flex flex-column">
+                                <h3 class="h5 card-title mb-3">
+                                    <a href="appunto.php?id=<?php echo $note['idappunto']; ?>" class="text-decoration-none stretched-link note-title-link">
+                                        <?php echo htmlspecialchars($note['titolo']); ?>
+                                    </a>
+                                </h3>
+                                <div class="mt-auto">
+                                    <small class="text-muted mb-2 d-block"><?php echo htmlspecialchars($note['nome_corso']); ?></small>
+                                    <p class="mb-2 small">
+                                        di <strong><?php echo htmlspecialchars($note['autore']); ?></strong>
+                                    </p>
+                                    <div class="d-flex flex-wrap gap-2 align-items-center">
+                                        <span class="badge bg-light text-dark border p-2" title="Data pubblicazione">
+                                            <?php echo date('d/m/Y', strtotime($note['data_pubblicazione'])); ?>
+                                        </span>
+                                        <span class="badge bg-light text-dark border p-2" title="Visualizzazioni">
+                                            <?php echo $note['numero_visualizzazioni']; ?> Visualizzazioni
+                                        </span>
+                                        <span class="badge bg-light text-dark border p-2" title="Media recensioni">
+                                            ★ <?php echo $note['media_recensioni'] ? htmlspecialchars($note['media_recensioni']) : 'N/A'; ?>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </article>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
+                        </article>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    </div>
 </section>
