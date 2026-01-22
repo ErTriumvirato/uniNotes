@@ -1,7 +1,7 @@
 <div class="container">
     <header class="row mb-4">
         <div class="col-12">
-            <h1 class="display-5 fw-bold h2">Gestione corsi</h1>
+            <h1 id="titolo-gestione-utenti" class="display-5 fw-bold h2">Gestione corsi</h1>
         </div>
     </header>
 
@@ -43,7 +43,7 @@
     </section>
 
     <!-- Modal Corso -->
-    <div class="modal fade" id="courseModal" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="courseModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">

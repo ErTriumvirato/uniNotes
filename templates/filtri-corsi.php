@@ -1,28 +1,10 @@
 <?php
-
-/**
- * Template per i filtri dei corsi
- * 
- * Variabili attese:
- * $ssds - (opzionale) array degli SSD per il popolamento via PHP
- * $showFollowFilter - (bool) mostra il filtro seguiti/non seguiti (default false)
- * $searchId - ID dell'input di ricerca (default 'search')
- * $ssdId - ID della select SSD (default 'ssd')
- * $filterTypeId - ID della select tipo filtro (default 'filterType')
- * $searchCallback - funzione JS al oninput (default 'filterCourses()')
- * $ssdCallback - funzione JS al onchange (default 'filterCourses()')
- * $filterTypeCallback - funzione JS al onchange (default 'filterCourses()')
- */
-
 $ssds = $ssds ?? []; // Array di SSD
 $showFollowFilter = $showFollowFilter ?? false; // Mostra il filtro seguiti/non seguiti
-$searchId = $searchId ?? 'search';
-$ssdId = $ssdId ?? 'ssd';
-$filterTypeId = $filterTypeId ?? 'filterType';
-$searchCallback = $searchCallback ?? 'filterCourses()';
-$ssdCallback = $ssdCallback ?? 'filterCourses()';
-$filterTypeCallback = $filterTypeCallback ?? 'filterCourses()';
-$extraButtons = $extraButtons ?? '';
+$searchId = $searchId ?? 'search'; // ID dell'input di ricerca
+$ssdId = $ssdId ?? 'ssd'; // ID della select SSD
+$filterTypeId = $filterTypeId ?? 'filterType'; // ID della select tipo filtro
+$extraButtons = $extraButtons ?? ''; // Pulsanti extra da mostrare accanto ai filtri
 ?>
 
 <section aria-label="Filtri corsi" class="mb-4">
@@ -38,8 +20,8 @@ $extraButtons = $extraButtons ?? '';
 
     <div class="row g-2 align-items-end collapse d-md-flex" id="filtersCollapse">
         <div class="col-12 col-md-<?php echo $showFollowFilter ? '4' : '6'; ?>">
-            <label for="<?php echo $searchId; ?>" class="form-label small text-muted">Cerca</label>
-            <input type="text" id="<?php echo $searchId; ?>" class="form-control" placeholder="Cerca corso" />
+            <label for="<?php echo $searchId; ?>" class="form-label small fw-bold">Cerca corso</label>
+            <input type="search" id="<?php echo $searchId; ?>" name="course_search" class="form-control" placeholder='es. "Ingegneria" o "Economia"' />
         </div>
         <div class="col-12 col-md-<?php echo $showFollowFilter ? '4' : '6'; ?>">
             <label for="<?php echo $ssdId; ?>" class="form-label small text-muted">SSD</label>
@@ -52,6 +34,7 @@ $extraButtons = $extraButtons ?? '';
                 <?php endforeach; ?>
             </select>
         </div>
+        <!-- Filtro seguiti/non seguiti solo se l'utente è loggato -->
         <?php if ($showFollowFilter): ?>
             <div class="col-12 col-md-4">
                 <label for="<?php echo $filterTypeId; ?>" class="form-label small text-muted">Stato</label>

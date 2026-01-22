@@ -33,6 +33,16 @@ if (!empty($action)) {
                     throw new Exception("Username e Email obbligatori");
                 }
 
+                // Verifica se l'utente esiste già
+                $existingUser = $dbh->getUsersWithFilters(username: $username);
+                $existingEmail = $dbh->getUsersWithFilters(email: $email);
+
+                if ($existingUser) {
+                    throw new Exception("Username già in uso");
+                } elseif ($existingEmail) {
+                    throw new Exception("Email già in uso");
+                }
+
                 // update or create user
                 if ($id > 0) {
                     // Update
@@ -51,7 +61,7 @@ if (!empty($action)) {
                 if ($result) {
                     echo json_encode(['success' => true, 'message' => 'Utente salvato con successo']);
                 } else {
-                    throw new Exception("Errore durante il salvataggio (username o email potrebbero essere già in uso)");
+                    throw new Exception("Errore durante il salvataggio");
                 }
                 break;
 
@@ -76,7 +86,7 @@ if (!empty($action)) {
                 break;
         }
     } catch (Exception $e) {
-        echo json_encode(['success' => false, 'message' => "Errore durante il salvataggio (username o email potrebbero essere già in uso)"]);
+        echo json_encode(['success' => false, 'message' => 'Errore durante il salvataggio: ' . $e->getMessage() . '.']);
     }
     exit();
 }

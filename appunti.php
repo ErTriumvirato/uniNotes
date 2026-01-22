@@ -1,9 +1,9 @@
 <?php
 require_once 'config.php';
 
-// Handle POST actions (approve, reject, delete)
+// Gestione delle richieste POST per eliminare, approvare o rifiutare appunti
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'], $_POST['idappunto'])) {
-    //requireLogin();
+    requireAdmin(); // L'utente deve essere un admin
 
     $action = $_POST['action'];
     $id = intval($_POST['idappunto']);
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'], $_POST['ida
     exit;
 }
 
-// Handle GET request for filtering notes
+// Gestione delle richieste GET per filtrare e ordinare appunti
 if (isset($_GET['action']) && $_GET['action'] === 'filter') {
     $sort = $_GET['sort'] ?? 'data_pubblicazione';
     $order = $_GET['order'] ?? 'DESC';

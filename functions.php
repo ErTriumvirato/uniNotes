@@ -1,41 +1,45 @@
 <?php
 require_once 'config.php';
 
-function isUserLoggedIn() // Verifica se l'utente è loggato
+// Verifica se l'utente è loggato
+function isUserLoggedIn()
 {
-    return true; // isset($_SESSION['username']);
+    return isset($_SESSION['username']);
 }
 
-function isUserAdmin() // Verifica se l'utente è admin
+// Verifica se l'utente è admin
+function isUserAdmin()
 {
-    return true; //isUserLoggedIn() && $_SESSION['isAdmin'] == true;
+    return isUserLoggedIn() && $_SESSION['isAdmin'] == true;
 }
 
-function getCurrentURI() // Restituisce l'URI corrente
+// Restituisce l'URI corrente
+function getCurrentURI()
 {
     return urlencode($_SERVER['REQUEST_URI']);
 }
 
-function requireAdmin() // Richiede che l'utente sia admin
+// Richiede che l'utente sia admin
+function requireAdmin()
 {
-    return;
     if (!isUserAdmin()) {
         header("Location: index.php");
         exit();
     }
 }
 
-function requireLogin($targetPage = null) // Richiede il login, opzionalmente con redirect
+// Richiede il login, opzionalmente con redirect
+function requireLogin($targetPage = null)
 {
     return;
     global $dbh;
-    // if not logged in
+
     if (!isUserLoggedIn()) {
-        header('Location: login.php?redirect=' . urlencode($targetPage ?? getCurrentURI()));
+        header('Location: login.php?redirect=' . urlencode($targetPage ?? getCurrentURI())); // Se non è loggato, reindirizza al login
         exit;
     }
 
-    // Verify user still exists in DB (handling stale sessions)
+    // Verifica che l'utente esista ancora nel database
     if (isset($_SESSION['idutente'])) {
         $user = $dbh->getUserById($_SESSION['idutente']);
         if (!$user) {
@@ -46,6 +50,6 @@ function requireLogin($targetPage = null) // Richiede il login, opzionalmente co
         }
     }
 
-    // if logged in
+    // Se è loggato
     return true;
 }

@@ -33,8 +33,7 @@
                 <!-- Menu di navigazione -->
                 <div class="offcanvas offcanvas-end flex-lg-grow-1" tabindex="-1" id="navbarOffcanvas" aria-labelledby="navbarOffcanvasLabel">
                     <div class="offcanvas-header d-lg-none">
-                        <p class="offcanvas-title" id="navbarOffcanvasLabel">Menu</p>
-                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Chiudi"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Chiudi menù"></button>
                     </div>
                     <div class="offcanvas-body">
                         <ul class="navbar-nav mx-auto mb-2 mb-lg-0 text-center">
@@ -59,7 +58,7 @@
                         <!-- Menu utente -->
                         <?php if (!isUserLoggedIn()) { ?>
                             <div class="d-flex justify-content-center">
-                                <a href="login.php" class="btn btn-primary" target="_self">Accedi</a>
+                                <a href="login.php" class="btn btn-outline-primary" target="_self">Accedi</a>
                             </div>
                         <?php } else { ?>
                             <div class="dropdown user-menu">
@@ -71,7 +70,7 @@
                                     <li><a class="dropdown-item" href="profilo-utente.php" target="_self">Profilo</a></li>
                                     <li><a class="dropdown-item" href="impostazioni.php" target="_self">Impostazioni</a></li>
                                     <li>
-                                        <hr class="dropdown-divider">
+                                        <hr class="dropdown-divider" />
                                     </li>
                                     <li><a class="dropdown-item text-danger" href="logout.php" target="_self">Esci</a></li>
                                 </ul>
@@ -99,7 +98,7 @@
                     <strong>Informativa cookie</strong>
                     <p class="mb-0 small">Usiamo solo cookie di sessione per il funzionamento del sito. Nessun cookie di profilazione.</p>
                 </div>
-                <button id="cookie-accept" type="button" class="btn btn-primary btn-sm px-4">Ok</button>
+                <button id="cookie-accept" type="button" class="btn btn-outline-primary btn-sm px-4">Ok</button>
             </div>
         </div>
     <?php endif; ?>

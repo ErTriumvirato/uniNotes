@@ -1,6 +1,6 @@
 <?php
-$courses = $dbh->getCoursesWithFilters();
-$note = $templateParams["appunto"];
+$courses = $dbh->getCoursesWithFilters(); // Recupera tutti i corsi disponibili
+$note = $templateParams["appunto"]; // Recupera i dettagli dell'appunto da modificare
 ?>
 
 <div class="row justify-content-center">
@@ -9,11 +9,14 @@ $note = $templateParams["appunto"];
             <div class="card-body p-4">
                 <h1 class="text-center mb-4 h2">Modifica appunti</h1>
 
+                <!-- Form di modifica dell'appunto -->
                 <form action="modifica-appunto.php" method="post">
                     <input type="hidden" name="idappunto" value="<?php echo $note['idappunto']; ?>" />
 
                     <div class="mb-3">
                         <label for="course" class="form-label">Corso</label>
+
+                        <!-- Select per scegliere il corso associato all'appunto -->
                         <select id="course" name="course" class="form-select" required>
                             <?php foreach ($courses as $course): ?>
                                 <option value="<?php echo htmlspecialchars($course['idcorso']); ?>" <?php echo ($note['idcorso'] == $course['idcorso']) ? 'selected' : ''; ?>>
@@ -34,7 +37,7 @@ $note = $templateParams["appunto"];
                     </div>
 
                     <div class="d-grid gap-2 mt-4">
-                        <input type="submit" name="salva" class="btn btn-primary btn-lg" value="Salva modifiche e richiedi approvazione" />
+                        <input type="submit" name="salva" class="btn btn-outline-primary btn-lg" value="Salva modifiche e richiedi approvazione" />
                     </div>
                 </form>
             </div>

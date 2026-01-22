@@ -51,7 +51,7 @@ function goBack() {
 	}
 }
 
-// Funzione per gestire il menu utente (user menu)
+// Funzione per gestire il menu utente
 function toggleUserMenu() {
 	const dropdown = document.getElementById("user-dropdown");
 	const btn = document.querySelector(".user-menu-btn");
@@ -85,8 +85,8 @@ function handleButtonAction(button = null, path = "", bodyText = null, onSuccess
 			}
 			onSuccess(data, button); // Esegue la funzione di successo passata come parametro
 		})
-		.catch(() => {
-			showError("Errore durante l'operazione"); // Mostra errore generico in caso di fallimento
+		.catch((e) => {
+			showError("Errore durante l'operazione: " + e.message); // Mostra errore generico in caso di fallimento
 		});
 }
 

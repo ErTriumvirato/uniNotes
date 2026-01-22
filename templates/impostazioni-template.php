@@ -11,6 +11,7 @@
                     </div>
                 <?php endif; ?>
 
+                <!-- Form di aggiornamento dati utente -->
                 <form action="impostazioni.php" method="POST">
                     <div class="mb-3">
                         <label for="username" class="form-label">Username</label>
@@ -39,6 +40,7 @@
 
                 <hr class="my-4" />
 
+                <!-- Form di eliminazione account -->
                 <form action="impostazioni.php" method="POST" id="deleteAccountForm">
                     <input type="hidden" name="delete_account" value="1" />
                     <div class="d-grid gap-2">

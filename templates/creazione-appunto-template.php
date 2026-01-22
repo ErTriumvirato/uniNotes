@@ -76,11 +76,11 @@ $selectedCourseId = isset($_GET['idcorso']) ? $_GET['idcorso'] : null;
 
                                     <?php else: ?>
                                         <!-- Appunto in attesa -->
-                                                <span class="badge bg-warning text-dark">In attesa</span> <!-- Etichetta in attesa -->
-                                            <?php endif; ?>
-                                        </div>
+                                        <span class="badge bg-warning text-dark">In attesa</span> <!-- Etichetta in attesa -->
+                                    <?php endif; ?>
                                 </div>
                             </div>
+                        </div>
                     </article>
                 <?php endforeach; ?>
             </div>

@@ -8,6 +8,7 @@ document.getElementById("filterRole").addEventListener("change", loadUsers); // 
 // Carica la lista degli utenti all'avvio
 loadUsers();
 
+// Creazione di una riga della tabella degli user
 function createUserRow(user) {
 	const roleBadge = user.isAdmin == 1 ? "Amministratore" : "Utente";
 	return `
@@ -29,16 +30,22 @@ function createUserRow(user) {
 		</tr>`;
 }
 
+// Carica la lista degli utenti con filtri di ricerca e ruolo
 function loadUsers() {
 	const search = document.getElementById("searchUser").value;
 	const role = document.getElementById("filterRole").value;
 	const url = `gestione-utenti.php?action=get_users&search=${encodeURIComponent(search)}&role=${encodeURIComponent(role)}`;
 
+	// Invia la richiesta AJAX per ottenere la lista degli utenti (definita in base.js)
 	handleButtonAction(null, url, null, (data) => {
 		if (!data.success) return;
 
-		document.getElementById("usersTableBody").innerHTML = data.data.map(createUserRow).join("");
+		// Popola la tabella con le righe create
+		document.getElementById("usersTableBody").innerHTML = data.data
+			.map(createUserRow) // Crea una riga per ogni utente
+			.join(""); // Unisce tutte le righe in una singola stringa
 
+		// Aggiunge i listener ai pulsanti di modifica ed eliminazione
 		document.querySelectorAll(".btn-edit-user").forEach((btn) => {
 			btn.addEventListener("click", () => editUser(btn.dataset.id));
 		});
@@ -53,12 +60,14 @@ function loadUsers() {
 function openUserModal() {
 	document.getElementById("userForm").reset();
 	document.getElementById("userId").value = "";
+	document.getElementById("password").required = true;
 	document.getElementById("userModalTitle").innerText = "Nuovo Utente";
 	userModalBS.show();
 }
 
 // Apre il modal per modificare un utente esistente
 function editUser(id) {
+	// Invia la richiesta AJAX per ottenere i dati dell'utente (definita in base.js)
 	handleButtonAction(null, `gestione-utenti.php?action=get_user&id=${id}`, null, (data) => {
 		if (!data.success) return;
 
@@ -68,6 +77,7 @@ function editUser(id) {
 		document.getElementById("email").value = user.email;
 		document.getElementById("ruolo").value = user.isAdmin;
 		document.getElementById("password").value = "";
+		delete document.getElementById("password").required;
 		document.getElementById("userModalTitle").innerText = "Modifica Utente";
 		userModalBS.show();
 	});
@@ -78,6 +88,7 @@ function saveUser() {
 	const formData = new FormData(document.getElementById("userForm"));
 	formData.append("action", "save_user");
 
+	// Invia la richiesta AJAX per salvare l'utente (definita in base.js)
 	handleButtonAction(null, "gestione-utenti.php", new URLSearchParams(formData).toString(), (data) => {
 		if (data.success) {
 			userModalBS.hide();
@@ -89,6 +100,7 @@ function saveUser() {
 	});
 }
 
+// Resetta il pulsante di eliminazione utente
 function resetDeleteUserButton(btn) {
 	delete btn.dataset.confirm;
 	btn.innerHTML = '<em class="bi bi-trash" aria-hidden="true"></em><span class="visually-hidden">Elimina</span>';
@@ -108,6 +120,7 @@ function deleteUser(id, btn) {
 		return;
 	}
 
+	// Invia la richiesta AJAX per eliminare l'utente (definita in base.js)
 	handleButtonAction(btn, "gestione-utenti.php", `action=delete_user&id=${id}`, (data) => {
 		if (data.success) {
 			loadUsers();

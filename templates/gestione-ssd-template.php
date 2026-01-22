@@ -1,7 +1,7 @@
 <div class="container">
     <header class="row mb-4">
         <div class="col-12">
-            <h1 class="display-5 fw-bold h2">Gestione SSD</h1>
+            <h1 id="titolo-gestione-utenti" class="display-5 fw-bold h2">Gestione SSD</h1>
         </div>
     </header>
 
@@ -19,8 +19,8 @@
 
             <div class="collapse d-md-block" id="ssdFiltersCollapse">
                 <div class="mb-4">
-                    <label for="searchSSD" class="form-label small text-muted">Cerca</label>
-                    <input type="text" id="searchSSD" class="form-control" placeholder="Cerca SSD..." />
+                    <label for="searchSSD" class="form-label small fw-semibold">Cerca per SSD</label>
+                    <input type="search" id="searchSSD" name="ssd_search" class="form-control" placeholder='es. "IUS/01" o "MAT/05"' />
                 </div>
             </div>
 
@@ -43,7 +43,7 @@
 
 
 <!-- Modal SSD -->
-<div class="modal fade" id="ssdModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="ssdModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">

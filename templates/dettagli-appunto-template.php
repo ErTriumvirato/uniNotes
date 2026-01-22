@@ -54,9 +54,9 @@ if (!empty($note)) {
                             <div class="d-flex align-items-center gap-2">
                                 <span>Autore: <a href="profilo-utente.php?id=<?php echo $note['idutente']; ?>" class="fw-bold"><?php echo htmlspecialchars($note['autore']); ?></a></span>
                             </div>
-                            
+
                             <div class="vr d-none d-md-block "></div> <!-- Separatore verticale -->
-                            
+
                             <div class="d-flex align-items-center gap-2">
                                 <span>Corso: <a href="corso.php?id=<?php echo $note['idcorso']; ?>" class="fw-bold"><?php echo htmlspecialchars($note['nome_corso']); ?></a></span>
                             </div>

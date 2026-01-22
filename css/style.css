@@ -1,48 +1,27 @@
+/* Variabili caucasiche */
 :root {
-	--nav-bg: #d666ff;
 	--bg-color: rgb(234, 247, 253);
 	--text-color: black;
 	--primary-color: #5a189a;
 	--focus-ring-color: rgba(90, 24, 154, 0.35);
 }
 
+/* Impostazioni generali scorrimento */
 html {
 	overflow-y: scroll;
 }
 
-::-webkit-scrollbar-track {
-	background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-	background: rgba(255, 255, 255, 0.3);
-	border-radius: 10px;
-}
-
-/* Frecce su/giù */
-::-webkit-scrollbar-button {
-	display: none;
-}
+/* Stili base del corpo pagina */
 body {
 	font-family:
 		system-ui,
 		-apple-system,
-		BlinkMacSystemFont,
-		"Segoe UI",
-		Roboto,
-		Oxygen,
-		Ubuntu,
-		Cantarell,
-		"Open Sans",
-		"Helvetica Neue",
 		sans-serif;
-}
-
-body {
 	background-color: var(--bg-color);
 	color: var(--text-color);
 }
 
+/* Link accessibilità (salta al contenuto) */
 .skip-link {
 	position: absolute;
 	left: 16px;
@@ -61,50 +40,52 @@ body {
 	top: 16px;
 }
 
+/* Stile Navbar */
 .navbar {
 	padding-block: 12px;
-	/* background-color: var(--nav-bg); */
-	background: linear-gradient(to right, rgb(219, 255, 221), rgb(176, 79, 255));
+	background: linear-gradient(to right, rgb(218, 255, 223), rgb(206, 151, 251));
 }
 
-.navbar a,
-.navbar button {
-	-webkit-tap-highlight-color: transparent;
-}
-
+/* Logo nella navbar */
 .navbar-brand .logo-img {
 	height: 40px;
 	width: auto;
 }
 
+/* Pulsanti nella navbar */
 .navbar .btn {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 }
 
+/* Colore testo link navbar */
+.navbar .nav-link {
+	color: #1a1a1a;
+}
+
+/* Transizioni link navbar */
 .nav-link {
 	transition: color 0.3s ease;
 }
 
-.navbar .nav-link,
-.navbar .navbar-brand {
-	color: #1a1a1a;
-}
-
-.navbar .nav-link:focus-visible,
-.navbar .navbar-brand:focus-visible,
-.user-menu-btn:focus-visible,
-.user-dropdown-item:focus-visible,
-button:focus-visible,
-a:focus-visible,
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible {
+/* Focus ring personalizzato */
+:is(
+	.navbar .nav-link,
+	.navbar .navbar-brand,
+	.user-menu-btn,
+	.user-dropdown-item,
+	button,
+	a,
+	input,
+	select,
+	textarea
+):focus-visible {
 	outline: 3px solid var(--focus-ring-color);
 	outline-offset: 2px;
 }
 
+/* Colorazione elementi attivi/hover */
 .navbar-nav .nav-link:hover,
 .navbar-nav .nav-link.active,
 .note-card:hover .note-title-link,
@@ -117,13 +98,6 @@ a:hover .admin-card .card-title {
 .card {
 	background-color: white;
 	border-radius: 14px;
-}
-
-.form-control,
-.form-select,
-.table {
-	background-color: white;
-	--bs-table-bg: white;
 }
 
 .form-card .form-control {
@@ -147,6 +121,7 @@ a:hover .admin-card .card-title {
 		box-shadow 0.2s ease-in-out;
 }
 
+/* Quando si passa sopra con il mouse la card si alza */
 .course-card:hover,
 .note-card:hover,
 .admin-card:hover {
@@ -159,11 +134,6 @@ a:hover .admin-card .card-title {
 .admin-card .card-title {
 	color: var(--bs-body-color);
 	transition: color 0.3s ease;
-}
-
-.badge-vote {
-	color: var(--primary-color);
-	border: 1px solid var(--primary-color);
 }
 
 .offcanvas,
@@ -196,10 +166,7 @@ a:hover .admin-card .card-title {
 		max-width: 320px !important;
 		background: linear-gradient(to bottom, rgb(219, 255, 221), rgb(176, 79, 255));
 	}
-}
 
-/* Menu utente: mobile espanso */
-@media (max-width: 991.98px) {
 	.user-menu {
 		width: 100%;
 		border-top: 1px solid rgba(0, 0, 0, 0.1);
@@ -245,7 +212,7 @@ a:hover .admin-card .card-title {
 	}
 }
 
-/* Sopra tutti gli altri elementi */
+/* Banner sopra a tutti gli altri elementi */
 .banner-layer {
 	z-index: 2000;
 }
@@ -263,22 +230,16 @@ a:hover .admin-card .card-title {
 /* Colonna ruolo fissa */
 .col-ruolo {
 	width: 20%;
-	max-width: 20%;
-	min-width: 20%;
 }
 
 /* Colonna ruolo fissa */
 .col-utente {
 	width: 60%;
-	max-width: 60%;
-	min-width: 60%;
 }
 
 /* Colonna azioni fissa */
 .col-azioni {
 	width: 20%;
-	max-width: 20%;
-	min-width: 20%;
 }
 
 /* Colonna azioni compatta */
@@ -301,6 +262,12 @@ a:hover .admin-card .card-title {
 	background: rgba(146, 146, 146, 0.064);
 }
 
-.visually-hidden-focusable {
-	position: absolute;
+/* Stile della scrollbar */
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background: rgba(255, 255, 255, 0.3);
+	border-radius: 10px;
 }

@@ -8,7 +8,7 @@ function getReviewFormHTML(idappunto) {
                     <div class="col-8 col-sm-6 col-md-4">
                         <label for="valutazione" class="form-label visually-hidden">Valutazione</label>
                         <select name="valutazione" id="valutazione" class="form-select text-center" required>
-                            <option value="" selected disabled>Vota</option>
+                            <option value="" selected disabled>Vota...</option>
                             <option value="5">5 - Eccellente</option>
                             <option value="4">4 - Molto Buono</option>
                             <option value="3">3 - Buono</option>
@@ -17,7 +17,7 @@ function getReviewFormHTML(idappunto) {
                         </select>
                     </div>
                     <div class="col-auto">
-                        <button type="submit" class="btn btn-primary">Invia</button>
+                        <button type="submit" class="btn btn-outline-primary">Invia</button>
                     </div>
                 </div>
             </form>
@@ -149,8 +149,10 @@ function handleApprove(id) {
 
 			// Mostra la sezione delle recensioni
 			const reviewsSection = document.getElementById("reviews-section");
-			reviewsSection.classList.remove("d-none");
-			reviewsSection.style.display = "block";
+			if (reviewsSection) {
+				reviewsSection.classList.remove("d-none");
+				reviewsSection.style.display = "block";
+			}
 
 			showSuccess("Appunto approvato con successo"); // Mostra un messaggio di successo
 		} else {

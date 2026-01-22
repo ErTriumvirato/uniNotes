@@ -33,10 +33,10 @@ if (isset($_POST["toggleFollow"])) {
 
     $isFollowing = $dbh->isFollowingCourse($idutente, $idcorso);
 
-    if ($isFollowing) {
+    if ($isFollowing) { // Se l'utente sta già seguendo il corso, smette di seguirlo
         $dbh->unfollowCourse($idutente, $idcorso);
         echo json_encode(['following' => false]);
-    } else {
+    } else { // Altrimenti inizia a seguirlo
         $dbh->followCourse($idutente, $idcorso);
         echo json_encode(['following' => true]);
     }

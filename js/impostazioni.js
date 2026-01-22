@@ -1,6 +1,7 @@
 const serverMessage = document.getElementById("server-message"); // Messaggio dal server (di successo o errore)
 
 if (serverMessage) {
+	// Se esiste un messaggio dal server
 	const message = serverMessage.dataset.message;
 	const type = serverMessage.dataset.type;
 	if (type === "success") {

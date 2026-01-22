@@ -23,8 +23,8 @@ $defaultMessage = $templateParams["defaultMessage"] ?? "Nessun appunto disponibi
     <!-- Filtri appunti (collassabile su dispositivi mobili) -->
     <div class="row g-2 align-items-end collapse d-md-flex" id="filtersCollapse">
         <div class="col-12 col-md-4">
-            <label for="ajax-search" class="form-label small text-muted">Cerca</label>
-            <input type="text" id="ajax-search" class="form-control form-control-sm" placeholder="Cerca appunti" value="<?= htmlspecialchars($search) ?>" />
+            <label for="ajax-search" class="form-label small fw-bold">Cerca appunti</label>
+            <input type="search" id="ajax-search" class="form-control form-control-sm" placeholder='es. "Analisi I" o "Informatica"' value="<?= htmlspecialchars($search) ?>" />
         </div>
         <!-- Filtro di approvazione solo per admin -->
         <?php if ($showApprovalFilter): ?>
