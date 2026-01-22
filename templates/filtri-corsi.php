@@ -14,8 +14,8 @@
  * $filterTypeCallback - funzione JS al onchange (default 'filterCourses()')
  */
 
-$ssds = $ssds ?? [];
-$showFollowFilter = $showFollowFilter ?? false;
+$ssds = $ssds ?? []; // Array di SSD
+$showFollowFilter = $showFollowFilter ?? false; // Mostra il filtro seguiti/non seguiti
 $searchId = $searchId ?? 'search';
 $ssdId = $ssdId ?? 'ssd';
 $filterTypeId = $filterTypeId ?? 'filterType';
@@ -39,11 +39,11 @@ $extraButtons = $extraButtons ?? '';
     <div class="row g-2 align-items-end collapse d-md-flex" id="filtersCollapse">
         <div class="col-12 col-md-<?php echo $showFollowFilter ? '4' : '6'; ?>">
             <label for="<?php echo $searchId; ?>" class="form-label small text-muted">Cerca</label>
-            <input type="text" id="<?php echo $searchId; ?>" class="form-control" placeholder="Cerca corso" oninput="<?php echo $searchCallback; ?>" />
+            <input type="text" id="<?php echo $searchId; ?>" class="form-control" placeholder="Cerca corso" />
         </div>
         <div class="col-12 col-md-<?php echo $showFollowFilter ? '4' : '6'; ?>">
             <label for="<?php echo $ssdId; ?>" class="form-label small text-muted">SSD</label>
-            <select id="<?php echo $ssdId; ?>" class="form-select" onchange="<?php echo $ssdCallback; ?>">
+            <select id="<?php echo $ssdId; ?>" class="form-select">
                 <option value="">Tutti gli SSD</option>
                 <?php foreach ($ssds as $ssd):
                     $nome = is_array($ssd) ? ($ssd['nome'] ?? $ssd) : $ssd;
@@ -55,7 +55,7 @@ $extraButtons = $extraButtons ?? '';
         <?php if ($showFollowFilter): ?>
             <div class="col-12 col-md-4">
                 <label for="<?php echo $filterTypeId; ?>" class="form-label small text-muted">Stato</label>
-                <select id="<?php echo $filterTypeId; ?>" class="form-select" onchange="<?php echo $filterTypeCallback; ?>">
+                <select id="<?php echo $filterTypeId; ?>" class="form-select">
                     <option value="all">Tutti i corsi</option>
                     <option value="followed">Corsi seguiti</option>
                     <option value="not_followed">Corsi non seguiti</option>

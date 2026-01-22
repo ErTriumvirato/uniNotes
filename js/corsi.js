@@ -16,6 +16,11 @@ const ssdSelect = document.getElementById("ssd"); // Select per SSD
 const filterTypeSelect = document.getElementById("filterType"); // Select per tipo di filtro (tutti, seguiti, non seguiti)
 const coursesContainer = document.getElementById("courses-container"); // Contenitore delle card dei corsi
 
+// Listener per i filtri
+if (searchInput) searchInput.addEventListener("input", filterCourses);
+if (ssdSelect) ssdSelect.addEventListener("change", filterCourses);
+if (filterTypeSelect) filterTypeSelect.addEventListener("change", filterCourses);
+
 // Carica i corsi all'avvio della pagina
 filterCourses();
 
@@ -28,7 +33,7 @@ function createCourseCard(corso) {
 		<div class="col-12 col-md-6 col-lg-4">
 			<div class="card h-100 shadow-sm border-0 course-card">
 				<div class="card-body d-flex flex-column">
-					<h3 class="card-title h5">
+					<h3 class=" h3 card-title">
 						<a href="corso.php?id=${corso.idcorso}" class="text-decoration-none course-title-link stretched-link">
 							${corso.nomeCorso}
 						</a>

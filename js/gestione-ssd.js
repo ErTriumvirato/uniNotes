@@ -1,12 +1,13 @@
-let ssdModalBS = new bootstrap.Modal(document.getElementById("ssdModal"));
+let ssdModalBS = new bootstrap.Modal(document.getElementById("ssdModal")); // Modal Bootstrap per la gestione degli SSD
 
-document.getElementById("btn-new-ssd").addEventListener("click", openSSDModal);
-document.getElementById("btn-save-ssd").addEventListener("click", saveSSD);
-document.getElementById("searchSSD").addEventListener("input", loadSSDs);
+document.getElementById("btn-new-ssd").addEventListener("click", openSSDModal); // Aggiunge al pulsante il listener di apertura del modal
+document.getElementById("btn-save-ssd").addEventListener("click", saveSSD); // Aggiunge al pulsante il listener di salvataggio dell'SSD
+document.getElementById("searchSSD").addEventListener("input", loadSSDs); // Aggiunge al campo di ricerca il listener di caricamento degli SSD
 
+// Carica gli SSD all'avvio della pagina
 loadSSDs();
 
-// Gestisce la creazione di un nuovo SSD
+// Creazione di una riga della tabella degli SSD
 function createSSDRow(ssd) {
 	return `
 		<tr>
@@ -32,6 +33,7 @@ function loadSSDs() {
 	const search = document.getElementById("searchSSD").value;
 	const url = `gestione-ssd.php?action=get_ssds&search=${encodeURIComponent(search)}`;
 
+	// Invia la richiesta AJAX per ottenere gli SSD (definita in base.js)
 	handleButtonAction(null, url, null, (data) => {
 		if (!data.success) return;
 
@@ -57,6 +59,7 @@ function openSSDModal() {
 
 // Apre il modal per modificare un SSD esistente
 function editSSD(id) {
+	// Invia la richiesta AJAX per ottenere i dati dell'SSD (definita in base.js)
 	handleButtonAction(null, `gestione-ssd.php?action=get_ssd&id=${id}`, null, (data) => {
 		if (!data.success) return;
 
@@ -74,6 +77,7 @@ function saveSSD() {
 	const formData = new FormData(document.getElementById("ssdForm"));
 	formData.append("action", "save_ssd");
 
+	// Invia la richiesta AJAX per salvare l'SSD (definita in base.js)
 	handleButtonAction(null, "gestione-ssd.php", new URLSearchParams(formData).toString(), (data) => {
 		if (data.success) {
 			ssdModalBS.hide();
@@ -95,16 +99,19 @@ function resetDeleteSSDButton(btn) {
 // Elimina un SSD
 function deleteSSD(id, btn) {
 	if (!btn.dataset.confirm) {
+		// È necessaria la conferma
 		btn.dataset.confirm = "true";
 		btn.innerHTML =
 			'<em class="bi bi-check-lg" aria-hidden="true"></em><span class="visually-hidden">Conferma eliminazione</span>';
 		btn.classList.replace("btn-outline-danger", "btn-danger");
 		setTimeout(() => {
+			// Resetta il pulsante dopo 3 secondi se non viene confermato
 			if (btn.dataset.confirm) resetDeleteSSDButton(btn);
 		}, 3000);
 		return;
 	}
 
+	// Invia la richiesta AJAX per eliminare l'SSD (definita in base.js)
 	handleButtonAction(btn, "gestione-ssd.php", `action=delete_ssd&id=${id}`, (data) => {
 		if (data.success) {
 			loadSSDs();

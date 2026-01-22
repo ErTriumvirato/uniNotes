@@ -1,5 +1,5 @@
 <?php
-$courses = $dbh->getCoursesWithFilters();
+$courses = $dbh->getCoursesWithFilters(); // Recupera tutti i corsi disponibili
 
 // Ottieni l'ID del corso selezionato della GET, se presente (se l'utente è stato reindirizzato dalla pagina del corso)
 $selectedCourseId = isset($_GET['idcorso']) ? $_GET['idcorso'] : null;
@@ -15,6 +15,8 @@ $selectedCourseId = isset($_GET['idcorso']) ? $_GET['idcorso'] : null;
                 <form action="creazione-appunto.php" method="post">
                     <div class="mb-3">
                         <label for="course" class="form-label">Corso</label>
+
+                        <!-- Select dei corsi -->
                         <select id="course" name="course" class="form-select" required>
                             <option value="" disabled <?php echo !$selectedCourseId ? 'selected' : ''; ?>>Seleziona un corso</option>
                             <?php foreach ($courses as $course): ?>
@@ -51,31 +53,34 @@ $selectedCourseId = isset($_GET['idcorso']) ? $_GET['idcorso'] : null;
             <h2 id="appunto-in-attesa" class="text-center mb-4 h3">In attesa di approvazione</h2>
             <div class="d-flex flex-column gap-3">
                 <?php foreach ($templateParams["unapprovedNotes"] as $note): ?>
+                    <!-- Appunto in attesa di approvazione -->
                     <article class="card shadow-sm border-0 rounded-3">
                         <div class="card-body p-3">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
                                     <div class="fw-bold"><?php echo htmlspecialchars($note['titolo']); ?></div>
                                     <div class="small text-muted"><?php echo htmlspecialchars($note['nome_corso']); ?></div>
-                                    <?php if ($note['stato'] === 'rifiutato'): ?>
-                                        <div class="text-danger small mt-1">
-                                            <strong>Stato:</strong> Rifiutato
-                                        </div>
-                                    <?php endif; ?>
                                 </div>
                                 <div class="d-flex flex-column align-items-end gap-2">
                                     <span class="text-muted small"><?php echo date('d/m/Y', strtotime($note['data_pubblicazione'])); ?></span>
+
                                     <?php if ($note['stato'] === 'rifiutato'): ?>
-                                        <a href="modifica-appunto.php?id=<?php echo $note['idappunto']; ?>" class="btn btn-sm btn-outline-danger" title="Modifica">
-                                            <em class="bi bi-pencil" aria-hidden="true"></em>
-                                            <span class="visually-hidden">Modifica</span>
-                                        </a>
+                                        <!-- Appunto riiutato -->
+                                        <div class="d-flex align-items-center gap-2">
+                                            <a href="modifica-appunto.php?id=<?php echo $note['idappunto']; ?>" class="btn btn-sm btn-outline-danger" title="Modifica">
+                                                <em class="bi bi-pencil" aria-hidden="true"></em> <!-- Icona matita -->
+                                                <span class="visually-hidden">Modifica</span> <!-- Testo per screen reader -->
+                                            </a>
+                                            <span class="badge bg-danger">Rifiutato</span> <!-- Etichetta rifiutato -->
+                                        </div>
+
                                     <?php else: ?>
-                                        <span class="badge bg-warning text-dark">In attesa</span>
-                                    <?php endif; ?>
+                                        <!-- Appunto in attesa -->
+                                                <span class="badge bg-warning text-dark">In attesa</span> <!-- Etichetta in attesa -->
+                                            <?php endif; ?>
+                                        </div>
                                 </div>
                             </div>
-                        </div>
                     </article>
                 <?php endforeach; ?>
             </div>

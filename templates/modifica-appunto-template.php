@@ -9,12 +9,6 @@ $note = $templateParams["appunto"];
             <div class="card-body p-4">
                 <h1 class="text-center mb-4 h2">Modifica appunti</h1>
 
-                <?php if ($note['stato'] === 'rifiutato'): ?>
-                    <div class="alert alert-danger" role="alert">
-                        <strong>Stato:</strong> Rifiutato
-                    </div>
-                <?php endif; ?>
-
                 <form action="modifica-appunto.php" method="post">
                     <input type="hidden" name="idappunto" value="<?php echo $note['idappunto']; ?>" />
 

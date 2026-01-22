@@ -1,10 +1,11 @@
 let userModalBS = new bootstrap.Modal(document.getElementById("userModal")); // Inizializza il modal di Bootstrap
 
-document.getElementById("btn-new-user").addEventListener("click", openUserModal);
-document.getElementById("btn-save-user").addEventListener("click", saveUser);
-document.getElementById("searchUser").addEventListener("input", loadUsers);
-document.getElementById("filterRole").addEventListener("change", loadUsers);
+document.getElementById("btn-new-user").addEventListener("click", openUserModal); // Aggiunge al pulsante il listener di apertura del modal
+document.getElementById("btn-save-user").addEventListener("click", saveUser); // Aggiunge al pulsante di salvataggio il listener per salvare l'utente
+document.getElementById("searchUser").addEventListener("input", loadUsers); // Aggiunge il listener di ricerca utenti
+document.getElementById("filterRole").addEventListener("change", loadUsers); // Aggiunge il listener di filtro per ruolo
 
+// Carica la lista degli utenti all'avvio
 loadUsers();
 
 function createUserRow(user) {

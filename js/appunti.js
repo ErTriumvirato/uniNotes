@@ -109,7 +109,7 @@ function updateNotes() {
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-12">
-                                <h3 class="card-title mb-1 h5">
+                                <h3 class=" h3 card-title mb-1">
                                     <a href="appunto.php?id=${el.idappunto}" class="text-decoration-none note-title-link ${showActions ? "" : "stretched-link"}">${el.titolo}</a>
                                 </h3>
                                 <p class="card-text text-muted small mb-2">di ${el.autore}</p>

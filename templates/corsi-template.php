@@ -11,7 +11,7 @@ $ssds = $templateParams["ssds"];
 </div>
 
 <?php
-$showFollowFilter = !empty($idutente);
+$showFollowFilter = !empty($idutente); // Mostra il filtro "Seguiti" solo se l'utente è loggato
 require 'filtri-corsi.php';
 ?>
 
@@ -19,5 +19,5 @@ require 'filtri-corsi.php';
 <!-- Lista corsi -->
 <section id="courses-container" class="row g-4" aria-label="Lista corsi" aria-live="polite">
     <h2 class="visually-hidden">Lista corsi</h2>
-    <!-- I corsi verranno caricati via JS -->
+    <!-- Riempita con JavaScript -->
 </section>

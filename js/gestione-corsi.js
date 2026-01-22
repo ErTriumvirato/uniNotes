@@ -1,8 +1,16 @@
-let courseModalBS = new bootstrap.Modal(document.getElementById("courseModal"));
+let courseModalBS = new bootstrap.Modal(document.getElementById("courseModal")); // Modal Bootstrap per la gestione dei corsi
 
+const searchCourseInput = document.getElementById("searchCourse"); // Input di ricerca dei corsi
+const filterSSDSelect = document.getElementById("filterSSD"); // Select di filtro per SSD
+
+if (searchCourseInput) searchCourseInput.addEventListener("input", loadCourses); // Ricarica i corsi al cambiamento del testo di ricerca
+if (filterSSDSelect) filterSSDSelect.addEventListener("change", loadCourses); // Ricarica i corsi al cambiamento del filtro SSD
+
+// Carica gli SSD e i corsi all'avvio
 loadFiltersSSDs();
 loadCourses();
 
+// Aggiunge gli event listener ai bottoni di creazione e salvataggio corso
 document.getElementById("btn-new-course").addEventListener("click", openCourseModal);
 document.getElementById("btn-save-course").addEventListener("click", saveCourse);
 
@@ -27,16 +35,22 @@ function createCourseRow(course) {
 		</tr>`;
 }
 
+// Carica e visualizza i corsi in base ai filtri
 function loadCourses() {
 	const search = document.getElementById("searchCourse").value;
 	const ssd = document.getElementById("filterSSD").value;
 	const url = `gestione-corsi.php?action=get_courses&search=${encodeURIComponent(search)}&ssd=${encodeURIComponent(ssd)}`;
 
+	// Invio della richiesta AJAX per ottenere i corsi (definita in base.js)
 	handleButtonAction(null, url, null, (data) => {
 		if (!data.success) return;
 
-		document.getElementById("coursesTableBody").innerHTML = data.data.map(createCourseRow).join("");
+		// Popola la tabella dei corsi
+		document.getElementById("coursesTableBody").innerHTML = data.data
+			.map(createCourseRow) // Crea una riga per ogni corso
+			.join(""); // Unisce tutte le righe in una singola stringa
 
+		// Aggiunge gli event listener ai bottoni di modifica ed eliminazione
 		document.querySelectorAll(".btn-edit-course").forEach((btn) => {
 			btn.addEventListener("click", () => editCourse(btn.dataset.id));
 		});
@@ -75,6 +89,7 @@ function saveCourse() {
 	const formData = new FormData(document.getElementById("courseForm"));
 	formData.append("action", "save_course");
 
+	// Invio della richiesta AJAX per salvare il corso (definita in base.js)
 	handleButtonAction(null, "gestione-corsi.php", new URLSearchParams(formData).toString(), (data) => {
 		if (data.success) {
 			courseModalBS.hide();
@@ -96,16 +111,19 @@ function resetDeleteCourseButton(btn) {
 // Eliminazione di un corso
 function deleteCourse(id, btn) {
 	if (!btn.dataset.confirm) {
+		// È necessaria la conferma
 		btn.dataset.confirm = "true";
 		btn.innerHTML =
 			'<em class="bi bi-check-lg" aria-hidden="true"></em><span class="visually-hidden">Conferma eliminazione</span>';
 		btn.classList.replace("btn-outline-danger", "btn-danger");
 		setTimeout(() => {
+			// Reset del bottone dopo 3 secondi se non viene confermato
 			if (btn.dataset.confirm) resetDeleteCourseButton(btn);
 		}, 3000);
 		return;
 	}
 
+	// Invio della richiesta AJAX per eliminare il corso (definita in base.js)
 	handleButtonAction(btn, "gestione-corsi.php", `action=delete_course&id=${id}`, (data) => {
 		if (data.success) {
 			loadCourses();

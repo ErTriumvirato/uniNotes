@@ -14,7 +14,7 @@ $statistiche = [
     <div class="col-4">
         <div class="card h-100 border-0 shadow-sm text-center p-2 p-md-3">
             <div class="card-body p-1 p-md-3">
-                <h3 class="h2 fw-bold text-primary mb-1 mb-md-2"><?php echo $statistiche["corsi_seguiti"]; ?></h3>
+                <h3 class="h3 fw-bold text-primary mb-1 mb-md-2"><?php echo $statistiche["corsi_seguiti"]; ?></h3>
                 <p class="mb-0 text-muted small">Corsi seguiti</p>
             </div>
         </div>
@@ -22,7 +22,7 @@ $statistiche = [
     <div class="col-4">
         <div class="card h-100 border-0 shadow-sm text-center p-2 p-md-3">
             <div class="card-body p-1 p-md-3">
-                <h3 class="h2 fw-bold text-primary mb-1 mb-md-2"><?php echo $statistiche["appunti_scritti"]; ?></h3>
+                <h3 class="h3 fw-bold text-primary mb-1 mb-md-2"><?php echo $statistiche["appunti_scritti"]; ?></h3>
                 <p class="mb-0 text-muted small">Appunti scritti</p>
             </div>
         </div>
@@ -30,7 +30,7 @@ $statistiche = [
     <div class="col-4">
         <div class="card h-100 border-0 shadow-sm text-center p-2 p-md-3">
             <div class="card-body p-1 p-md-3">
-                <h3 class="h2 fw-bold text-primary mb-1 mb-md-2"><?php echo $statistiche["media_recensioni"]; ?></h3>
+                <h3 class="h3 fw-bold text-primary mb-1 mb-md-2"><?php echo $statistiche["media_recensioni"]; ?></h3>
                 <p class="mb-0 text-muted small">Media voto</p>
             </div>
         </div>

@@ -2,7 +2,7 @@
 function getReviewFormHTML(idappunto) {
 	return `
         <div id="review-form-container">
-            <h3 class="mb-3 h5">Lascia una recensione</h3>
+            <h3 class="mb-3 h3">Lascia una recensione</h3>
             <form id="review-form" data-idappunto="${idappunto}">
                 <div class="row g-2 align-items-end">
                     <div class="col-8 col-sm-6 col-md-4">

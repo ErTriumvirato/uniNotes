@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" dir="ltr">
 
 <head>
     <meta charset="UTF-8" />
@@ -12,15 +12,18 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100">
+    <!-- Skip to content accessibilità-->
+    <a class="visually-hidden-focusable" href="#main-content" target="_self">Salta al contenuto</a>
 
     <header>
         <!-- Barra di navigazione -->
         <nav class="navbar navbar-expand-lg navbar-light shadow-sm fixed-top" aria-label="Barra di navigazione">
             <div class="container-fluid">
                 <!-- Logo -->
-                <a class="navbar-brand" href="index.php">
-                    <img src="uploads/img/logo.png" alt="Logo uniNotes" class="logo-img" />
+                <a class="navbar-brand" href="index.php" target="_self">
+                    <img src="uploads/img/logo.png" alt="Logo del sito uniNotes" class="logo-img" />
                 </a>
+
 
                 <!-- Pulsante menu per dispositivi mobile -->
                 <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas" aria-controls="navbarOffcanvas" aria-label="Apri menu di navigazione">
@@ -30,25 +33,25 @@
                 <!-- Menu di navigazione -->
                 <div class="offcanvas offcanvas-end flex-lg-grow-1" tabindex="-1" id="navbarOffcanvas" aria-labelledby="navbarOffcanvasLabel">
                     <div class="offcanvas-header d-lg-none">
-                        <h5 class="offcanvas-title" id="navbarOffcanvasLabel">Menu</h5>
+                        <p class="offcanvas-title" id="navbarOffcanvasLabel">Menu</p>
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Chiudi"></button>
                     </div>
                     <div class="offcanvas-body">
                         <ul class="navbar-nav mx-auto mb-2 mb-lg-0 text-center">
                             <li class="nav-item">
-                                <a class="nav-link" href="index.php">Home</a>
+                                <a class="nav-link" href="index.php" target="_self">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="corsi.php">Corsi</a>
+                                <a class="nav-link" href="corsi.php" target="_self">Corsi</a>
                             </li>
                             <?php if (isUserLoggedIn()) { ?>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="creazione-appunto.php">Carica</a>
+                                    <a class="nav-link" href="creazione-appunto.php" target="_self">Carica</a>
                                 </li>
                             <?php } ?>
                             <?php if (isUserAdmin()) { ?>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="menu-gestione.php">Area amministrazione</a>
+                                    <a class="nav-link" href="menu-gestione.php" target="_self">Area amministrazione</a>
                                 </li>
                             <?php } ?>
                         </ul>
@@ -56,21 +59,21 @@
                         <!-- Menu utente -->
                         <?php if (!isUserLoggedIn()) { ?>
                             <div class="d-flex justify-content-center">
-                                <a href="login.php" class="btn btn-primary">Accedi</a>
+                                <a href="login.php" class="btn btn-primary" target="_self">Accedi</a>
                             </div>
                         <?php } else { ?>
                             <div class="dropdown user-menu">
                                 <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-person-circle me-1"></i>
+                                    <em class="bi bi-person-circle me-1"></em>
                                     <?php echo htmlspecialchars($_SESSION['username']); ?>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><a class="dropdown-item" href="profilo-utente.php">Profilo</a></li>
-                                    <li><a class="dropdown-item" href="impostazioni.php">Impostazioni</a></li>
+                                    <li><a class="dropdown-item" href="profilo-utente.php" target="_self">Profilo</a></li>
+                                    <li><a class="dropdown-item" href="impostazioni.php" target="_self">Impostazioni</a></li>
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
-                                    <li><a class="dropdown-item text-danger" href="logout.php">Esci</a></li>
+                                    <li><a class="dropdown-item text-danger" href="logout.php" target="_self">Esci</a></li>
                                 </ul>
                             </div>
                         <?php } ?>
@@ -120,21 +123,20 @@
             "templates/modifica-appunto-template.php"
         ];
 
-        if (isset($templateParams["nome"]) && in_array($templateParams["nome"], $backButtonPages)):
-        ?>
+        if (isset($templateParams["nome"]) && in_array($templateParams["nome"], $backButtonPages)): ?>
             <button class="btn btn-outline-secondary mb-3" id="btn-back">← Indietro</button>
         <?php
         endif;
         ?>
 
         <!-- Contenuto principale della pagina -->
-        <div class="py-4">
+        <div class="py-4" id="main-content">
             <!-- Include il template specifico della pagina -->
             <?php
             if (isset($dbh) && $dbh->errorConnection) {
                 // Non caricare il template se c'è un errore di connessione
             } elseif (isset($templateParams["nome"])) {
-                require($templateParams["nome"]);
+                require($templateParams["nome"]); //
             }
             ?>
         </div>
@@ -151,9 +153,6 @@
 <!-- Script Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
-<!-- Rendering di formule matematiche -->
-<script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-
 <?php
 // Inclusione di script .js passati come parametri
 if (isset($templateParams["script"])) {
@@ -163,6 +162,7 @@ if (isset($templateParams["script"])) {
 }
 ?>
 
+<!-- Gestione errori di connessione al database con banner -->
 <?php if (isset($dbh) && $dbh->errorConnection): ?>
     <script>
         showError("<?php echo $dbh->errorConnection; ?>");

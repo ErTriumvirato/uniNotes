@@ -2,11 +2,12 @@
 $idCorso = $_GET['id'];
 $corso = $dbh->getCourseById($idCorso);
 $idutente = $_SESSION["idutente"] ?? null;
-$isFollowing = $idutente ? $dbh->isFollowingCourse($idutente, $idCorso) : false;
+$isFollowing = $idutente ? $dbh->isFollowingCourse($idutente, $idCorso) : false; // Controlla se l'utente sta seguendo il corso
 ?>
 
 <div class="row justify-content-center">
     <div class="col-12 col-lg-10">
+        <!-- Dettagli corso -->
         <section aria-labelledby="titolo-corso" class="card shadow-sm border-0 mb-5">
             <div class="card-body p-4 p-md-5">
                 <div>
@@ -23,10 +24,11 @@ $isFollowing = $idutente ? $dbh->isFollowingCourse($idutente, $idCorso) : false;
             </div>
         </section>
 
+        <!-- Lista appunti del corso (usa il template appunti-template.php) -->
         <section aria-label="Lista appunti corso" class="card shadow-sm border-0 mb-5">
             <div class="card-body p-3 p-md-4">
                 <?php
-                $templateParams["titoloFiltri"] = "Appunti disponibili";
+                $templateParams["titoloFiltri"] = "Appunti del corso";
                 $templateParams["idcorso"] = $idCorso;
                 $templateParams["defaultMessage"] = "Nessun appunto disponibile per questo corso.";
                 include 'templates/appunti-template.php';

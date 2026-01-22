@@ -80,8 +80,8 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
-                        <button type="button" class="btn btn-primary" id="btn-save-user">Salva</button>
+                        <button type="button" class="btn btn-outline-primary" id="btn-save-user">Salva</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annulla</button>
                     </div>
                 </div>
             </div>

@@ -1,8 +1,8 @@
 <?php
-$note = $templateParams["appunto"];
+$note = $templateParams["appunto"]; // Recupero i dettagli dell'appunto
 
 if (!empty($note)) {
-    $dbh->incrementNoteViews($_GET['id']);
+    $dbh->incrementNoteViews($_GET['id']); // Se l'appunto esiste, incremento le visualizzazioni
 ?>
 
     <div class="row justify-content-center">
@@ -14,6 +14,8 @@ if (!empty($note)) {
                             <h1 class="display-5 fw-bold mb-3"><?php echo htmlspecialchars($note['titolo']); ?></h1>
                         </div>
                         <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3">
+
+                            <!-- L'amministratore può approvare, rifiutare o eliminare l'appunto -->
                             <?php if (isUserAdmin()): ?>
                                 <?php
                                 $statusMap = [
@@ -25,8 +27,11 @@ if (!empty($note)) {
                                 ?>
 
                                 <div class="d-flex gap-2 align-items-center">
+
+                                    <!-- Badge di stato dell'appunto -->
                                     <span id="status-badge" class="badge <?php echo $statusInfo['class']; ?>"><?php echo $statusInfo['label']; ?></span>
 
+                                    <!-- Pulsanti di approvazione, rifiuto e eliminazione -->
                                     <div class="d-flex gap-2" id="admin-actions">
                                         <?php if ($note['stato'] === 'in_revisione'): ?>
                                             <button type="button" class="btn btn-sm btn-outline-success btn-approve" data-id="<?= $note['idappunto'] ?>" title="Approva">
@@ -43,16 +48,20 @@ if (!empty($note)) {
                                 </div>
                             <?php endif; ?>
                         </div>
+
+                        <!-- Dettagli sull'appunto -->
                         <div class="d-flex flex-wrap gap-3 text-muted align-items-center">
                             <div class="d-flex align-items-center gap-2">
-                                <span>Autore: <a href="profilo-utente.php?id=<?php echo $note['idutente']; ?>" class="text-decoration-none fw-bold"><?php echo htmlspecialchars($note['autore']); ?></a></span>
+                                <span>Autore: <a href="profilo-utente.php?id=<?php echo $note['idutente']; ?>" class="fw-bold"><?php echo htmlspecialchars($note['autore']); ?></a></span>
                             </div>
-                            <div class="vr d-none d-md-block"></div>
+                            
+                            <div class="vr d-none d-md-block "></div> <!-- Separatore verticale -->
+                            
                             <div class="d-flex align-items-center gap-2">
-                                <span>Corso: <a href="corso.php?id=<?php echo $note['idcorso']; ?>" class="text-decoration-none fw-bold"><?php echo htmlspecialchars($note['nome_corso']); ?></a></span>
+                                <span>Corso: <a href="corso.php?id=<?php echo $note['idcorso']; ?>" class="fw-bold"><?php echo htmlspecialchars($note['nome_corso']); ?></a></span>
                             </div>
 
-                            <div class="vr d-none d-md-block"></div>
+                            <div class="vr d-none d-md-block"></div> <!-- Separatore verticale -->
 
                             <div class="d-flex flex-wrap gap-2 align-items-center">
                                 <span class="badge bg-light text-dark border p-2" title="Data pubblicazione">
@@ -68,11 +77,13 @@ if (!empty($note)) {
                         </div>
                     </header>
 
+                    <!-- Contenuto dell'appunto -->
                     <div class="note-content mb-4 note-body-card rounded p-3">
                         <?php echo nl2br(htmlspecialchars($note['contenuto'])); ?>
                     </div>
 
                     <?php
+                    // Se l'appunto è approvato o se l'utente non è l'autore, mostra la sezione per lasciare recensioni
                     $isAuthor = isUserLoggedIn() && $_SESSION['idutente'] == $note['idutente'];
                     if (($note['stato'] === 'approvato' || isUserAdmin()) && !$isAuthor):
                     ?>
@@ -90,7 +101,9 @@ if (!empty($note)) {
                                 'loginUrl' => 'login.php?redirect=' . urlencode(getCurrentURI())
                             ];
                             ?>
-                            <div id="user-review-interaction" data-config='<?php echo htmlspecialchars(json_encode($jsReviewConfig, JSON_HEX_APOS | JSON_HEX_QUOT), ENT_QUOTES, 'UTF-8'); ?>'></div>
+
+                            <!-- Sezione le recensioni, riempita con JavaScript -->
+                            <div id="user-review-interaction" data-config='<?php echo htmlspecialchars(json_encode($jsReviewConfig)); ?>'></div>
                         </section>
                     <?php endif; ?>
                 </div>
@@ -98,7 +111,7 @@ if (!empty($note)) {
         </div>
     </div>
 <?php
-} else {
+} else { // Se l'appunto non esiste
     echo '<div class="alert alert-danger text-center" role="alert">Appunto non trovato.</div>';
 }
 ?>
