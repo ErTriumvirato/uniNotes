@@ -1,5 +1,10 @@
 let courseModalBS = new bootstrap.Modal(document.getElementById("courseModal")); // Modal Bootstrap per la gestione dei corsi
 
+// Rimuove il focus dall'elemento attivo quando il modal inizia a chiudersi per evitare errori di accessibilità
+document.getElementById("courseModal").addEventListener("hide.bs.modal", () => {
+	document.activeElement?.blur();
+});
+
 const searchCourseInput = document.getElementById("searchCourse"); // Input di ricerca dei corsi
 const filterSSDSelect = document.getElementById("filterSSD"); // Select di filtro per SSD
 
@@ -148,7 +153,7 @@ function loadFiltersSSDs() {
 			data.data.map((ssd) => `<option value="${ssd.nome}">${ssd.nome}</option>`).join("");
 
 		document.getElementById("courseSSD").innerHTML = data.data
-			.map((ssd) => `<option value="${ssd.idssd}">${ssd.nome} - ${ssd.descrizione}</option>`)
+			.map((ssd) => `<option value="${ssd.idssd}">${ssd.nome}</option>`)
 			.join("");
 
 		filterSelect.value = currentFilter;

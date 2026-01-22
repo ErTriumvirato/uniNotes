@@ -1,5 +1,10 @@
 let ssdModalBS = new bootstrap.Modal(document.getElementById("ssdModal")); // Modal Bootstrap per la gestione degli SSD
 
+// Rimuove il focus dall'elemento attivo quando il modal inizia a chiudersi per evitare errori di accessibilità
+document.getElementById("ssdModal").addEventListener("hide.bs.modal", () => {
+	document.activeElement?.blur();
+});
+
 document.getElementById("btn-new-ssd").addEventListener("click", openSSDModal); // Aggiunge al pulsante il listener di apertura del modal
 document.getElementById("btn-save-ssd").addEventListener("click", saveSSD); // Aggiunge al pulsante il listener di salvataggio dell'SSD
 document.getElementById("searchSSD").addEventListener("input", loadSSDs); // Aggiunge al campo di ricerca il listener di caricamento degli SSD

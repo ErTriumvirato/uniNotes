@@ -1,5 +1,10 @@
 let userModalBS = new bootstrap.Modal(document.getElementById("userModal")); // Inizializza il modal di Bootstrap
 
+// Rimuove il focus dall'elemento attivo quando il modal inizia a chiudersi per evitare errori di accessibilità
+document.getElementById("userModal").addEventListener("hide.bs.modal", () => {
+	document.activeElement?.blur();
+});
+
 document.getElementById("btn-new-user").addEventListener("click", openUserModal); // Aggiunge al pulsante il listener di apertura del modal
 document.getElementById("btn-save-user").addEventListener("click", saveUser); // Aggiunge al pulsante di salvataggio il listener per salvare l'utente
 document.getElementById("searchUser").addEventListener("input", loadUsers); // Aggiunge il listener di ricerca utenti

@@ -9,14 +9,11 @@
     <section aria-labelledby="titolo-gestione-corsi" class="card shadow-sm border-0 mb-5">
         <div class="card-body p-3 p-md-4">
             <?php
-            // Prepare extra buttons for filters
-            ob_start();
-            ?>
+            // Pulsante Nuovo Corso
+            $extraButtons = '
             <button type="button" class="btn btn-outline-primary" id="btn-new-course">
                 Nuovo Corso
-            </button>
-            <?php
-            $extraButtons = ob_get_clean();
+            </button>';
 
             $searchId = 'searchCourse';
             $ssdId = 'filterSSD';
