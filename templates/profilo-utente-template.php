@@ -37,8 +37,12 @@ $statistiche = [
     </div>
 </section>
 
-<?php
-$templateParams["titoloFiltri"] = "Appunti di " . htmlspecialchars($templateParams['profiloUtente']['username']);
-$templateParams["idutente"] = $templateParams['profiloUtente']['idutente'];
-include 'templates/appunti-template.php';
-?>
+<section aria-label="Lista appunti utente" class="card shadow-sm border-0 mb-5">
+    <div class="card-body p-3 p-md-4">
+        <?php
+        $templateParams["titoloFiltri"] = "Appunti di " . htmlspecialchars($templateParams['profiloUtente']['username']);
+        $templateParams["idutente"] = $templateParams['profiloUtente']['idutente'];
+        include 'templates/appunti-template.php';
+        ?>
+    </div>
+</section>

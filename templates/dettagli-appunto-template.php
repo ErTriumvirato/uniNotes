@@ -53,7 +53,7 @@ if (!empty($note)) {
                             </div>
 
                             <div class="vr d-none d-md-block"></div>
-                            
+
                             <div class="d-flex flex-wrap gap-2 align-items-center">
                                 <span class="badge bg-light text-dark border p-2" title="Data pubblicazione">
                                     <?php echo date_format(date_create($note['data_pubblicazione']), 'd/m/Y'); ?>
@@ -68,7 +68,7 @@ if (!empty($note)) {
                         </div>
                     </header>
 
-                    <div class="note-content mb-4">
+                    <div class="note-content mb-4 note-body-card rounded p-3">
                         <?php echo nl2br(htmlspecialchars($note['contenuto'])); ?>
                     </div>
 

@@ -285,3 +285,17 @@ a:hover .admin-card .card-title {
 .col-actions-compact {
 	width: 1%;
 }
+
+/* Tabelle zebra striping */
+.table > tbody > tr:nth-child(even) > * {
+	--bs-table-bg-type: rgba(158, 61, 255, 0.05);
+}
+
+/* Tabelle zebra striping */
+.table > tbody > tr:nth-child(odd) > * {
+	--bs-table-bg-type: rgba(158, 61, 255, 0.17);
+}
+
+.note-card, .note-body-card {
+	background: rgba(146, 146, 146, 0.064);
+}

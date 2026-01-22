@@ -23,11 +23,15 @@ $isFollowing = $idutente ? $dbh->isFollowingCourse($idutente, $idCorso) : false;
             </div>
         </section>
 
-        <?php
-        $templateParams["titoloFiltri"] = "Appunti disponibili";
-        $templateParams["idcorso"] = $idCorso;
-        $templateParams["defaultMessage"] = "Nessun appunto disponibile per questo corso.";
-        include 'templates/appunti-template.php';
-        ?>
+        <section aria-label="Lista appunti corso" class="card shadow-sm border-0 mb-5">
+            <div class="card-body p-3 p-md-4">
+                <?php
+                $templateParams["titoloFiltri"] = "Appunti disponibili";
+                $templateParams["idcorso"] = $idCorso;
+                $templateParams["defaultMessage"] = "Nessun appunto disponibile per questo corso.";
+                include 'templates/appunti-template.php';
+                ?>
+            </div>
+        </section>
     </div>
 </div>
