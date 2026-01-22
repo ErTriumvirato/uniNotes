@@ -13,7 +13,7 @@ if (!empty($note)) {
                         <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3">
                             <h1 class="display-5 fw-bold mb-3"><?php echo htmlspecialchars($note['titolo']); ?></h1>
                         </div>
-                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3">
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 mb-3">
 
                             <!-- L'amministratore può approvare, rifiutare o eliminare l'appunto -->
                             <?php if (isUserAdmin()): ?>

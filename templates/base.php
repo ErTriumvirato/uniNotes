@@ -115,10 +115,8 @@
             "templates/gestione-appunti-template.php",
             "templates/menu-appunti.php",
             "templates/dettagli-appunto-template.php",
-            "templates/login-template.php",
             "templates/registrazione-template.php",
             "templates/profilo-utente-template.php",
-            "templates/impostazioni-template.php",
             "templates/modifica-appunto-template.php"
         ];
 

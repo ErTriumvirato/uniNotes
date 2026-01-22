@@ -32,7 +32,7 @@ function getReviewDisplayHTML(review, idappunto) {
         <div id="already-reviewed-container" class="d-flex justify-content-between align-items-center bg-light p-3 rounded" data-review-id="${review.idrecensione}" data-idappunto="${idappunto}">
             <div class="d-flex align-items-center gap-2">
                 <span class="fw-bold">La tua recensione:</span>
-                <span class="text-warning">${stars}</span>
+                <span>${stars}</span>
             </div>
             <button class="btn btn-sm btn-outline-danger delete-review-btn" data-review-id="${review.idrecensione}" aria-label="Elimina recensione" title="Elimina">
                 <em class="bi bi-trash" aria-hidden="true"></em>
@@ -177,7 +177,7 @@ function handleReject(id) {
 			adminActions.querySelector(".btn-approve")?.remove();
 			adminActions.querySelector(".btn-reject")?.remove();
 
-			showSuccess("Appunto rifiutato con successo"); // Mostra un messaggio di successo
+			showSuccess("Appunto rifiutato con successo."); // Mostra un messaggio di successo
 		} else {
 			showError("Errore durante il rifiuto"); // Mostra un messaggio di errore
 		}
