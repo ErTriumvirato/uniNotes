@@ -132,7 +132,7 @@ function handleDeleteReview(btn) {
 	});
 }
 
-// Approvazione articolo (per admin)
+// Approvazione appunto (per admin)
 function handleApprove(id) {
 	// Invia la richiesta AJAX per approvare l'appunto (definita in base.js)
 	handleButtonAction(null, "appunti.php", `action=approve&idappunto=${id}`, (data) => {
@@ -159,7 +159,7 @@ function handleApprove(id) {
 	});
 }
 
-// Rifiuto articolo
+// Rifiuto appunto (per admin)
 function handleReject(id) {
 	// Invia la richiesta AJAX per rifiutare l'appunto (definita in base.js)
 	handleButtonAction(null, "appunti.php", `action=reject&idappunto=${id}`, (data) => {
@@ -189,7 +189,7 @@ function resetDeleteNoteButton(btn) {
 	btn.classList.replace("btn-danger", "btn-outline-danger"); // Ripristina la classe di stile originale
 }
 
-// Eliminazione articolo
+// Eliminazione appnto (per admin)
 function handleDeleteNote(btn) {
 	const id = btn.dataset.id; // ID dell'appunto da eliminare
 

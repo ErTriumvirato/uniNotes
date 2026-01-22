@@ -44,7 +44,7 @@ $selectedCourseId = isset($_GET['idcorso']) ? $_GET['idcorso'] : null;
     </div>
 </div>
 
-<!-- Articoli in attesa di approvazione -->
+<!-- Appunti in attesa di approvazione -->
 <?php if (!empty($templateParams["unapprovedNotes"])): ?>
     <section aria-labelledby="appunto-in-attesa" class="row justify-content-center mt-5">
         <div class="col-12 col-md-8 col-lg-6">

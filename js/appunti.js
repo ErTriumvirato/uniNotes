@@ -103,7 +103,7 @@ function updateNotes() {
 				statusBadge = `<span class="badge ${statusInfo.class}" title="Stato">${statusInfo.label}</span>`;
 			}
 
-			// Aggiungi l'articolo al container
+			// Aggiungi l'appunto al container
 			container.innerHTML += `
                 <article class="card shadow-sm border-0 note-card" id="note-${el.idappunto}">
                     <div class="card-body">
@@ -189,7 +189,7 @@ function resetDeleteButton(btn) {
 	btn.classList.replace("btn-danger", "btn-outline-danger"); // Ripristina lo stile originale
 }
 
-// Aggiorna gli articoli quando si torna alla pagina dal back/forward
+// Aggiorna gli appunti quando si torna alla pagina dal back/forward
 window.addEventListener("pageshow", (event) => {
 	if (event.persisted) {
 		updateNotes(); // Ricarica gli appunti se la pagina è stata caricata dalla cache
