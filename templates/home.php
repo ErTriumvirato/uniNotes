@@ -20,7 +20,7 @@ $seguendoCorsi = $userId ? $dbh->getFollowedCoursesCount($userId) : false;
 <?php endif; ?>
 
 <section class="mb-5">
-    <h2 class="mb-4">Ultimi appunti usciti</h2>
+    <h2 class="mb-4">Appunti recenti</h2>
     <?php if (empty($lastNotes)): ?>
         <p>Nessun appunto trovato.</p>
     <?php else: ?>

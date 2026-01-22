@@ -8,13 +8,16 @@
     <!-- Sezione Corsi -->
     <section aria-labelledby="titolo-gestione-corsi" class="card shadow-sm border-0 mb-5">
         <div class="card-body p-3 p-md-4">
-            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-                <button type="button" class="btn btn-outline-primary" id="btn-new-course">
-                    Nuovo Corso
-                </button>
-            </div>
-
             <?php
+            // Prepare extra buttons for filters
+            ob_start();
+            ?>
+            <button type="button" class="btn btn-outline-primary" id="btn-new-course">
+                Nuovo Corso
+            </button>
+            <?php
+            $extraButtons = ob_get_clean();
+
             $searchId = 'searchCourse';
             $ssdId = 'filterSSD';
             $searchCallback = 'loadCourses()';

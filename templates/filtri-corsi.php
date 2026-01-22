@@ -22,11 +22,15 @@ $filterTypeId = $filterTypeId ?? 'filterType';
 $searchCallback = $searchCallback ?? 'filterCourses()';
 $ssdCallback = $ssdCallback ?? 'filterCourses()';
 $filterTypeCallback = $filterTypeCallback ?? 'filterCourses()';
+$extraButtons = $extraButtons ?? '';
 ?>
 
 <section aria-label="Filtri corsi" class="mb-4">
     <h2 class="visually-hidden">Filtri corsi</h2>
     <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex gap-3">
+            <?= $extraButtons ?>
+        </div>
         <button class="btn btn-sm btn-outline-secondary d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#filtersCollapse" aria-expanded="false" aria-controls="filtersCollapse">
             <em class="bi bi-filter"></em> Filtri
         </button>

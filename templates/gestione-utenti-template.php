@@ -9,9 +9,6 @@
                         <button type="button" class="btn btn-outline-primary" id="btn-new-user">
                             Nuovo utente
                         </button>
-                    </div>
-
-                    <div class="d-flex justify-content-between align-items-center mb-3">
                         <button class="btn btn-sm btn-outline-secondary d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#userFiltersCollapse" aria-expanded="false" aria-controls="userFiltersCollapse">
                             <em class="bi bi-filter"></em> Filtri
                         </button>
